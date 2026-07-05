@@ -42,7 +42,7 @@
         }
         .back-link { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-decoration: none; }
 
-        /* STEP 1: CONFIGURATION GATE */
+        /* STEP 1: INITIAL VALUE TRACK & IDENTITY SELECTION CONTAINER */
         #onboardingWrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; width: 100%; }
         .setup-card {
             background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px;
@@ -65,8 +65,9 @@
         .pillar-meta p { margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
         
         .action-btn { background: var(--electric-lilac); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2); }
+        .action-btn:hover { opacity: 0.95; }
 
-        /* STEP 2: LIVE RUNTIME MATRIX WORKSPACE */
+        /* STEP 2: LIVE MATRIX WORKSPACE DISPLAY (HIDDEN BY DEFAULT) */
         #workspaceWrapper { display: none; width: 100%; flex-direction: column; gap: 24px; }
         .workspace-grid { display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start; }
 
@@ -167,11 +168,17 @@
             <section class="config-sidebar">
                 <h3 class="config-header" id="activeProfileLabel">1. Configure Matrix</h3>
                 
+                <div style="margin-bottom: 4px;">
+                    <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.3px;">1. Paste Product URL</label>
+                </div>
                 <div class="scan-container">
                     <input type="url" id="itemUrlInput" class="scan-input" value="https://www.amazon.co.uk/Burts-Bees-Lip-Balm-Pomegranate">
                     <button class="scan-action" id="triggerScanBtn">Scan URL</button>
                 </div>
 
+                <div style="margin-top: 16px; margin-bottom: 4px;">
+                    <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.3px;">2. Adjust Value Algorithm</label>
+                </div>
                 <div class="slider-item">
                     <div class="slider-text"><span>🍃 Cruelty-Free</span><span id="vVal1">88%</span></div>
                     <input type="range" class="slider-control" id="sl1" min="0" max="100" value="88">
@@ -195,7 +202,10 @@
                         </div>
                         <div>
                             <h3 class="title-txt" id="displayProductTitle">Burt's Bees Lip Balm Pomegranate</h3>
-                            <span class="domain-txt" id="displayDomain">amazon.co.uk</span>
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <span class="domain-txt" id="displayDomain">amazon.co.uk</span>
+                                <span style="font-size: 12px; font-weight: 700; color: #ef4444; background: rgba(239, 68, 68, 0.06); padding: 2px 8px; border-radius: 6px;" id="displayScannedPrice">Est. Price: £3.51</span>
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -205,7 +215,7 @@
                 </div>
 
                 <div class="stream-title-row">
-                    <span>2. Sovrn Merchant Directory Matches Found</span>
+                    <span>3. Recommended Value Alternative Matches Found</span>
                     <span class="clear-trigger" id="resetInputLink">Clear & Scan Another Link</span>
                 </div>
 
@@ -323,7 +333,7 @@
             outputs[1].textContent = `${cIngUser}%`;
             outputs[2].textContent = `${lWasteUser}%`;
 
-            // Calculate current bad match score based on inverse parameter deviations
+            // Calculate current match score based on parameters
             let baselineAvg = (cFreeUser + cIngUser + lWasteUser) / 3;
             let finalHeroScore = Math.max(12, 104 - Math.round(baselineAvg * 0.78));
             scoreLabel.textContent = `${finalHeroScore}%`;
@@ -331,7 +341,6 @@
 
             // Process and recalculate the entire Sovrn Simulated Array
             let calculatedDirectory = sovrnMerchantCatalog.map(product => {
-                // Determine statistical match convergence distance formulas
                 let d1 = Math.abs(product.metrics.crueltyFree - cFreeUser);
                 let d2 = Math.abs(product.metrics.cleanIngredients - cIngUser);
                 let d3 = Math.abs(product.metrics.lowWaste - lWasteUser);
@@ -347,62 +356,4 @@
             // Clear and render dynamic DOM stream items
             alternativesContainer.innerHTML = "";
             calculatedDirectory.forEach(product => {
-                const card = document.createElement('div');
-                card.className = "alternative-card";
-                card.innerHTML = `
-                    <div class="alt-top">
-                        <div style="display:flex; gap:16px; align-items:center;">
-                            <div class="media-box">
-                                <img src="${product.img}" alt="${product.name}">
-                            </div>
-                            <div>
-                                <h4 class="alt-brand-name" style="margin:0;">${product.name}</h4>
-                                <span class="alt-pricing">Estimated Value Validation: ${product.price}</span>
-                            </div>
-                        </div>
-                        <span class="badge-pill" id="scorePill_${product.name.replace(/\s+/g, '')}" style="border: 1px solid;">${product.computedMatchScore}% Match Alternative</span>
-                    </div>
-                    
-                    <div class="matrix-metrics-grid">
-                        <div class="metric-cell"><div class="cell-label">Composition</div><div class="cell-value">${product.composition}</div></div>
-                        <div class="metric-cell"><div class="cell-label">Labor Trace</div><div class="cell-value">${product.labor}</div></div>
-                        <div class="metric-cell"><div class="cell-label">Packaging</div><div class="cell-value">${product.packaging}</div></div>
-                    </div>
-                    
-                    <div class="log-container">
-                        <strong>Verification Evidence Log:</strong> ${product.evidence}
-                    </div>
-                    
-                    <button class="swap-button" onclick="alert('Routing tracking parameters via Sovrn affiliate code triggers...')">Swap to ${product.name}</button>
-                `;
-                alternativesContainer.appendChild(card);
-                
-                // Color style rendering update cycles
-                const currentPill = document.getElementById(`scorePill_${product.name.replace(/\s+/g, '')}`);
-                updatePillColor(currentPill, product.computedMatchScore);
-            });
-        }
-
-        // Attach event listeners to all sliders to trigger complete recalculations dynamically on input
-        sliders.forEach(s => s.addEventListener('input', recalibrateMatrix));
-
-        document.getElementById('triggerScanBtn').addEventListener('click', () => {
-            const path = document.getElementById('itemUrlInput').value.trim();
-            if(!path) return alert('Input target data path.');
-            try {
-                const urlObj = new URL(path);
-                document.getElementById('displayDomain').textContent = urlObj.hostname.replace('www.', '');
-                recalibrateMatrix(); 
-            } catch(e) {
-                document.getElementById('displayDomain').textContent = 'External Store Listing';
-            }
-        });
-
-        document.getElementById('resetInputLink').addEventListener('click', () => {
-            document.getElementById('itemUrlInput').value = '';
-            document.getElementById('itemUrlInput').focus();
-        });
-    });
-</script>
-</body>
-</html>
+                const card = document.createElement
