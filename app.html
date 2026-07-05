@@ -13,6 +13,7 @@
             --electric-lilac: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
             --border-ui: rgba(129, 140, 248, 0.15);
             --match-green: #22c55e;
+            --match-orange: #f97316;
             --match-red: #ef4444;
         }
 
@@ -41,7 +42,7 @@
         }
         .back-link { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-decoration: none; }
 
-        /* STEP 1: INITIAL VALUE TRACK & IDENTITY SELECTION CONTAINER */
+        /* STEP 1: CONFIGURATION GATE */
         #onboardingWrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; width: 100%; }
         .setup-card {
             background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px;
@@ -63,10 +64,9 @@
         .pillar-meta strong { display: block; font-size: 14px; margin-bottom: 2px; }
         .pillar-meta p { margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
         
-        .action-btn { background: var(--electric-lilac); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2); transition: opacity 0.2s; }
-        .action-btn:hover { opacity: 0.95; }
+        .action-btn { background: var(--electric-lilac); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2); }
 
-        /* STEP 2: LIVE MATRIX WORKSPACE DISPLAY (HIDDEN BY DEFAULT) */
+        /* STEP 2: LIVE RUNTIME MATRIX WORKSPACE */
         #workspaceWrapper { display: none; width: 100%; flex-direction: column; gap: 24px; }
         .workspace-grid { display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start; }
 
@@ -91,16 +91,18 @@
 
         .title-txt { font-weight: 800; font-size: 16px; margin: 0 0 4px 0; letter-spacing: -0.3px; }
         .domain-txt { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
-        .match-score-large { font-size: 38px; font-weight: 900; color: var(--match-red); text-align: right; line-height: 1; }
+        .match-score-large { font-size: 38px; font-weight: 900; color: var(--match-red); text-align: right; line-height: 1; transition: color 0.2s; }
 
         .stream-title-row { font-size: 11px; text-transform: uppercase; font-weight: 800; color: var(--text-secondary); letter-spacing: 0.5px; display: flex; justify-content: space-between; align-items: center; }
         .clear-trigger { color: #818cf8; text-decoration: none; cursor: pointer; }
 
-        .alternative-card { background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+        #alternativesContainer { display: flex; flex-direction: column; gap: 20px; }
+
+        .alternative-card { background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 20px; animation: fadeIn 0.3s ease-in-out; }
         .alt-top { display: flex; justify-content: space-between; align-items: flex-start; }
         .alt-brand-name { font-size: 18px; font-weight: 800; margin: 0 0 4px 0; }
         .alt-pricing { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
-        .badge-pill { background: rgba(34, 197, 94, 0.08); color: var(--match-green); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; border: 1px solid rgba(34, 197, 94, 0.1); }
+        .badge-pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; transition: all 0.2s; }
 
         .matrix-metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .metric-cell { background: #f8fafc; border: 1px solid #f1f5f9; padding: 12px; border-radius: 12px; }
@@ -109,6 +111,11 @@
 
         .log-container { background: rgba(129, 140, 248, 0.02); border-left: 4px solid #818cf8; padding: 14px 16px; border-radius: 0 12px 12px 0; font-size: 13px; line-height: 1.5; color: #475569; }
         .swap-button { background: var(--electric-lilac); color: white; border: none; width: 100%; padding: 16px; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(129, 140, 248, 0.15); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         @media (max-width: 890px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
@@ -133,7 +140,6 @@
             <div class="form-group">
                 <label>Select Top Baseline Focus Pillar</label>
                 <div class="pillar-select-list">
-                    
                     <div class="pillar-row active" id="vector1">
                         <input type="radio" name="pillar" id="rad1" checked>
                         <div class="pillar-meta">
@@ -141,7 +147,6 @@
                             <p>Prioritizes toxin-free products, clean elements, and full label safety verification.</p>
                         </div>
                     </div>
-
                     <div class="pillar-row" id="vector2">
                         <input type="radio" name="pillar" id="rad2">
                         <div class="pillar-meta">
@@ -149,7 +154,6 @@
                             <p>Prioritizes human rights, fair wages, safety oversight, and manufacturing integrity.</p>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -201,36 +205,12 @@
                 </div>
 
                 <div class="stream-title-row">
-                    <span>2. Recommended Value Alternative Matches Found</span>
+                    <span>2. Sovrn Merchant Directory Matches Found</span>
                     <span class="clear-trigger" id="resetInputLink">Clear & Scan Another Link</span>
                 </div>
 
-                <div class="alternative-card">
-                    <div class="alt-top">
-                        <div style="display:flex; gap:16px; align-items:center;">
-                            <div class="media-box">
-                                <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=150&q=80" alt="Alternative Value Verified Product Asset">
-                            </div>
-                            <div>
-                                <h4 class="alt-brand-name" style="margin:0;">Hurraw! Balm</h4>
-                                <span class="alt-pricing">Estimated Value Validation: £4.10</span>
-                            </div>
-                        </div>
-                        <span class="badge-pill">96% Alternative Match</span>
+                <div id="alternativesContainer">
                     </div>
-                    
-                    <div class="matrix-metrics-grid">
-                        <div class="metric-cell"><div class="cell-label">Composition</div><div class="cell-value">100% Raw Organic</div></div>
-                        <div class="metric-cell"><div class="cell-label">Labor Trace</div><div class="metric-cell-value cell-value">Leaping Bunny Cert</div></div>
-                        <div class="metric-cell"><div class="cell-label">Packaging</div><div class="cell-value">Recyclable Eco-Tube</div></div>
-                    </div>
-                    
-                    <div class="log-container">
-                        <strong>Verification Evidence Log:</strong> Formulated using 100% organic food-grade cold-pressed oils. Production facilities operate fully solar-powered out of Whitefish, Montana, mitigating standard logistic distribution footprints.
-                    </div>
-                    
-                    <button class="swap-button" onclick="alert('Redirecting via verified value affiliate criteria logs...')">Swap to Hurraw! Balm</button>
-                </div>
 
             </section>
         </div>
@@ -238,13 +218,49 @@
 </div>
 
 <script>
+    // Mocking out a diverse catalog representing simulated Sovrn Affiliate directory returns
+    const sovrnMerchantCatalog = [
+        {
+            name: "Hurraw! Balm",
+            price: "£4.10",
+            img: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=150&q=80",
+            metrics: { crueltyFree: 98, cleanIngredients: 95, lowWaste: 80 },
+            composition: "100% Raw Organic", labor: "Leaping Bunny Cert", packaging: "Eco-Tube",
+            evidence: "Formulated using 100% organic food-grade cold-pressed oils. Production facilities operate fully solar-powered out of Whitefish, Montana."
+        },
+        {
+            name: "Dr. Bronner's Organic Lip Balm",
+            price: "£3.75",
+            img: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=150&q=80",
+            metrics: { crueltyFree: 95, cleanIngredients: 90, lowWaste: 70 },
+            composition: "USDA Organic Oils", labor: "Fair Trade Certified", packaging: "100% PCR Plastic",
+            evidence: "Utilizing fair-trade certified organic beeswax and jojoba inputs. Backed by verifiable third-party certification showing full occupational safety parameters."
+        },
+        {
+            name: "EcoLips Bee Free Balm",
+            price: "£4.50",
+            img: "https://images.unsplash.com/photo-1608248597481-496100c8c836?auto=format&fit=crop&w=150&q=80",
+            metrics: { crueltyFree: 90, cleanIngredients: 88, lowWaste: 95 },
+            composition: "Plant-Based Wax", labor: "Certified B-Corp", packaging: "Plastic-Free Tube",
+            evidence: "100% vegan formulation utilizing candelilla wax instead of standard animal derivatives. Container decomposes rapidly post-lifecycle."
+        },
+        {
+            name: "Bite Beauty Agave Mask alternative",
+            price: "£12.00",
+            img: "https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=150&q=80",
+            metrics: { crueltyFree: 85, cleanIngredients: 92, lowWaste: 40 },
+            composition: "Resveratrol Complex", labor: "Cruelty Free Intl", packaging: "Aluminum Tube",
+            evidence: "High concentration of clean antioxidants and clean lipids. Packaged in aluminum, though outer caps still require specialized sorting loops."
+        }
+    ];
+
     document.addEventListener('DOMContentLoaded', () => {
         const onboardingWrapper = document.getElementById('onboardingWrapper');
         const workspaceWrapper = document.getElementById('workspaceWrapper');
         const submitSetupBtn = document.getElementById('submitSetupBtn');
         const activeProfileLabel = document.getElementById('activeProfileLabel');
 
-        // Step 1: Radio/Row selection mechanics switcher
+        // Step 1 Layout toggles
         const row1 = document.getElementById('vector1');
         const row2 = document.getElementById('vector2');
         const rad1 = document.getElementById('rad1');
@@ -253,7 +269,6 @@
         row1.addEventListener('click', () => { row1.classList.add('active'); row2.classList.remove('active'); rad1.checked = true; });
         row2.addEventListener('click', () => { row2.classList.add('active'); row1.classList.remove('active'); rad2.checked = true; });
 
-        // Handle inline submission and local configuration load loop
         submitSetupBtn.addEventListener('click', () => {
             const emailValue = document.getElementById('userEmailField').value.trim();
             if(!emailValue || !emailValue.includes('@')) return alert('Please input a valid identity email address.');
@@ -263,34 +278,121 @@
             
             onboardingWrapper.style.display = 'none';
             workspaceWrapper.style.display = 'flex';
+            recalibrateMatrix(); // Run calculation array instantly on build
         });
 
-        // Step 2: Live Slider Math Engine Controls
+        // Step 2: Algorithmic Calibration Engines
         const sliders = [document.getElementById('sl1'), document.getElementById('sl2'), document.getElementById('sl3')];
         const outputs = [document.getElementById('vVal1'), document.getElementById('vVal2'), document.getElementById('vVal3')];
         const scoreLabel = document.getElementById('computedScoreLabel');
+        const alternativesContainer = document.getElementById('alternativesContainer');
+
+        function updateColorClass(element, score) {
+            if (score >= 75) {
+                element.style.color = "var(--match-green)";
+            } else if (score >= 45) {
+                element.style.color = "var(--match-orange)";
+            } else {
+                element.style.color = "var(--match-red)";
+            }
+        }
+
+        function updatePillColor(element, score) {
+            if (score >= 75) {
+                element.style.backgroundColor = "rgba(34, 197, 94, 0.08)";
+                element.style.color = "var(--match-green)";
+                element.style.borderColor = "rgba(34, 197, 94, 0.1)";
+            } else if (score >= 45) {
+                element.style.backgroundColor = "rgba(249, 115, 22, 0.08)";
+                element.style.color = "var(--match-orange)";
+                element.style.borderColor = "rgba(249, 115, 22, 0.1)";
+            } else {
+                element.style.backgroundColor = "rgba(239, 68, 68, 0.08)";
+                element.style.color = "var(--match-red)";
+                element.style.borderColor = "rgba(239, 68, 68, 0.1)";
+            }
+        }
 
         function recalibrateMatrix() {
-            let total = 0;
-            sliders.forEach((slider, i) => {
-                outputs[i].textContent = `${slider.value}%`;
-                total += parseInt(slider.value);
+            const cFreeUser = parseInt(sliders[0].value);
+            const cIngUser = parseInt(sliders[1].value);
+            const lWasteUser = parseInt(sliders[2].value);
+
+            // Update UI value indicator readouts
+            outputs[0].textContent = `${cFreeUser}%`;
+            outputs[1].textContent = `${cIngUser}%`;
+            outputs[2].textContent = `${lWasteUser}%`;
+
+            // Calculate current bad match score based on inverse parameter deviations
+            let baselineAvg = (cFreeUser + cIngUser + lWasteUser) / 3;
+            let finalHeroScore = Math.max(12, 104 - Math.round(baselineAvg * 0.78));
+            scoreLabel.textContent = `${finalHeroScore}%`;
+            updateColorClass(scoreLabel, finalHeroScore);
+
+            // Process and recalculate the entire Sovrn Simulated Array
+            let calculatedDirectory = sovrnMerchantCatalog.map(product => {
+                // Determine statistical match convergence distance formulas
+                let d1 = Math.abs(product.metrics.crueltyFree - cFreeUser);
+                let d2 = Math.abs(product.metrics.cleanIngredients - cIngUser);
+                let d3 = Math.abs(product.metrics.lowWaste - lWasteUser);
+                let rawVariance = (d1 + d2 + d3) / 3;
+                
+                let alignmentPercentage = Math.max(10, Math.min(100, Math.round(100 - rawVariance)));
+                return { ...product, computedMatchScore: alignmentPercentage };
             });
-            // Computational algorithm inverse ratio tracking
-            let score = Math.max(12, 104 - Math.round((total / 3) * 0.8));
-            scoreLabel.textContent = `${score}%`;
-            scoreLabel.style.color = score > 50 ? "var(--match-green)" : "var(--match-red)";
+
+            // Sort listing output showing the strongest matches first
+            calculatedDirectory.sort((a, b) => b.computedMatchScore - a.computedMatchScore);
+
+            // Clear and render dynamic DOM stream items
+            alternativesContainer.innerHTML = "";
+            calculatedDirectory.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "alternative-card";
+                card.innerHTML = `
+                    <div class="alt-top">
+                        <div style="display:flex; gap:16px; align-items:center;">
+                            <div class="media-box">
+                                <img src="${product.img}" alt="${product.name}">
+                            </div>
+                            <div>
+                                <h4 class="alt-brand-name" style="margin:0;">${product.name}</h4>
+                                <span class="alt-pricing">Estimated Value Validation: ${product.price}</span>
+                            </div>
+                        </div>
+                        <span class="badge-pill" id="scorePill_${product.name.replace(/\s+/g, '')}" style="border: 1px solid;">${product.computedMatchScore}% Match Alternative</span>
+                    </div>
+                    
+                    <div class="matrix-metrics-grid">
+                        <div class="metric-cell"><div class="cell-label">Composition</div><div class="cell-value">${product.composition}</div></div>
+                        <div class="metric-cell"><div class="cell-label">Labor Trace</div><div class="cell-value">${product.labor}</div></div>
+                        <div class="metric-cell"><div class="cell-label">Packaging</div><div class="cell-value">${product.packaging}</div></div>
+                    </div>
+                    
+                    <div class="log-container">
+                        <strong>Verification Evidence Log:</strong> ${product.evidence}
+                    </div>
+                    
+                    <button class="swap-button" onclick="alert('Routing tracking parameters via Sovrn affiliate code triggers...')">Swap to ${product.name}</button>
+                `;
+                alternativesContainer.appendChild(card);
+                
+                // Color style rendering update cycles
+                const currentPill = document.getElementById(`scorePill_${product.name.replace(/\s+/g, '')}`);
+                updatePillColor(currentPill, product.computedMatchScore);
+            });
         }
+
+        // Attach event listeners to all sliders to trigger complete recalculations dynamically on input
         sliders.forEach(s => s.addEventListener('input', recalibrateMatrix));
 
-        // URL Retail Destination String parser field
         document.getElementById('triggerScanBtn').addEventListener('click', () => {
             const path = document.getElementById('itemUrlInput').value.trim();
-            if(!path) return alert('Input target e-commerce retail data parameter listing path.');
+            if(!path) return alert('Input target data path.');
             try {
                 const urlObj = new URL(path);
                 document.getElementById('displayDomain').textContent = urlObj.hostname.replace('www.', '');
-                alert(`Running vector scanning sequences across components on ${urlObj.hostname}...`);
+                recalibrateMatrix(); 
             } catch(e) {
                 document.getElementById('displayDomain').textContent = 'External Store Listing';
             }
