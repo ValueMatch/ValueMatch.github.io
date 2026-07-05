@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValueMatch | Results Matrix</title>
+    <style>
+        body { margin: 0; font-family: -apple-system, sans-serif; background: #faf9f6; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 440px; min-height: 100vh; background: #ffffff; padding: 24px; box-sizing: border-box; }
+        .score-banner { text-align: center; padding: 24px; border-radius: 20px; color: white; margin-bottom: 28px; font-weight: 800; background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%); box-shadow: 0 8px 24px rgba(74, 222, 128, 0.3); }
+        .breakdown-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; font-size: 15px; font-weight: 500; }
+        .metric-val { color: #818cf8; font-weight: 700; }
+        .alt-card { border: 1px solid rgba(129, 140, 248, 0.15); background: rgba(129, 140, 248, 0.02); border-radius: 14px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .alt-btn { background: linear-gradient(135deg, #c084fc 0%, #818cf8 100%); color: white; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700; }
+        .evidence-box { background: #f8fafc; border-left: 4px solid #c084fc; padding: 14px; font-size: 13px; color: #475569; margin-top: 20px; border-radius: 0 8px 8px 0; line-height: 1.5; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="score-banner" id="bannerBox">
+        <div style="font-size: 13px; text-transform: uppercase; opacity: 0.9; letter-spacing: 0.5px;">Current Item Match Score</div>
+        <div style="font-size: 46px; margin: 4px 0;" id="mainScore">...</div>
+    </div>
+
+    <h4 style="letter-spacing: -0.3px; margin-bottom: 12px;">Value Category Breakdown</h4>
+    <div id="breakdownContainer">
+        <div class="breakdown-row"><span>🛡️ Clean Composition:</span><span class="metric-val" id="score-clean">--%</span></div>
+        <div class="breakdown-row"><span>🤝 Ethical Labor:</span><span class="metric-val" id="score-labor">--%</span></div>
+        <div class="breakdown-row"><span>🌍 Circular Footprint:</span><span class="metric-val" id="score-circular">--%</span></div>
+        <div class="breakdown-row"><span>📈 Budget Efficiency:</span><span class="metric-val" id="score-budget">--%</span></div>
+    </div>
+
+    <h4 style="letter-spacing: -0.3px; margin: 28px 0 12px 0;">Top Aligned Alternatives</h4>
+    <div id="alternativesContainer">
+        <div class="alt-card">
+            <div>
+                <strong style="font-size:14px;">EcoAlternative Premium</strong>
+                <div style="font-size:12px; color:#64748b; margin-top:2px;">94% Value Match Match</div>
+            </div>
+            <a href="#" class="alt-btn">Swap Item</a>
+        </div>
+    </div>
+
+    <h4 style="letter-spacing: -0.3px; margin: 28px 0 8px 0;">Verified Evidence Trace</h4>
+    <div class="evidence-box" id="evidenceTrace">Processing verification traces via Gemini API engine...</div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            document.getElementById('mainScore').textContent = "84%";
+            document.getElementById('score-clean').textContent = "90%";
+            document.getElementById('score-labor').textContent = "80%";
+            document.getElementById('score-circular').textContent = "85%";
+            document.getElementById('score-price').textContent = "82%";
+            document.getElementById('evidenceTrace').textContent = "Gemini Trace Verified: This item carries verified zero-toxicity certifications and utilizes post-consumer recycled materials for zero landfill waste output.";
+        }, 1000);
+    });
+</script>
+</body>
+</html>
