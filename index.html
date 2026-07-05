@@ -3,184 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YourValueMatch | Take Control of Your Shopping Algorithm</title>
+    <title>YourValueMatch | Hack Your Shopping Algorithm</title>
     <style>
         :root {
             --bg-canvas: #faf9f6;
             --card-surface: #ffffff;
             --text-primary: #0f172a;
+            --text-secondary: #64748b;
             --electric-lilac: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
-            --lilac-glow: rgba(129, 140, 248, 0.06);
+            --border-ui: rgba(129, 140, 248, 0.12);
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+            margin: 0; padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             background-color: var(--bg-canvas);
             color: var(--text-primary);
-            display: flex;
-            justify-content: center;
             min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        /* This locks the page structure to match the clean signup page framework perfectly */
-        .app-container {
-            width: 100%;
-            max-width: 440px;
-            min-height: 100vh;
-            background: var(--card-surface);
-            padding: 40px 24px;
+        .responsive-shell {
+            display: flex; flex-direction: row;
+            width: 100%; max-width: 1200px; min-height: 85vh;
+            margin: 24px; background: var(--card-surface);
+            border-radius: 32px; overflow: hidden;
+            box-shadow: 0 25px 60px rgba(15, 23, 42, 0.03);
+            border: 1px solid var(--border-ui);
+        }
+
+        .editorial-panel {
+            flex: 1.2; padding: 64px;
+            display: flex; flex-direction: column; justify-content: space-between;
             box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
         }
 
-        .hero-section {
-            text-align: center;
-            margin-top: 20px;
+        .showcase-panel {
+            flex: 0.8; background: linear-gradient(135deg, rgba(192, 132, 252, 0.05) 0%, rgba(129, 140, 248, 0.05) 100%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 48px; box-sizing: border-box;
+            border-left: 1px solid var(--border-ui);
         }
 
-        .logo {
-            font-size: 32px;
-            font-weight: 800;
-            background: var(--electric-lilac);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
-            margin-bottom: 24px;
-            display: inline-block;
+        .logo-mark {
+            font-size: 32px; font-weight: 800;
+            background: var(--electric-lilac); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: -1px; margin-bottom: 40px; display: inline-block;
         }
 
-        h1 {
-            font-size: 28px;
-            font-weight: 800;
-            line-height: 1.2;
-            letter-spacing: -0.8px;
-            margin: 0 0 16px 0;
+        h1 { font-size: 42px; font-weight: 800; line-height: 1.15; letter-spacing: -1.5px; margin: 0 0 20px 0; }
+        
+        .hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 48px; max-width: 520px; }
+
+        .value-grid-preview {
+            background: #ffffff; border: 1px solid var(--border-ui); border-radius: 24px;
+            padding: 28px; width: 100%; max-width: 340px;
+            box-shadow: 0 15px 35px rgba(129, 140, 248, 0.06);
         }
 
-        .subtitle {
-            font-size: 15px;
-            color: #64748b;
-            line-height: 1.6;
-            margin-bottom: 36px;
-            padding: 0 8px;
-        }
-
-        /* Clean, non-stretching preview widget container */
-        .preview-box {
-            background: #ffffff;
-            border: 1px solid rgba(129, 140, 248, 0.15);
-            border-radius: 20px;
-            padding: 24px 20px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 25px rgba(129, 140, 248, 0.04);
-        }
-
-        .preview-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 14px;
-        }
+        .preview-row { display: flex; align-items: center; margin-bottom: 16px; }
         .preview-row:last-child { margin-bottom: 0; }
+        .preview-label { font-size: 13px; font-weight: 600; width: 130px; color: #475569; }
+        .preview-bar { flex-grow: 1; height: 6px; background: #f1f5f9; border-radius: 10px; }
+        .preview-fill { height: 100%; border-radius: 10px; background: var(--electric-lilac); }
 
-        .preview-label {
-            font-size: 13px;
-            font-weight: 600;
-            width: 130px;
-            text-align: left;
-            color: #475569;
-        }
+        /* Multi-step Architecture Tour Map */
+        .framework-map { margin-bottom: 48px; }
+        .step-node { display: flex; align-items: flex-start; margin-bottom: 24px; }
+        .step-number { font-size: 12px; font-weight: 800; color: #818cf8; background: rgba(129, 140, 248, 0.1); padding: 4px 10px; border-radius: 20px; margin-right: 16px; margin-top: 2px; }
+        .step-text strong { display: block; font-size: 15px; margin-bottom: 4px; letter-spacing: -0.3px; }
+        .step-text p { margin: 0; font-size: 13.5px; color: var(--text-secondary); line-height: 1.4; }
 
-        .preview-bar {
-            flex-grow: 1;
-            height: 6px;
-            background: #f1f5f9;
-            border-radius: 10px;
-            position: relative;
-        }
-
-        .preview-fill {
-            height: 100%;
-            border-radius: 10px;
-            background: var(--electric-lilac);
-        }
-
-        .cta-btn {
-            display: block;
-            width: 100%;
-            background: var(--electric-lilac);
-            color: white;
-            text-align: center;
-            padding: 18px 24px;
-            border-radius: 14px;
-            font-weight: 700;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            text-decoration: none;
-            box-shadow: 0 8px 24px rgba(129, 140, 248, 0.2);
-            box-sizing: border-box;
+        .cta-action {
+            display: inline-block; width: 100%; max-width: 340px;
+            background: var(--electric-lilac); color: white; text-align: center;
+            padding: 18px 28px; border-radius: 16px; font-weight: 700;
+            border: none; font-size: 16px; cursor: pointer; text-decoration: none;
+            box-shadow: 0 10px 28px rgba(129, 140, 248, 0.25); box-sizing: border-box;
             transition: transform 0.1s ease;
         }
 
-        .cta-btn:active {
-            transform: scale(0.98);
-        }
+        .cta-action:active { transform: scale(0.98); }
 
-        .footer-tag {
-            text-align: center;
-            font-size: 12px;
-            color: #94a3b8;
-            margin-top: 24px;
+        @media (max-width: 868px) {
+            .responsive-shell { flex-direction: column; margin: 0; border-radius: 0; border: none; }
+            .editorial-panel { padding: 40px 24px; }
+            .showcase-panel { padding: 32px 24px; background: var(--bg-canvas); border-left: none; }
+            h1 { font-size: 32px; }
+            .cta-action { max-width: 100%; }
         }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div class="hero-section">
-        <div class="logo">YourValueMatch</div>
-        <h1>Hack the algorithm.<br>Shop your own way.</h1>
-        <p class="subtitle">
-            Corporate platforms use hidden rules to control what you buy. We give you the dashboard. Set your parameters, scan any link, and match products directly to your baseline profile.
-        </p>
+<div class="responsive-shell">
+    <div class="editorial-panel">
+        <div>
+            <div class="logo-mark">YourValueMatch</div>
+            <h1>Hack the algorithm.<br>Shop your own way.</h1>
+            <p class="hero-desc">
+                Retail sites use hidden weighting strategies to control your checkout choices. YourValueMatch intercepts their product listings and filters them according to your custom validation layout.
+            </p>
 
-        <div class="preview-box">
-            <div style="font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 700; margin-bottom: 18px; letter-spacing: 0.5px;">Interactive Engine Control Panel</div>
+            <div class="framework-map">
+                <div class="step-node">
+                    <span class="step-number">01</span>
+                    <div class="step-text">
+                        <strong>Identify & Establish Matrix</strong>
+                        <p>Lock in your preferred baseline values profile via independent sliders.</p>
+                    </div>
+                </div>
+                <div class="step-node">
+                    <span class="step-number">02</span>
+                    <div class="step-text">
+                        <strong>Drop & Analyze Retail Assets</strong>
+                        <p>Paste product detail links directly into the comparison parsing engine.</p>
+                    </div>
+                </div>
+                <div class="step-node">
+                    <span class="step-number">03</span>
+                    <div class="step-text">
+                        <strong>Verify & Swap Alternative Picks</strong>
+                        <p>Review real-time attribute matches and redirect traffic to ideal choices.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <a href="signup.html" class="cta-action">Launch Procurement Matrix</a>
+            <div style="font-size: 12px; color: #94a3b8; margin-top: 20px;">AI-Native Personal Procurement Framework</div>
+        </div>
+    </div>
+
+    <div class="showcase-panel">
+        <div class="value-grid-preview">
+            <div style="font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 700; margin-bottom: 20px; letter-spacing: 0.5px; text-align: center;">Live Application Mockup</div>
             <div class="preview-row">
-                <span class="preview-label">🛡️ Value Track 1</span>
+                <span class="preview-label">🌿 Variable One</span>
                 <div class="preview-bar"><div class="preview-fill" style="width: 85%;"></div></div>
             </div>
             <div class="preview-row">
-                <span class="preview-label">🤝 Value Track 2</span>
+                <span class="preview-label">🤝 Variable Two</span>
                 <div class="preview-bar"><div class="preview-fill" style="width: 45%;"></div></div>
             </div>
             <div class="preview-row">
-                <span class="preview-label">🌍 Value Track 3</span>
+                <span class="preview-label">🌍 Variable Three</span>
                 <div class="preview-bar"><div class="preview-fill" style="width: 75%;"></div></div>
             </div>
         </div>
     </div>
-
-    <div>
-        <a href="signup.html" class="cta-btn">Create Your Custom Matrix</a>
-        <div class="footer-tag">AI-Native Personal Procurement Framework</div>
-    </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const ref = urlParams.get('ref');
-        if (ref) {
-            const cta = document.querySelector('.cta-btn');
-            cta.href = `signup.html?ref=${ref}`;
-        }
-    });
-</script>
 </body>
 </html>
