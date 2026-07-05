@@ -41,11 +41,11 @@
         }
         .back-link { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-decoration: none; }
 
-        /* STEP 1: SIGNUP VIEW BLOCK */
+        /* STEP 1: INITIAL ONBOARDING VIEW */
         #signupStep { display: flex; flex-direction: column; align-items: center; padding: 60px 20px; width: 100%; box-sizing: border-box;}
         .signup-card {
             background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px;
-            padding: 32px; width: 100%; max-width: 460px; box-shadow: 0 4px 20px rgba(0,0,0,0.01);
+            padding: 32px; width: 100%; max-width: 480px; box-shadow: 0 4px 20px rgba(0,0,0,0.01);
             display: flex; flex-direction: column; gap: 20px;
         }
         .signup-card h2 { font-size: 22px; font-weight: 800; margin: 0; text-align: center; }
@@ -54,14 +54,14 @@
         .form-input { width: 100%; padding: 14px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 14px; box-sizing: border-box; outline: none; }
         
         .pillar-option {
-            border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px; display: flex; gap: 12px; cursor: pointer;
+            border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px; display: flex; gap: 12px; cursor: pointer; transition: all 0.2s;
         }
-        .pillar-option.selected { border-color: #818cf8; background: rgba(129, 140, 248, 0.03); }
+        .pillar-option.selected { border-color: #818cf8; background: rgba(129, 140, 248, 0.04); box-shadow: 0 0 0 1px #818cf8; }
         .pillar-info strong { display: block; font-size: 14px; margin-bottom: 2px; }
         .pillar-info p { margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
-        .submit-btn { background: var(--electric-lilac); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .submit-btn { background: var(--electric-lilac); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2); }
 
-        /* STEP 2: WORKSPACE INTERACTIVE CORE UI */
+        /* STEP 2: REVEALED WORKSPACE CORE */
         #workspaceStep { display: none; flex-direction: column; gap: 24px; width: 100%; }
         .workspace-grid { display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start; }
 
@@ -117,32 +117,32 @@
 
     <main id="signupStep">
         <div class="signup-card">
-            <h2>Establish Your Matrix Identity</h2>
+            <h2>Configure Your Values Algorithm</h2>
             
             <div class="form-group">
-                <label>Account Email Address</label>
-                <input type="email" id="fieldEmail" class="form-input" placeholder="name@domain.com" required>
+                <label>Account Identity Email</label>
+                <input type="email" id="fieldEmail" class="form-input" placeholder="Enter your email to save profile preferences" required>
             </div>
 
             <div class="form-group">
-                <label>Select Primary Core Value Vector Pillar:</label>
+                <label>Select Primary Optimization Vector:</label>
                 
                 <div class="pillar-option selected" id="p1">
                     <div class="pillar-info">
                         <strong>🍃 Clean Ingredient Sourcing</strong>
-                        <p>Flags synthetics, toxic compounds, and production transparency issues.</p>
+                        <p>Flags synthetics, toxic compounds, and chemical production transparency issues.</p>
                     </div>
                 </div>
 
                 <div class="pillar-option" id="p2">
                     <div class="pillar-info">
-                        <strong> Cruelty-Free Accountability</strong>
-                        <p>Monitors animal testing tracking declarations and supply line certifications.</p>
+                        <strong>🐰 Cruelty-Free Accountability</strong>
+                        <p>Tracks international animal testing metrics and supply chain verify frameworks.</p>
                     </div>
                 </div>
             </div>
 
-            <button class="submit-btn" id="btnSubmitSignup">Lock Framework & Open Engine</button>
+            <button class="submit-btn" id="btnSubmitSignup">Lock Preferences & Build Engine</button>
         </div>
     </main>
 
@@ -175,7 +175,7 @@
                 <div class="comparison-hero">
                     <div class="product-meta">
                         <div class="img-container">
-                            <img src="https://images.unsplash.com/photo-1617480708386-0445240111ef?auto=format&fit=crop&w=120&q=80" alt="Current Item">
+                            <img src="https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=150&q=80" alt="Current E-Commerce Item Scan">
                         </div>
                         <div>
                             <h3 class="product-title" id="lblTitle">Burt's Bees Lip Balm Pomegranate</h3>
@@ -197,7 +197,7 @@
                     <div class="alt-header">
                         <div style="display:flex; gap:16px; align-items:center;">
                             <div class="img-container">
-                                <img src="https://images.unsplash.com/photo-1608248597481-496100c8c836?auto=format&fit=crop&w=120&q=80" alt="Alternative Item">
+                                <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=150&q=80" alt="Ethical Matrix Match Alternative">
                             </div>
                             <div>
                                 <h4 class="alt-brand" style="margin:0;">Hurraw! Balm</h4>
@@ -215,7 +215,7 @@
                     <div class="evidence-drawer">
                         <strong>Verification Evidence Log:</strong> Formulated using 100% organic food-grade cold-pressed oils. Production facilities operate fully solar-powered out of Whitefish, Montana, mitigating standard logistical footprints.
                     </div>
-                    <button class="swap-action-btn" onclick="alert('Redirecting via verified value affiliate code parameters...')">Swap to Hurraw! Balm</button>
+                    <button class="swap-action-btn" onclick="alert('Redirecting via verified value affiliate parameters...')">Swap to Hurraw! Balm</button>
                 </div>
             </section>
         </div>
@@ -229,7 +229,7 @@
         const btnSubmitSignup = document.getElementById('btnSubmitSignup');
         const userTitleLabel = document.getElementById('userTitleLabel');
 
-        // Toggle choices layout logic natively
+        // Step 1 option toggle logic mechanics
         const p1 = document.getElementById('p1');
         const p2 = document.getElementById('p2');
         p1.addEventListener('click', () => { p1.classList.add('selected'); p2.classList.remove('selected'); });
@@ -239,13 +239,13 @@
             const email = document.getElementById('fieldEmail').value;
             if(!email || !email.includes('@')) return alert('Please input a valid email address.');
             
-            localStorage.setItem('vm_email', email);
-            userTitleLabel.textContent = `Profile Matrix: ${email}`;
+            localStorage.setItem('vm_user_profile_email', email);
+            userTitleLabel.textContent = `Matrix Active: ${email}`;
             signupStep.style.display = 'none';
             workspaceStep.style.display = 'flex';
         });
 
-        // Live math range controls logic mapping 
+        // Dynamic calculator logic arrays tracking matching algorithms
         const ranges = [document.getElementById('range1'), document.getElementById('range2'), document.getElementById('range3')];
         const outputs = [document.getElementById('txt1'), document.getElementById('txt2'), document.getElementById('txt3')];
         const scoreDisplay = document.getElementById('lblScore');
