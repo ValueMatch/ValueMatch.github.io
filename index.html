@@ -12,8 +12,6 @@
             --text-secondary: #64748b;
             --electric-lilac: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
             --border-ui: rgba(129, 140, 248, 0.15);
-            --match-green: #22c55e;
-            --match-red: #ef4444;
         }
 
         body {
@@ -21,38 +19,19 @@
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
             background-color: var(--bg-canvas);
             color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
         }
 
-        .app-container {
-            width: 100%; max-width: 1200px; padding: 32px 24px; box-sizing: border-box;
-            display: flex; flex-direction: column; gap: 24px;
+        .welcome-container {
+            width: 100%; max-width: 800px; padding: 60px 24px; box-sizing: border-box;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
         }
 
-        header {
-            width: 100%; max-width: 1152px; display: flex; justify-content: space-between; align-items: center;
-            padding: 24px 24px 16px 24px; box-sizing: border-box; border-bottom: 1px solid var(--border-ui);
-        }
-
+        header { margin-bottom: 40px; }
         .logo {
-            font-size: 26px; font-weight: 800;
+            font-size: 36px; font-weight: 800;
             background: var(--electric-lilac); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: -1px; text-decoration: none; cursor: pointer;
-        }
-
-        /* DYNAMIC STATE VIEWS */
-        .view-section { display: none; width: 100%; }
-        .view-section.active { display: flex; }
-
-        /* ==========================================================================
-           STEP 1: Centered Welcome Mat Layout
-           ========================================================================== */
-        #viewLanding {
-            flex-direction: column; align-items: center; text-align: center;
-            padding: 80px 20px; max-width: 800px; margin: 0 auto; box-sizing: border-box;
+            letter-spacing: -1px; text-decoration: none;
         }
 
         h1 { font-size: 48px; font-weight: 800; line-height: 1.15; letter-spacing: -1.5px; margin: 0 0 24px 0; }
@@ -61,7 +40,7 @@
         .preview-mini-panel {
             background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 20px;
             padding: 20px; width: 100%; max-width: 340px; box-shadow: 0 10px 25px rgba(0,0,0,0.02);
-            margin: 0 auto 40px auto; text-align: left;
+            margin-bottom: 40px; text-align: left;
         }
         .preview-title { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #818cf8; letter-spacing: 0.5px; margin-bottom: 12px; display: block;}
         .preview-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: 13px; font-weight: 600;}
@@ -69,368 +48,38 @@
         .preview-fill { height: 100%; background: #818cf8; border-radius: 4px; }
 
         .launch-btn {
-            background: var(--electric-lilac); color: white; border: none; padding: 18px 40px;
-            border-radius: 16px; font-size: 16px; font-weight: 700; cursor: pointer;
-            box-shadow: 0 10px 30px rgba(129, 140, 248, 0.3); transition: transform 0.1s;
+            display: inline-block; background: var(--electric-lilac); color: white; border: none; 
+            padding: 18px 40px; border-radius: 16px; font-size: 16px; font-weight: 700; 
+            cursor: pointer; text-decoration: none; box-shadow: 0 10px 30px rgba(129, 140, 248, 0.3); 
+            transition: transform 0.1s;
         }
         .launch-btn:active { transform: scale(0.98); }
-
-        /* ==========================================================================
-           STEP 2: Sign Up / Baseline Alignment Setup
-           ========================================================================== */
-        #viewSignup {
-            flex-direction: column; align-items: center; padding: 60px 20px; box-sizing: border-box;
-        }
-        .signup-card {
-            background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px;
-            padding: 32px; width: 100%; max-width: 480px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-            display: flex; flex-direction: column; gap: 20px; text-align: left;
-        }
-        .signup-card h2 { font-size: 22px; font-weight: 800; margin: 0 0 4px 0; text-align: center; }
-        .sub-brand-tag { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #818cf8; text-align: center; letter-spacing: 1px; display: block; margin-top: -12px; }
-        
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-group label { font-size: 13px; font-weight: 700; color: var(--text-primary); }
-        .form-input {
-            width: 100%; padding: 14px; border: 1px solid #cbd5e1; border-radius: 12px;
-            font-size: 14px; box-sizing: border-box; outline: none;
-        }
-
-        .pillar-option {
-            border: 1px solid #e2e8f0; border-radius: 14px; padding: 16px; display: flex;
-            align-items: flex-start; gap: 12px; cursor: pointer; transition: background 0.2s, border-color 0.2s;
-        }
-        .pillar-option:hover { background: #f8fafc; }
-        .pillar-option.selected { border-color: #818cf8; background: rgba(129, 140, 248, 0.04); }
-        .pillar-radio { margin-top: 3px; }
-        .pillar-info strong { display: block; font-size: 14px; margin-bottom: 2px; }
-        .pillar-info p { margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
-
-        /* ==========================================================================
-           STEP 3: The Interactive Engine Workspace
-           ========================================================================== */
-        #viewEngine { flex-direction: column; gap: 24px; }
-        .workspace-grid { display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start; }
-
-        .control-panel {
-            background: var(--card-surface); border: 1px solid var(--border-ui);
-            border-radius: 24px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.01);
-        }
-        .panel-title { font-size: 18px; font-weight: 700; margin: 0 0 16px 0; }
-
-        .url-box { position: relative; margin-bottom: 24px; }
-        .url-input {
-            width: 100%; padding: 14px 90px 14px 16px; border: 1px solid #cbd5e1;
-            border-radius: 12px; font-size: 14px; box-sizing: border-box; outline: none;
-        }
-        .scan-btn {
-            position: absolute; right: 8px; top: 8px; background: #0f172a;
-            color: white; border: none; padding: 8px 14px; border-radius: 8px;
-            font-size: 12px; font-weight: 700; cursor: pointer;
-        }
-
-        .slider-group { margin-bottom: 20px; }
-        .slider-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #475569; }
-        .slider-ui { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; -webkit-appearance: none; outline: none; margin: 12px 0; }
-        .slider-ui::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: white; border: 4px solid #818cf8; cursor: pointer; }
-
-        .results-stream { display: flex; flex-direction: column; gap: 24px; }
-        .comparison-hero {
-            background: var(--card-surface); border: 1px solid var(--border-ui);
-            border-radius: 24px; padding: 20px; display: flex; align-items: center; justify-content: space-between;
-        }
-        .product-meta { display: flex; align-items: center; gap: 16px; }
-        
-        .img-container {
-            width: 64px; height: 64px; border-radius: 14px; background: #f1f5f9;
-            overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid #e2e8f0; flex-shrink: 0;
-        }
-        .img-container img { width: 100%; height: 100%; object-fit: cover; }
-
-        .product-title { font-weight: 800; font-size: 16px; margin: 0 0 4px 0; }
-        .product-domain { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
-        .score-val { font-size: 36px; font-weight: 900; color: var(--match-red); }
-
-        .section-divider { font-size: 12px; text-transform: uppercase; font-weight: 700; color: var(--text-secondary); letter-spacing: 0.5px; display: flex; justify-content: space-between; }
-        .reset-link { color: #818cf8; text-decoration: none; cursor: pointer; }
-
-        .alt-card { background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 18px; }
-        .alt-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .alt-brand { font-size: 18px; font-weight: 800; margin: 0 0 4px 0; }
-        .alt-price { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
-        .match-pill { background: rgba(34, 197, 94, 0.1); color: var(--match-green); padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; }
-
-        .breakdown-table { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .table-node { background: #f8fafc; border: 1px solid #f1f5f9; padding: 12px; border-radius: 12px; }
-        .node-lbl { font-size: 11px; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 4px; }
-        .node-val { font-size: 13px; font-weight: 700; }
-
-        .evidence-drawer { background: rgba(129, 140, 248, 0.03); border-left: 4px solid #818cf8; padding: 14px; border-radius: 0 12px 12px 0; font-size: 13px; line-height: 1.5; color: #475569; }
-        .swap-action-btn { background: var(--electric-lilac); color: white; border: none; width: 100%; padding: 16px; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; text-align: center; }
-
-        @media (max-width: 890px) {
-            .workspace-grid { grid-template-columns: 1fr; }
-        }
+        footer { font-size: 11px; color: var(--text-secondary); font-weight: 700; margin-top: 60px; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo" id="navHomeLogo">YourValueMatch</div>
-        <div id="userBadge" style="font-size: 13px; color: var(--text-secondary); font-weight: 600; display: none;">Syncing profile...</div>
-    </header>
+<div class="welcome-container">
+    <header><div class="logo">YourValueMatch</div></header>
+    <main>
+        <h1>Hack the algorithm.<br>Shop your own way.</h1>
+        <p class="hero-desc">
+            Corporate platforms use hidden rules to control what you buy. We give you back the dashboard. Set your parameters, scan any link, and match products directly to your baseline profile.
+        </p>
 
-    <div class="app-container">
-        
-        <main id="viewLanding" class="view-section active">
-            <h1>Hack the algorithm.<br>Shop your own way.</h1>
-            <p class="hero-desc">
-                Corporate platforms use hidden rules to control what you buy. We give you the dashboard. Set your parameters, scan any link, and match products directly to your baseline profile.
-            </p>
-
+        <center>
             <div class="preview-mini-panel">
-                <span class="preview-title">Interactive Engine Controls</span>
-                <div class="preview-row"><span>🍃 Cruelty Free</span><div class="preview-bar"><div class="preview-fill" style="width: 88%;"></div></div></div>
-                <div class="preview-row"><span> Clean Ingredients</span><div class="preview-bar"><div class="preview-fill" style="width: 100%;"></div></div></div>
-                <div class="preview-row"><span>📦 Low-Waste Pack</span><div class="preview-bar"><div class="preview-fill" style="width: 12%;"></div></div></div>
+                <span class="preview-title">Interactive Engine Preview</span>
+                <div class="preview-row"><span>🍃 Cruelty-Free</span><div class="preview-bar"><div class="preview-fill" style="width: 85%;"></div></div></div>
+                <div class="preview-row"><span>🧪 Clean Ingredients</span><div class="preview-bar"><div class="preview-fill" style="width: 90%;"></div></div></div>
+                <div class="preview-row"><span>📦 Low-Waste Pack</span><div class="preview-bar"><div class="preview-fill" style="width: 25%;"></div></div></div>
             </div>
+        </center>
 
-            <button class="launch-btn" id="btnLandingNext">Launch Custom Matrix</button>
-        </main>
+        <a href="app.html" class="launch-btn">Open Procurement Engine</a>
+    </main>
+    <footer>AI-Powered Value Alignment System</footer>
+</div>
 
-        <main id="viewSignup" class="view-section">
-            <div class="signup-card">
-                <h2>Set Your Baseline Identity</h2>
-                <span class="sub-brand-tag">Identify Values™</span>
-                
-                <div class="form-group">
-                    <label>Account Email Address</label>
-                    <input type="email" id="fieldEmail" class="form-input" placeholder="hello@yourvaluematch.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Select top baseline focus pillar:</label>
-                    <span style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">This anchors your primary lifestyle matrix tracking profile.</span>
-                    
-                    <div class="pillar-option selected" data-pillar="Clean Composition">
-                        <input type="radio" name="pillar" class="pillar-radio" checked>
-                        <div class="pillar-info">
-                            <strong>🔷 Clean Composition</strong>
-                            <p>Prioritizes toxin-free products, clean elements, and label safety.</p>
-                        </div>
-                    </div>
-
-                    <div class="pillar-option" data-pillar="Ethical Labor">
-                        <input type="radio" name="pillar" class="pillar-radio">
-                        <div class="pillar-info">
-                            <strong> Ethical Labor</strong>
-                            <p>Prioritizes human rights, fair wages, and manufacturing integrity.</p>
-                        </div>
-                    </div>
-
-                    <div class="pillar-option" data-pillar="Circular Footprint">
-                        <input type="radio" name="pillar" class="pillar-radio">
-                        <div class="pillar-info">
-                            <strong> Circular Footprint</strong>
-                            <p>Prioritizes waste reduction, local logistics, and long-lasting utility.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="launch-btn" id="btnSignupNext" style="width:100%; padding:16px;">Create Profile & Build Engine</button>
-            </div>
-        </main>
-
-        <main id="viewEngine" class="view-section">
-            <div class="workspace-grid">
-                
-                <section class="control-panel">
-                    <h2 class="panel-title">1. Configure Matrix</h2>
-                    
-                    <div class="url-box">
-                        <input type="url" id="linkField" class="url-input" value="https://www.amazon.co.uk/Burts-Bees-Lip-Balm-Pomegranate">
-                        <button class="scan-btn" id="runAnalysis">Scan URL</button>
-                    </div>
-
-                    <div class="slider-group">
-                        <div class="slider-header"><span>🍃 Cruelty-Free</span><span id="txt1">88%</span></div>
-                        <input type="range" class="slider-ui" id="range1" min="0" max="100" value="88">
-                    </div>
-                    <div class="slider-group">
-                        <div class="slider-header"><span> Clean Ingredients</span><span id="txt2">100%</span></div>
-                        <input type="range" class="slider-ui" id="range2" min="0" max="100" value="100">
-                    </div>
-                    <div class="slider-group">
-                        <div class="slider-header"><span>📦 Low-Waste Pack</span><span id="txt3">12%</span></div>
-                        <input type="range" class="slider-ui" id="range3" min="0" max="100" value="12">
-                    </div>
-                </section>
-
-                <section class="results-stream">
-                    <div class="comparison-hero">
-                        <div class="product-meta">
-                            <div class="img-container">
-                                <img src="https://images.unsplash.com/photo-1617480708386-0445240111ef?auto=format&fit=crop&w=120&q=80" alt="Burt's Bees">
-                            </div>
-                            <div>
-                                <h3 class="product-title" id="lblTitle">Burt's Bees Lip Balm Pomegranate</h3>
-                                <span class="product-domain" id="lblDomain">amazon.co.uk</span>
-                            </div>
-                        </div>
-                        <div style="text-align: right;">
-                            <span style="font-size: 10px; font-weight:700; color:var(--text-secondary); text-transform:uppercase;">Current Match</span>
-                            <div class="score-val" id="lblScore">35%</div>
-                        </div>
-                    </div>
-
-                    <div class="section-divider">
-                        <span>2. Recommended Value Alternative Matches Found</span>
-                        <span class="reset-link" id="clearSearch">Clear & Scan Another Link</span>
-                    </div>
-
-                    <div class="alt-card">
-                        <div class="alt-header">
-                            <div style="display:flex; gap:16px; align-items:center;">
-                                <div class="img-container">
-                                    <img src="https://images.unsplash.com/photo-1608248597481-496100c8c836?auto=format&fit=crop&w=120&q=80" alt="Hurraw">
-                                </div>
-                                <div>
-                                    <h4 class="alt-brand" style="margin:0;">Hurraw! Balm</h4>
-                                    <span class="alt-price">Estimated Value Validation: £4.10</span>
-                                </div>
-                            </div>
-                            <span class="match-pill">96% Alternative Match</span>
-                        </div>
-                        
-                        <div class="breakdown-table">
-                            <div class="table-node"><div class="node-lbl">Composition</div><div class="node-val">100% Raw Organic</div></div>
-                            <div class="table-node"><div class="node-lbl">Labor Trace</div><div class="node-val">Leaping Bunny Cert</div></div>
-                            <div class="table-node"><div class="node-lbl">Packaging</div><div class="node-val">Recyclable Eco-Tube</div></div>
-                        </div>
-                        <div class="evidence-drawer">
-                            <strong>Verification Evidence Log:</strong> Formulated using 100% organic food-grade cold-pressed oils. Production facilities operate fully solar-powered out of Whitefish, Montana, mitigating standard logistic distribution footprints.
-                        </div>
-                        <button class="swap-action-btn" onclick="alert('Redirecting tracking code to Hurraw link...')">Swap to Hurraw! Balm</button>
-                    </div>
-
-                    <div class="alt-card">
-                        <div class="alt-header">
-                            <div style="display:flex; gap:16px; align-items:center;">
-                                <div class="img-container">
-                                    <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=120&q=80" alt="Dr Bronners">
-                                </div>
-                                <div>
-                                    <h4 class="alt-brand" style="margin:0;">Dr. Bronner's Organic Balm</h4>
-                                    <span class="alt-price">Estimated Value Validation: £3.75</span>
-                                </div>
-                            </div>
-                            <span class="match-pill" style="background:rgba(192, 132, 252, 0.1); color:#c084fc;">91% Alternative Match</span>
-                        </div>
-                        
-                        <div class="breakdown-table">
-                            <div class="table-node"><div class="node-lbl">Composition</div><div class="node-val">USDA Natural Oils</div></div>
-                            <div class="table-node"><div class="node-lbl">Labor Trace</div><div class="node-val">Fair Trade Certified</div></div>
-                            <div class="table-node"><div class="node-lbl">Packaging</div><div class="node-val">100% PCR Plastic</div></div>
-                        </div>
-                        <div class="evidence-drawer">
-                            <strong>Verification Evidence Log:</strong> Utilizing fair-trade certified organic beeswax and jojoba inputs. Backed by verifiable third-party certification showing full occupational safety parameters across supply chains.
-                        </div>
-                        <button class="swap-action-btn" onclick="alert('Redirecting tracking code to Dr. Bronner link...')">Swap to Dr. Bronner's</button>
-                    </div>
-
-                </section>
-            </div>
-        </main>
-
-    </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Navigation Engine View Controller State Mapping
-        const viewLanding = document.getElementById('viewLanding');
-        const viewSignup = document.getElementById('viewSignup');
-        const viewEngine = document.getElementById('viewEngine');
-
-        const btnLandingNext = document.getElementById('btnLandingNext');
-        const btnSignupNext = document.getElementById('btnSignupNext');
-        const navHomeLogo = document.getElementById('navHomeLogo');
-        const userBadge = document.getElementById('userBadge');
-
-        // Step 1 -> Step 2 Transitions
-        btnLandingNext.addEventListener('click', () => {
-            viewLanding.classList.remove('active');
-            viewSignup.classList.add('active');
-        });
-
-        // Step 2 -> Step 3 Transitions (Form Process Matrix Alignment Step)
-        btnSignupNext.addEventListener('click', () => {
-            const emailVal = document.getElementById('fieldEmail').value;
-            if(!emailVal || !emailVal.includes('@')) {
-                alert('Please enter a valid email address to anchor your value profile algorithm parameters.');
-                return;
-            }
-            
-            // Capture Identity Zero-Party Data Strategy Logic
-            localStorage.setItem('vm_user_email', emailVal);
-            userBadge.textContent = `👤 Profile: ${emailVal}`;
-            userBadge.style.display = 'block';
-
-            viewSignup.classList.remove('active');
-            viewEngine.classList.add('active');
-        });
-
-        // Pillar Selection Interactive UX
-        const pillars = document.querySelectorAll('.pillar-option');
-        pillars.forEach(p => {
-            p.addEventListener('click', () => {
-                pillars.forEach(item => item.classList.remove('selected'));
-                p.classList.add('selected');
-                p.querySelector('.pillar-radio').checked = true;
-            });
-        });
-
-        // Logo Reset Routing Logic Trigger
-        navHomeLogo.addEventListener('click', () => {
-            viewSignup.classList.remove('active');
-            viewEngine.classList.remove('active');
-            viewLanding.classList.add('active');
-        });
-
-        // Live Real-Time Parameter Ratio Balancers
-        const ranges = [document.getElementById('range1'), document.getElementById('range2'), document.getElementById('range3')];
-        const outputs = [document.getElementById('txt1'), document.getElementById('txt2'), document.getElementById('txt3')];
-        const scoreDisplay = document.getElementById('lblScore');
-
-        function reCalc() {
-            let total = 0;
-            ranges.forEach((r, idx) => {
-                outputs[idx].textContent = `${r.value}%`;
-                total += parseInt(r.value);
-            });
-            let parsedAvg = Math.round(total / ranges.length);
-            let simulatedScore = Math.max(15, 102 - Math.round(parsedAvg * 0.75));
-            scoreDisplay.textContent = `${simulatedScore}%`;
-            scoreDisplay.style.color = simulatedScore > 50 ? "var(--match-green)" : "var(--match-red)";
-        }
-        ranges.forEach(r => r.addEventListener('input', reCalc));
-
-        document.getElementById('runAnalysis').addEventListener('click', () => {
-            const val = document.getElementById('linkField').value;
-            if(!val) return alert("Please specify an evaluation link target.");
-            try {
-                const url = new URL(val);
-                document.getElementById('lblDomain').textContent = url.hostname.replace('www.', '');
-                alert(`Querying catalog parsing endpoints on ${url.hostname}...`);
-            } catch(e) {
-                document.getElementById('lblDomain').textContent = 'Retail Asset Target';
-            }
-        });
-
-        document.getElementById('clearSearch').addEventListener('click', () => {
-            document.getElementById('linkField').value = '';
-            document.getElementById('linkField').focus();
-        });
-    });
-</script>
 </body>
 </html>
