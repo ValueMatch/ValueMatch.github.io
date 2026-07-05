@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Setup Profile | YourValueMatch</title>
+    <style>
+        body { font-family: sans-serif; background: #faf9f6; display: flex; justify-content: center; padding-top: 50px; }
+        .setup-card { background: white; padding: 32px; border-radius: 24px; border: 1px solid rgba(129, 140, 248, 0.15); width: 400px; }
+        .action-btn { background: #818cf8; color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; cursor: pointer; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <div class="setup-card">
+        <h2>Configure Your Matrix Profile</h2>
+        <input type="email" id="email" placeholder="Enter email" style="width:100%; padding:10px; margin-bottom:20px;">
+        <button class="action-btn" onclick="saveAndGo()">Create Profile & Build Engine</button>
+    </div>
+
+    <script>
+        function saveAndGo() {
+            const email = document.getElementById('email').value;
+            if (email) {
+                localStorage.setItem('vm_user', email);
+                window.location.href = 'app.html';
+            }
+        }
+    </script>
+</body>
+</html>
