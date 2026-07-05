@@ -2,27 +2,200 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Setup Profile | YourValueMatch</title>
     <style>
-        body { font-family: sans-serif; background: #faf9f6; display: flex; justify-content: center; padding-top: 50px; }
-        .setup-card { background: white; padding: 32px; border-radius: 24px; border: 1px solid rgba(129, 140, 248, 0.15); width: 400px; }
-        .action-btn { background: #818cf8; color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; cursor: pointer; font-weight: 700; }
+        :root {
+            --bg-canvas: #faf9f6;
+            --card-surface: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --electric-lilac: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
+            --border-ui: rgba(129, 140, 248, 0.15);
+        }
+
+        body { 
+            margin: 0; padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif; 
+            background: var(--bg-canvas); 
+            color: var(--text-primary);
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; 
+        }
+        
+        .setup-card { 
+            background: var(--card-surface); 
+            padding: 40px; 
+            border-radius: 24px; 
+            border: 1px solid var(--border-ui); 
+            width: 100%;
+            max-width: 440px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin: 0;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .form-group { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; 
+        }
+
+        .form-group label { 
+            font-size: 13px; 
+            font-weight: 700; 
+            color: var(--text-primary); 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+
+        .input-text {
+            width: 100%; 
+            padding: 14px 16px; 
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-text:focus {
+            border-color: #818cf8;
+        }
+
+        .pillar-select-list { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+        }
+
+        .pillar-row {
+            border: 1px solid #e2e8f0; 
+            border-radius: 14px; 
+            padding: 14px 16px; 
+            display: flex; 
+            gap: 14px; 
+            align-items: flex-start; 
+            cursor: pointer; 
+            transition: all 0.2s;
+        }
+
+        .pillar-row.active { 
+            border-color: #818cf8; 
+            background: rgba(129, 140, 248, 0.03); 
+            box-shadow: 0 0 0 1px #818cf8; 
+        }
+
+        .pillar-row input[type="radio"] { 
+            margin-top: 3px; 
+            cursor: pointer; 
+        }
+
+        .pillar-meta strong { 
+            display: block; 
+            font-size: 14px; 
+            margin-bottom: 2px; 
+        }
+
+        .pillar-meta p { 
+            margin: 0; 
+            font-size: 12px; 
+            color: var(--text-secondary); 
+            line-height: 1.4; 
+        }
+
+        .action-btn { 
+            display: inline-block;
+            background: var(--electric-lilac); 
+            color: white; 
+            border: none; 
+            padding: 16px; 
+            border-radius: 16px; 
+            width: 100%; 
+            cursor: pointer; 
+            font-size: 16px;
+            font-weight: 700; 
+            box-shadow: 0 12px 36px rgba(192, 132, 252, 0.25);
+            transition: transform 0.1s;
+        }
+
+        .action-btn:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
+
     <div class="setup-card">
         <h2>Configure Your Matrix Profile</h2>
-        <input type="email" id="email" placeholder="Enter email" style="width:100%; padding:10px; margin-bottom:20px;">
+        
+        <div class="form-group">
+            <label>Account Identity Email</label>
+            <input type="email" id="userEmailField" class="input-text" placeholder="Enter your email to anchor your preferences" required>
+        </div>
+
+        <div class="form-group">
+            <label>Select Top Baseline Focus Pillar</label>
+            <div class="pillar-select-list">
+                <div class="pillar-row active" id="vector1">
+                    <input type="radio" name="pillar" id="rad1" value="clean" checked>
+                    <div class="pillar-meta">
+                        <strong>🍃 Clean Composition</strong>
+                        <p>Prioritizes toxin-free products, clean elements, and full label safety verification.</p>
+                    </div>
+                </div>
+                <div class="pillar-row" id="vector2">
+                    <input type="radio" name="pillar" id="rad2" value="labor">
+                    <div class="pillar-meta">
+                        <strong>🐰 Ethical Labor Tracking</strong>
+                        <p>Prioritizes human rights, fair wages, safety oversight, and manufacturing integrity.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <button class="action-btn" onclick="saveAndGo()">Create Profile & Build Engine</button>
     </div>
 
     <script>
+        // Synchronized Row Selectors from the original App Script format
+        const row1 = document.getElementById('vector1');
+        const row2 = document.getElementById('vector2');
+        const rad1 = document.getElementById('rad1');
+        const rad2 = document.getElementById('rad2');
+
+        row1.addEventListener('click', () => { row1.classList.add('active'); row2.classList.remove('active'); rad1.checked = true; });
+        row2.addEventListener('click', () => { row2.classList.add('active'); row1.classList.remove('active'); rad2.checked = true; });
+
         function saveAndGo() {
-            const email = document.getElementById('email').value;
-            if (email) {
-                localStorage.setItem('vm_user', email);
-                window.location.href = 'app.html';
+            const emailInput = document.getElementById('userEmailField');
+            const emailValue = emailInput.value.trim();
+            
+            if (!emailValue || !emailValue.includes('@')) {
+                alert('Please input a valid identity email address.');
+                emailInput.focus();
+                return;
             }
+
+            // Determine which priority vector they chose
+            const selectedPillar = rad1.checked ? 'clean' : 'labor';
+
+            // Cache configurations down to LocalStorage strings
+            localStorage.setItem('vm_user', emailValue);
+            localStorage.setItem('vm_initial_pillar', selectedPillar);
+
+            // Forward directly to the interactive calculation matrix
+            window.location.href = 'app.html';
         }
     </script>
 </body>
