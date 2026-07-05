@@ -6,12 +6,11 @@
     <title>YourValueMatch | Hack Your Shopping Algorithm</title>
     <style>
         :root {
-            --bg-canvas: #faf9f6; /* Luminous soft canvas white */
+            --bg-canvas: #faf9f6;
             --card-surface: #ffffff;
             --text-primary: #0f172a;
             --electric-lilac: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
             
-            /* Luminous Traffic Light Gradients */
             --match-high: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
             --match-mid: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
             --match-low: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
@@ -63,7 +62,6 @@
             letter-spacing: -0.2px;
         }
 
-        /* Luminous Score Visualization */
         .live-preview-card {
             background: #ffffff;
             border-radius: 24px;
@@ -71,7 +69,6 @@
             margin-bottom: 36px;
             text-align: center;
             border: 1px solid rgba(168, 85, 247, 0.08);
-            position: relative;
         }
 
         .preview-title {
@@ -135,11 +132,6 @@
             background: #ffffff;
             border: 4.5px solid #818cf8;
             box-shadow: 0 4px 12px rgba(129, 140, 248, 0.25);
-            transition: transform 0.1s ease, border-color 0.2s ease;
-        }
-
-        .slider-input::-webkit-slider-thumb:active {
-            transform: scale(1.15);
         }
 
         .primary-action {
@@ -155,13 +147,7 @@
             font-size: 16px;
             cursor: pointer;
             box-shadow: 0 8px 24px rgba(129, 140, 248, 0.2);
-            transition: all 0.2s ease;
             margin-top: 44px;
-            letter-spacing: -0.2px;
-        }
-
-        .primary-action:active {
-            transform: scale(0.98);
         }
     </style>
 </head>
@@ -176,86 +162,32 @@
     <div class="live-preview-card">
         <div class="preview-title">Current Engine Focus</div>
         <div class="score-circle" id="luminousScore">0%</div>
-        <div style="font-size: 13px; color: #64748b; margin-top: 6px;" id="statusText">Sliders are fully customizable</div>
+        <div style="font-size: 13px; color: #64748b; margin-top: 6px;" id="statusText">Sliders customizable</div>
     </div>
 
     <div class="slider-wrapper">
-        <div class="slider-meta"><span>🌿 Planet First</span><span class="slider-percentage" id="val1">0%</span></div>
+        <div class="slider-meta"><span>🛡️ Clean Composition</span><span class="slider-percentage" id="val1">0%</span></div>
         <input type="range" min="0" max="100" value="0" class="slider-input" id="track1">
     </div>
 
     <div class="slider-wrapper">
-        <div class="slider-meta"><span>🤝 Conscious Craft</span><span class="slider-percentage" id="val2">0%</span></div>
+        <div class="slider-meta"><span>🤝 Ethical Labor</span><span class="slider-percentage" id="val2">0%</span></div>
         <input type="range" min="0" max="100" value="0" class="slider-input" id="track2">
     </div>
 
     <div class="slider-wrapper">
-        <div class="slider-meta"><span>🐰 Kind Living</span><span class="slider-percentage" id="val3">0%</span></div>
+        <div class="slider-meta"><span>🌍 Circular Footprint</span><span class="slider-percentage" id="val3">0%</span></div>
         <input type="range" min="0" max="100" value="0" class="slider-input" id="track3">
     </div>
 
     <div class="slider-wrapper">
-        <div class="slider-meta"><span>📉 Smart Spender</span><span class="slider-percentage" id="val4">0%</span></div>
+        <div class="slider-meta"><span>📈 Budget Efficiency</span><span class="slider-percentage" id="val4">0%</span></div>
         <input type="range" min="0" max="100" value="0" class="slider-input" id="track4">
     </div>
 
     <button class="primary-action" id="lockMatrixBtn">Lock Algorithm & Launch Feed</button>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Automatically check if the user arrived via a tracking link
-        const urlParams = new URLSearchParams(window.location.search);
-        const creator = urlParams.get('ref');
-        if (creator) {
-            document.getElementById('algoModeBadge').textContent = `Tuning ${creator}'s Vibe Matrix`;
-        }
-
-        const tracks = [
-            { el: document.getElementById('track1'), out: document.getElementById('val1') },
-            { el: document.getElementById('track2'), out: document.getElementById('val2') },
-            { el: document.getElementById('track3'), out: document.getElementById('val3') },
-            { el: document.getElementById('track4'), out: document.getElementById('val4') }
-        ];
-        const scoreCircle = document.getElementById('luminousScore');
-        const statusText = document.getElementById('statusText');
-
-        function calculateLuminousMetrics() {
-            let total = 0;
-            tracks.forEach(t => {
-                const val = parseInt(t.el.value);
-                total += val;
-                t.out.textContent = `${val}%`;
-            });
-
-            // Find the true mathematical average of the user's current intent
-            let averageScore = Math.round(total / 4);
-            scoreCircle.textContent = `${averageScore}%`;
-
-            // Fluid color-scale shifts based on overall alignment intensity
-            if (averageScore >= 70) {
-                scoreCircle.style.background = 'var(--match-high)';
-                scoreCircle.style.boxShadow = '0 8px 24px rgba(74, 222, 128, 0.35)';
-                statusText.textContent = "High Intensity Alignment Mode";
-            } else if (averageScore >= 35) {
-                scoreCircle.style.background = 'var(--match-mid)';
-                scoreCircle.style.boxShadow = '0 8px 24px rgba(251, 146, 60, 0.35)';
-                statusText.textContent = "Balanced Hybrid Alignment Mode";
-            } else {
-                scoreCircle.style.background = 'var(--match-low)';
-                scoreCircle.style.boxShadow = '0 8px 24px rgba(248, 113, 113, 0.35)';
-                statusText.textContent = "Standard Utility Focus";
-            }
-        }
-
-        // Attach direct, independent input tracks
-        tracks.forEach(track => {
-            track.el.addEventListener('input', calculateLuminousMetrics);
-        });
-        
-        // Run initial configuration load
-        calculateLuminousMetrics();
-    });
-</script>
+<script src="app.js"></script>
 </body>
 </html>
