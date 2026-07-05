@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValueMatch | Analyze Product</title>
+    <style>
+        body { margin: 0; font-family: -apple-system, sans-serif; background: #faf9f6; color: #0f172a; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 440px; min-height: 100vh; background: #ffffff; padding: 32px 24px; box-sizing: border-box; }
+        header { text-align: center; margin-bottom: 40px; }
+        .logo { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #c084fc 0%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .input-box { width: 100%; padding: 16px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 15px; box-sizing: border-box; margin-bottom: 20px; }
+        .submit-btn { display: block; width: 100%; background: linear-gradient(135deg, #c084fc 0%, #818cf8 100%); color: white; padding: 16px; border-radius: 12px; font-weight: 700; border: none; font-size: 16px; cursor: pointer; text-align: center; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <header><div class="logo">YourValueMatch</div></header>
+    <h3 style="margin-top:0;">Paste Product to Scan</h3>
+    <p style="font-size: 14px; color: #64748b;">Drop an Amazon, Sephora, or Target item link below to run it against your algorithm parameters.</p>
+    
+    <input type="url" id="productUrl" class="input-box" placeholder="https://www.amazon.com/dp/..." required>
+    <button id="analyzeBtn" class="submit-btn">Run Alignment Match</button>
+</div>
+
+<script>
+    document.getElementById('analyzeBtn').addEventListener('click', () => {
+        const url = document.getElementById('productUrl').value;
+        if(!url) return alert("Please paste a valid product link");
+        
+        // Store the query url temporarily for the extraction phase
+        localStorage.setItem('vm_target_url', url);
+        window.location.href = 'results.html';
+    });
+</script>
+</body>
+</html>
