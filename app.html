@@ -356,4 +356,72 @@
             // Clear and render dynamic DOM stream items
             alternativesContainer.innerHTML = "";
             calculatedDirectory.forEach(product => {
-                const card = document.createElement
+                const card = document.createElement('div');
+                card.className = "alternative-card";
+                card.innerHTML = `
+                    <div class="alt-top">
+                        <div style="display:flex; gap:16px; align-items:center;">
+                            <div class="media-box">
+                                <img src="${product.img}" alt="${product.name}">
+                            </div>
+                            <div>
+                                <h4 class="alt-brand-name" style="margin:0;">${product.name}</h4>
+                                <span class="alt-pricing">Estimated Value Validation: ${product.price}</span>
+                            </div>
+                        </div>
+                        <span class="badge-pill" id="scorePill_${product.name.replace(/\s+/g, '')}" style="border: 1px solid;">${product.computedMatchScore}% Match Alternative</span>
+                    </div>
+                    
+                    <div class="matrix-metrics-grid">
+                        <div class="metric-cell"><div class="cell-label">Composition</div><div class="cell-value">${product.composition}</div></div>
+                        <div class="metric-cell"><div class="cell-label">Labor Trace</div><div class="cell-value">${product.labor}</div></div>
+                        <div class="metric-cell"><div class="cell-label">Packaging</div><div class="cell-value">${product.packaging}</div></div>
+                    </div>
+                    
+                    <div class="log-container">
+                        <strong>Verification Evidence Log:</strong> ${product.evidence}
+                    </div>
+                    
+                    <button class="swap-button" onclick="alert('Routing tracking parameters via Sovrn affiliate code triggers...')">Swap to ${product.name}</button>
+                `;
+                alternativesContainer.appendChild(card);
+                
+                // Color style rendering update cycles
+                const currentPill = document.getElementById(`scorePill_${product.name.replace(/\s+/g, '')}`);
+                updatePillColor(currentPill, product.computedMatchScore);
+            });
+        }
+
+        // Attach event listeners to all sliders to trigger complete recalculations dynamically on input
+        sliders.forEach(s => s.addEventListener('input', recalibrateMatrix));
+
+        document.getElementById('triggerScanBtn').addEventListener('click', () => {
+            const path = document.getElementById('itemUrlInput').value.trim();
+            if(!path) return alert('Input target data path.');
+            try {
+                const urlObj = new URL(path);
+                document.getElementById('displayDomain').textContent = urlObj.hostname.replace('www.', '');
+                
+                // Simulate pulling dynamic catalog data on lookups
+                if(path.toLowerCase().includes('burt')) {
+                    document.getElementById('displayProductTitle').textContent = "Burt's Bees Lip Balm Pomegranate";
+                    document.getElementById('displayScannedPrice').textContent = "Est. Price: £3.51";
+                } else {
+                    document.getElementById('displayProductTitle').textContent = "Alternative Scanned Store Listing Item";
+                    document.getElementById('displayScannedPrice').textContent = "Est. Price: £6.99";
+                }
+                
+                recalibrateMatrix(); 
+            } catch(e) {
+                document.getElementById('displayDomain').textContent = 'External Store Listing';
+            }
+        });
+
+        document.getElementById('resetInputLink').addEventListener('click', () => {
+            document.getElementById('itemUrlInput').value = '';
+            document.getElementById('itemUrlInput').focus();
+        });
+    });
+</script>
+</body>
+</html>
