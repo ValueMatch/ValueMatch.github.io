@@ -40,14 +40,14 @@
             background: var(--electric-lilac); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             letter-spacing: -1px; text-decoration: none;
         }
-        .back-link { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-decoration: none; }
+        .back-link { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-decoration: none; cursor: pointer; }
 
         /* STEP 1: INITIAL VALUE TRACK & IDENTITY SELECTION CONTAINER */
         #onboardingWrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; width: 100%; }
         .setup-card {
             background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px;
             padding: 32px; width: 100%; max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,0.02);
-            display: flex; flex-direction: column; gap: 24px;
+            display: flex; flex-direction: column; gap: 24px; box-sizing: border-box;
         }
         .setup-card h2 { font-size: 22px; font-weight: 800; margin: 0; text-align: center; letter-spacing: -0.5px; }
         .form-group { display: flex; flex-direction: column; gap: 8px; }
@@ -84,7 +84,7 @@
         .slider-control::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: white; border: 4px solid #818cf8; cursor: pointer; }
 
         .stream-layout { display: flex; flex-direction: column; gap: 24px; }
-        .scanned-hero-card { background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px; padding: 20px; display: flex; align-items: center; justify-content: space-between; }
+        .scanned-hero-card { background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px; padding: 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
         .meta-group { display: flex; align-items: center; gap: 16px; }
         
         .media-box { width: 64px; height: 64px; border-radius: 12px; background: #f1f5f9; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid #e2e8f0; flex-shrink: 0; }
@@ -110,10 +110,10 @@
         #alternativesContainer { display: flex; flex-direction: column; gap: 20px; }
 
         .alternative-card { background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 20px; animation: fadeIn 0.3s ease-in-out; }
-        .alt-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .alt-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
         .alt-brand-name { font-size: 18px; font-weight: 800; margin: 0 0 4px 0; }
         .alt-pricing { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
-        .badge-pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; transition: all 0.2s; }
+        .badge-pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; transition: all 0.2s; flex-shrink: 0; }
 
         .matrix-metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .metric-cell { background: #f8fafc; border: 1px solid #f1f5f9; padding: 12px; border-radius: 12px; }
@@ -128,7 +128,12 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @media (max-width: 890px) { .workspace-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 890px) { 
+            .workspace-grid { grid-template-columns: 1fr; } 
+            .scanned-hero-card, .alt-top { flex-direction: column; align-items: flex-start; }
+            .match-score-large { text-align: left; margin-top: 8px; }
+            .matrix-metrics-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -136,7 +141,7 @@
 <div class="app-container">
     <header>
         <a href="index.html" class="logo">YourValueMatch</a>
-        <a href="index.html" class="back-link" id="resetEntireSessionLink">← Reset Entire Session</a>
+        <span class="back-link" id="resetEntireSessionLink">← Reset Entire Session</span>
     </header>
 
     <main id="onboardingWrapper">
@@ -155,109 +160,4 @@
                         <input type="radio" name="pillar" id="rad1" checked>
                         <div class="pillar-meta">
                             <strong>🍃 Clean Composition</strong>
-                            <p>Prioritizes toxin-free products, clean elements, and full label safety verification.</p>
-                        </div>
-                    </div>
-                    <div class="pillar-row" id="vector2">
-                        <input type="radio" name="pillar" id="rad2">
-                        <div class="pillar-meta">
-                            <strong>🐰 Ethical Labor Tracking</strong>
-                            <p>Prioritizes human rights, fair wages, safety oversight, and manufacturing integrity.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button class="action-btn" id="submitSetupBtn">Create Profile & Build Engine</button>
-        </div>
-    </main>
-
-    <main id="workspaceWrapper">
-        <div class="workspace-grid">
-            
-            <section class="config-sidebar">
-                <h3 class="config-header" id="activeProfileLabel">Active Profile: Initializing...</h3>
-                
-                <div class="sidebar-section-label">
-                    <span>1. Paste Product URL</span>
-                </div>
-                <div class="scan-container">
-                    <input type="url" id="itemUrlInput" class="scan-input" value="https://www.amazon.co.uk/Burts-Bees-Lip-Balm-Pomegranate">
-                    <button class="scan-action" id="triggerScanBtn">Scan URL</button>
-                </div>
-
-                <div style="margin-top: 8px;" class="sidebar-section-label">
-                    <span>2. Adjust Value Algorithm</span>
-                </div>
-                <div class="slider-item">
-                    <div class="slider-text"><span>🍃 Cruelty-Free</span><span id="vVal1">88%</span></div>
-                    <input type="range" class="slider-control" id="sl1" min="0" max="100" value="88">
-                </div>
-                <div class="slider-item">
-                    <div class="slider-text"><span>🧪 Clean Ingredients</span><span id="vVal2">100%</span></div>
-                    <input type="range" class="slider-control" id="sl2" min="0" max="100" value="100">
-                </div>
-                <div class="slider-item">
-                    <div class="slider-text"><span>📦 Low-Waste Pack</span><span id="vVal3">12%</span></div>
-                    <input type="range" class="slider-control" id="sl3" min="0" max="100" value="12">
-                </div>
-            </section>
-
-            <section class="stream-layout">
-                
-                <div class="scanned-hero-card">
-                    <div class="meta-group">
-                        <div class="media-box">
-                            <img src="https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=150&q=80" alt="Scanned E-commerce Product Asset">
-                        </div>
-                        <div>
-                            <h3 class="title-txt" id="displayProductTitle">Burt's Bees Lip Balm Pomegranate</h3>
-                            <div style="display: flex; gap: 12px; align-items: center;">
-                                <span class="domain-txt" id="displayDomain">amazon.co.uk</span>
-                                <span style="font-size: 12px; font-weight: 700; color: #ef4444; background: rgba(239, 68, 68, 0.06); padding: 2px 8px; border-radius: 6px;" id="displayScannedPrice">Est. Price: £3.51</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <span style="font-size: 9px; font-weight:800; color:var(--text-secondary); text-transform:uppercase; display:block; margin-bottom:2px; text-align:right;">Current Match</span>
-                        <div class="match-score-large" id="computedScoreLabel">35%</div>
-                    </div>
-                </div>
-
-                <div class="stream-title-row">
-                    <span>3. Recommended Value Alternative Matches Found</span>
-                    <span class="clear-trigger" id="resetInputLink">Clear & Scan Another Link</span>
-                </div>
-
-                <div id="alternativesContainer">
-                    </div>
-
-            </section>
-        </div>
-    </main>
-</div>
-
-<script>
-    const sovrnMerchantCatalog = [
-        {
-            name: "Hurraw! Balm",
-            price: "£4.10",
-            img: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=150&q=80",
-            metrics: { crueltyFree: 98, cleanIngredients: 95, lowWaste: 80 },
-            composition: "100% Raw Organic", labor: "Leaping Bunny Cert", packaging: "Eco-Tube",
-            evidence: "Formulated using 100% organic food-grade cold-pressed oils. Production facilities operate fully solar-powered out of Whitefish, Montana."
-        },
-        {
-            name: "Dr. Bronner's Organic Lip Balm",
-            price: "£3.75",
-            img: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=150&q=80",
-            metrics: { crueltyFree: 95, cleanIngredients: 90, lowWaste: 70 },
-            composition: "USDA Organic Oils", labor: "Fair Trade Certified", packaging: "100% PCR Plastic",
-            evidence: "Utilizing fair-trade certified organic beeswax and jojoba inputs. Backed by verifiable third-party certification showing full occupational safety parameters."
-        },
-        {
-            name: "EcoLips Bee Free Balm",
-            price: "£4.50",
-            img: "https://images.unsplash.com/photo-1608248597481-496100c8c836?auto=format&fit=crop&w=150&q=80",
-            metrics: { crueltyFree: 90, cleanIngredients: 88, lowWaste: 95 },
-            composition: "Plant-Based Wax", labor: "Certified B-Corp", packaging: "Plastic-
+                            <p>
