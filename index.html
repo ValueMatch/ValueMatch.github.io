@@ -3,29 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YourValueMatch | The Smart Shopping Assistant</title>
+    <title>YourValueMatch | Tune Your Shopping Algorithm</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f9fafb; color: #111827; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; }
-        .container { max-width: 600px; padding: 40px 20px; }
-        .logo { font-size: 2.5rem; font-weight: 800; color: #4F46E5; margin-bottom: 10px; text-decoration: none; }
-        h1 { font-size: 2.25rem; font-weight: 700; line-height: 1.2; margin-bottom: 20px; color: #1f2937; }
-        p { font-size: 1.125rem; color: #4b5563; line-height: 1.6; margin-bottom: 30px; }
-        .badge { display: inline-block; background-color: #EEF2F6; color: #4F46E5; padding: 6px 16px; border-radius: 9999px; font-weight: 600; font-size: 0.875rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .cta-btn { display: inline-block; background-color: #4F46E5; color: white; padding: 14px 28px; border-radius: 8px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1); transition: background-color 0.2s; }
-        .cta-btn:hover { background-color: #4338CA; }
-        .footer { margin-top: 60px; font-size: 0.875rem; color: #9ca3af; }
+        :root {
+            --bg-primary: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --brand-color: #2563eb;
+            --accent-green: #16a34a;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            background: var(--card-bg);
+            padding: 24px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            position: relative;
+        }
+
+        header {
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--brand-color);
+            letter-spacing: -0.5px;
+        }
+
+        .tagline {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .token-pool-card {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .token-count {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--brand-color);
+        }
+
+        .slider-group {
+            margin-bottom: 24px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .value-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .value-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--brand-color);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .action-btn {
+            display: block;
+            width: 100%;
+            background: var(--brand-color);
+            color: white;
+            text-align: center;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 32px;
+        }
+
+        .extension-upsell {
+            margin-top: 40px;
+            border-top: 1px dashed #e2e8f0;
+            padding-top: 24px;
+            text-align: center;
+        }
+
+        .ext-link {
+            color: var(--brand-color);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="badge">Chrome Extension Coming Soon</div>
-        <a href="#" class="logo">YourValueMatch</a>
-        <h1>Shop your values. Automatically.</h1>
-        <p>YourValueMatch is a secure smart-shopping browser extension powered by Gemini AI. It analyzes products in real-time as you browse and seamlessly surfaces highly aligned, sustainable, independent, and ethical alternatives—instantly wrapping choices into direct brand partner conversions.</p>
-        <a href="mailto:hello@yourvaluematch.com" class="cta-btn">Join the Beta Queue</a>
-        <div class="footer">
-            &copy; 2026 YourValueMatch. All rights reserved. <br> Contact: hello@yourvaluematch.com
-        </div>
+
+<div class="app-container">
+    <header>
+        <div class="logo">YourValueMatch</div>
+        <div class="tagline">Dynamic AI Shopping Intelligence</div>
+    </header>
+
+    <div class="token-pool-card">
+        <div class="slider-header"><span>Algorithm Energy Remaining:</span></div>
+        <div class="token-count" id="tokenPool">10</div>
+        <p style="font-size: 12px; color: #64748b; margin: 4px 0 0 0;">Distribute tokens to prioritize metrics for your current shop session.</p>
     </div>
+
+    <div class="slider-group">
+        <div class="slider-header"><span>🌿 Sustainability & Carbon</span><span id="val1-display">0</span></div>
+        <input type="range" min="0" max="10" value="0" class="value-slider" id="slider1">
+    </div>
+
+    <div class="slider-group">
+        <div class="slider-header"><span>🛠️ Ethical Labor & Wages</span><span id="val2-display">0</span></div>
+        <input type="range" min="0" max="10" value="0" class="value-slider" id="slider2">
+    </div>
+
+    <div class="slider-group">
+        <div class="slider-header"><span>🐰 Cruelty-Free & Vegan</span><span id="val3-display">0</span></div>
+        <input type="range" min="0" max="10" value="0" class="value-slider" id="slider3">
+    </div>
+
+    <div class="slider-group">
+        <div class="slider-header"><span>📉 Price & Budget Focus</span><span id="val4-display">0</span></div>
+        <input type="range" min="0" max="10" value="0" class="value-slider" id="slider4">
+    </div>
+
+    <button class="action-btn" id="saveAlgoBtn">Lock Session Algorithm</button>
+
+    <div class="extension-upsell">
+        <p style="font-size: 13px; color: #64748b; margin-bottom: 8px;">Shopping on a laptop or desktop?</p>
+        <a href="#" class="ext-link">⚡ Download the Chrome Extension Add-on</a>
+    </div>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
