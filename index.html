@@ -11,149 +11,327 @@
             --text-primary: #0f172a;
             --text-secondary: #64748b;
             --electric-lilac: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
-            --border-ui: rgba(129, 140, 248, 0.12);
+            --border-ui: rgba(129, 140, 248, 0.15);
+            --match-green: #22c55e;
+            --match-red: #ef4444;
         }
 
         body {
             margin: 0; padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
             background-color: var(--bg-canvas);
             color: var(--text-primary);
-            min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
+            display: flex; justify-content: center; min-height: 100vh;
         }
 
-        .responsive-shell {
-            display: flex; flex-direction: row;
-            width: 100%; max-width: 1200px; min-height: 85vh;
-            margin: 24px; background: var(--card-surface);
-            border-radius: 32px; overflow: hidden;
-            box-shadow: 0 25px 60px rgba(15, 23, 42, 0.03);
-            border: 1px solid var(--border-ui);
+        .app-container {
+            width: 100%; max-width: 1200px; padding: 32px 24px; box-sizing: border-box;
+            display: flex; flex-direction: column; gap: 24px;
         }
 
-        .editorial-panel {
-            flex: 1.2; padding: 64px;
-            display: flex; flex-direction: column; justify-content: space-between;
-            box-sizing: border-box;
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 16px; border-bottom: 1px solid var(--border-ui);
         }
 
-        .showcase-panel {
-            flex: 0.8; background: linear-gradient(135deg, rgba(192, 132, 252, 0.05) 0%, rgba(129, 140, 248, 0.05) 100%);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 48px; box-sizing: border-box;
-            border-left: 1px solid var(--border-ui);
-        }
-
-        .logo-mark {
-            font-size: 32px; font-weight: 800;
+        .logo {
+            font-size: 24px; font-weight: 800;
             background: var(--electric-lilac); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: -1px; margin-bottom: 40px; display: inline-block;
+            letter-spacing: -1px; text-decoration: none;
         }
 
-        h1 { font-size: 42px; font-weight: 800; line-height: 1.15; letter-spacing: -1.5px; margin: 0 0 20px 0; }
+        .version-badge {
+            font-size: 11px; background: #0f172a; color: white; padding: 4px 10px; border-radius: 20px; font-weight: 600;
+        }
+
+        /* 2-Step Visual Walkthrough Banner */
+        .onboarding-banner {
+            background: linear-gradient(135deg, rgba(192, 132, 252, 0.04) 0%, rgba(129, 140, 248, 0.04) 100%);
+            border: 1px dashed #c084fc; border-radius: 20px; padding: 24px;
+        }
+        .banner-title { font-size: 15px; font-weight: 700; margin: 0 0 16px 0; display: flex; align-items: center; gap: 8px; }
+        .steps-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .step-card { display: flex; gap: 12px; }
+        .step-num { font-size: 12px; font-weight: 800; background: #818cf8; color: white; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 50%; flex-shrink: 0; }
+        .step-txt strong { display: block; font-size: 14px; margin-bottom: 4px; }
+        .step-txt p { margin: 0; font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
+
+        /* Workspace Grid Split Layout */
+        .workspace-grid {
+            display: grid; grid-template-columns: 380px 1fr; gap: 28px; align-items: start;
+        }
+
+        /* Left Column Matrix Control Controls */
+        .control-panel {
+            background: var(--card-surface); border: 1px solid var(--border-ui);
+            border-radius: 24px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.01);
+            position: sticky; top: 24px;
+        }
+        .panel-title { font-size: 18px; font-weight: 700; margin: 0 0 16px 0; letter-spacing: -0.5px; }
         
-        .hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 48px; max-width: 520px; }
-
-        .value-grid-preview {
-            background: #ffffff; border: 1px solid var(--border-ui); border-radius: 24px;
-            padding: 28px; width: 100%; max-width: 340px;
-            box-shadow: 0 15px 35px rgba(129, 140, 248, 0.06);
+        .url-box { position: relative; margin-bottom: 28px; }
+        .url-input {
+            width: 100%; padding: 14px 90px 14px 16px; border: 1px solid #cbd5e1;
+            border-radius: 12px; font-size: 14px; box-sizing: border-box; outline: none; font-weight: 500;
+        }
+        .scan-btn {
+            position: absolute; right: 8px; top: 8px; background: #0f172a;
+            color: white; border: none; padding: 8px 14px; border-radius: 8px;
+            font-size: 12px; font-weight: 700; cursor: pointer;
         }
 
-        .preview-row { display: flex; align-items: center; margin-bottom: 16px; }
-        .preview-row:last-child { margin-bottom: 0; }
-        .preview-label { font-size: 13px; font-weight: 600; width: 130px; color: #475569; }
-        .preview-bar { flex-grow: 1; height: 6px; background: #f1f5f9; border-radius: 10px; }
-        .preview-fill { height: 100%; border-radius: 10px; background: var(--electric-lilac); }
-
-        /* Multi-step Architecture Tour Map */
-        .framework-map { margin-bottom: 48px; }
-        .step-node { display: flex; align-items: flex-start; margin-bottom: 24px; }
-        .step-number { font-size: 12px; font-weight: 800; color: #818cf8; background: rgba(129, 140, 248, 0.1); padding: 4px 10px; border-radius: 20px; margin-right: 16px; margin-top: 2px; }
-        .step-text strong { display: block; font-size: 15px; margin-bottom: 4px; letter-spacing: -0.3px; }
-        .step-text p { margin: 0; font-size: 13.5px; color: var(--text-secondary); line-height: 1.4; }
-
-        .cta-action {
-            display: inline-block; width: 100%; max-width: 340px;
-            background: var(--electric-lilac); color: white; text-align: center;
-            padding: 18px 28px; border-radius: 16px; font-weight: 700;
-            border: none; font-size: 16px; cursor: pointer; text-decoration: none;
-            box-shadow: 0 10px 28px rgba(129, 140, 248, 0.25); box-sizing: border-box;
-            transition: transform 0.1s ease;
+        .slider-group { margin-bottom: 22px; }
+        .slider-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: #475569; }
+        .slider-ui {
+            width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px;
+            -webkit-appearance: none; outline: none; margin: 12px 0;
+        }
+        .slider-ui::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+            background: white; border: 4px solid #818cf8; cursor: pointer;
         }
 
-        .cta-action:active { transform: scale(0.98); }
+        /* Right Column Deep Ledger Recommendation Stream */
+        .results-stream { display: flex; flex-direction: column; gap: 24px; }
 
-        @media (max-width: 868px) {
-            .responsive-shell { flex-direction: column; margin: 0; border-radius: 0; border: none; }
-            .editorial-panel { padding: 40px 24px; }
-            .showcase-panel { padding: 32px 24px; background: var(--bg-canvas); border-left: none; }
-            h1 { font-size: 32px; }
-            .cta-action { max-width: 100%; }
+        .comparison-hero {
+            background: var(--card-surface); border: 1px solid var(--border-ui);
+            border-radius: 24px; padding: 24px; display: flex; align-items: center; justify-content: space-between;
+        }
+        .product-meta { display: flex; align-items: center; gap: 16px; }
+        .product-icon { font-size: 32px; background: #f8fafc; padding: 12px; border-radius: 16px; border: 1px solid #f1f5f9; }
+        .product-title { font-weight: 800; font-size: 17px; margin: 0 0 4px 0; letter-spacing: -0.3px; }
+        .product-domain { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+        .score-badge { text-align: center; }
+        .score-lbl { font-size: 10px; text-transform: uppercase; font-weight: 700; color: var(--text-secondary); letter-spacing: 0.5px; }
+        .score-val { font-size: 36px; font-weight: 900; color: var(--match-red); margin-top: 2px; }
+
+        .section-divider {
+            font-size: 12px; text-transform: uppercase; font-weight: 700; color: var(--text-secondary);
+            letter-spacing: 0.5px; margin: 8px 0 0 0; display: flex; justify-content: space-between; align-items: center;
+        }
+        .reset-link { font-size: 12px; color: #818cf8; text-decoration: none; font-weight: 600; cursor: pointer; }
+
+        /* Alternative Deep Presentation Cards */
+        .alt-card {
+            background: var(--card-surface); border: 1px solid var(--border-ui);
+            border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.01);
+        }
+        .alt-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .alt-brand { font-size: 18px; font-weight: 800; margin: 0 0 4px 0; letter-spacing: -0.4px; }
+        .alt-price { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+        .match-pill { background: rgba(34, 197, 94, 0.1); color: var(--match-green); padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+
+        /* 3-Way Comparative Parameters Breakdown Grid Matrix */
+        .breakdown-table {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+        }
+        .table-node { background: #f8fafc; border: 1px solid #f1f5f9; padding: 14px; border-radius: 14px; }
+        .node-lbl { font-size: 11px; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; margin-bottom: 4px; }
+        .node-val { font-size: 13.5px; font-weight: 700; color: var(--text-primary); }
+        
+        /* Interactive Evidence Log Drawer Box */
+        .evidence-drawer {
+            background: rgba(129, 140, 248, 0.03); border-left: 4px solid #818cf8;
+            padding: 14px 16px; border-radius: 0 12px 12px 0; font-size: 13px; line-height: 1.5; color: #475569;
+        }
+
+        .swap-action-btn {
+            background: var(--electric-lilac); color: white; border: none; width: 100%;
+            padding: 16px; border-radius: 14px; font-size: 15px; font-weight: 700;
+            cursor: pointer; text-align: center; text-decoration: none;
+            box-shadow: 0 4px 15px rgba(129, 140, 248, 0.15); transition: opacity 0.2s;
+        }
+        .swap-action-btn:hover { opacity: 0.95; }
+
+        @media (max-width: 890px) {
+            .workspace-grid { grid-template-columns: 1fr; }
+            .steps-row { grid-template-columns: 1fr; gap: 16px; }
+            .control-panel { position: static; }
         }
     </style>
 </head>
 <body>
 
-<div class="responsive-shell">
-    <div class="editorial-panel">
-        <div>
-            <div class="logo-mark">YourValueMatch</div>
-            <h1>Hack the algorithm.<br>Shop your own way.</h1>
-            <p class="hero-desc">
-                Retail sites use hidden weighting strategies to control your checkout choices. YourValueMatch intercepts their product listings and filters them according to your custom validation layout.
-            </p>
+<div class="app-container">
+    <header>
+        <a href="index.html" class="logo">YourValueMatch</a>
+        <div class="version-badge">Gemini Sandbox V2</div>
+    </header>
 
-            <div class="framework-map">
-                <div class="step-node">
-                    <span class="step-number">01</span>
-                    <div class="step-text">
-                        <strong>Identify & Establish Matrix</strong>
-                        <p>Lock in your preferred baseline values profile via independent sliders.</p>
-                    </div>
-                </div>
-                <div class="step-node">
-                    <span class="step-number">02</span>
-                    <div class="step-text">
-                        <strong>Drop & Analyze Retail Assets</strong>
-                        <p>Paste product detail links directly into the comparison parsing engine.</p>
-                    </div>
-                </div>
-                <div class="step-node">
-                    <span class="step-number">03</span>
-                    <div class="step-text">
-                        <strong>Verify & Swap Alternative Picks</strong>
-                        <p>Review real-time attribute matches and redirect traffic to ideal choices.</p>
-                    </div>
+    <div class="onboarding-banner">
+        <div class="banner-title">⚡ How it works: Bypass platform bias in two actions</div>
+        <div class="steps-row">
+            <div class="step-card">
+                <span class="step-num">1</span>
+                <div class="step-txt">
+                    <strong>Set Your Value Profile</strong>
+                    <p>Adjust the vector bars on the left to tell the system exactly what criteria matter to your shopping baseline.</p>
                 </div>
             </div>
-        </div>
-
-        <div>
-            <a href="signup.html" class="cta-action">Launch Procurement Matrix</a>
-            <div style="font-size: 12px; color: #94a3b8; margin-top: 20px;">AI-Native Personal Procurement Framework</div>
+            <div class="step-card">
+                <span class="step-num">2</span>
+                <div class="step-txt">
+                    <strong>Scan Link & Swap Alternative</strong>
+                    <p>Paste any direct retail link. If the product scores poorly against your profile, click Swap to switch to a higher match choice.</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="showcase-panel">
-        <div class="value-grid-preview">
-            <div style="font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 700; margin-bottom: 20px; letter-spacing: 0.5px; text-align: center;">Live Application Mockup</div>
-            <div class="preview-row">
-                <span class="preview-label">🌿 Variable One</span>
-                <div class="preview-bar"><div class="preview-fill" style="width: 85%;"></div></div>
+    <main class="workspace-grid">
+        
+        <section class="control-panel">
+            <h2 class="panel-title">1. Configure Matrix</h2>
+            
+            <div class="url-box">
+                <input type="url" id="linkField" class="url-input" value="https://www.amazon.co.uk/Burts-Bees-Lip-Balm-Pomegranate">
+                <button class="scan-btn" id="runAnalysis">Scan URL</button>
             </div>
-            <div class="preview-row">
-                <span class="preview-label">🤝 Variable Two</span>
-                <div class="preview-bar"><div class="preview-fill" style="width: 45%;"></div></div>
+
+            <div class="slider-group">
+                <div class="slider-header"><span>🍃 Cruelty-Free</span><span id="txt1">88%</span></div>
+                <input type="range" class="slider-ui" id="range1" min="0" max="100" value="88">
             </div>
-            <div class="preview-row">
-                <span class="preview-label">🌍 Variable Three</span>
-                <div class="preview-bar"><div class="preview-fill" style="width: 75%;"></div></div>
+            <div class="slider-group">
+                <div class="slider-header"><span>🧪 Clean Ingredients</span><span id="txt2">100%</span></div>
+                <input type="range" class="slider-ui" id="range2" min="0" max="100" value="100">
             </div>
-        </div>
-    </div>
+            <div class="slider-group">
+                <div class="slider-header"><span>📦 Low-Waste Pack</span><span id="txt3">12%</span></div>
+                <input type="range" class="slider-ui" id="range3" min="0" max="100" value="12">
+            </div>
+        </section>
+
+        <section class="results-stream">
+            
+            <div class="comparison-hero">
+                <div class="product-meta">
+                    <span class="product-icon">💄</span>
+                    <div>
+                        <h3 class="product-title" id="lblTitle">Burt's Bees Lip Balm Pomegranate</h3>
+                        <span class="product-domain" id="lblDomain">amazon.co.uk</span>
+                    </div>
+                </div>
+                <div class="score-badge">
+                    <span class="score-lbl">Current Match</span>
+                    <div class="score-val" id="lblScore">35%</div>
+                </div>
+            </div>
+
+            <div class="section-divider">
+                <span>2. Recommended Value Alternative Matches Found</span>
+                <span class="reset-link" id="clearSearch">Clear & Scan Another Link</span>
+            </div>
+
+            <div class="alt-card">
+                <div class="alt-header">
+                    <div>
+                        <h4 class="alt-brand">Hurraw! Balm</h4>
+                        <span class="alt-price">Estimated Value Validation: £4.10</span>
+                    </div>
+                    <span class="match-pill">96% Alternative Match</span>
+                </div>
+                
+                <div class="breakdown-table">
+                    <div class="table-node"><div class="node-lbl">Composition</div><div class="node-val">100% Raw Organic</div></div>
+                    <div class="table-node"><div class="node-lbl">Labor Trace</div><div class="node-val">Leaping Bunny Cert</div></div>
+                    <div class="table-node"><div class="node-lbl">Packaging</div><div class="node-val">Recyclable Eco-Tube</div></div>
+                </div>
+
+                <div class="evidence-drawer">
+                    <strong>Verification Evidence Log:</strong> Formulated using 100% organic food-grade cold-pressed oils. Production facilities operate fully solar-powered out of Whitefish, Montana, mitigating standard logistic distribution footprints.
+                </div>
+                
+                <button class="swap-action-btn" onclick="alert('Redirecting via ValueMatch verified affiliate link...')">Swap to Hurraw! Balm</button>
+            </div>
+
+            <div class="alt-card">
+                <div class="alt-header">
+                    <div>
+                        <h4 class="alt-brand">Dr. Bronner's Organic Balm</h4>
+                        <span class="alt-price">Estimated Value Validation: £3.75</span>
+                    </div>
+                    <span class="match-pill" style="background: rgba(192, 132, 252, 0.1); color: #c084fc;">91% Alternative Match</span>
+                </div>
+                
+                <div class="breakdown-table">
+                    <div class="table-node"><div class="node-lbl">Composition</div><div class="node-val">USDA Natural Oils</div></div>
+                    <div class="table-node"><div class="node-lbl">Labor Trace</div><div class="node-val">Fair Trade Certified</div></div>
+                    <div class="table-node"><div class="node-lbl">Packaging</div><div class="node-val">100% PCR Plastic</div></div>
+                </div>
+
+                <div class="evidence-drawer">
+                    <strong>Verification Evidence Log:</strong> Utilizing fair-trade certified organic beeswax and jojoba inputs. Backed by verifiable third-party certification showing full occupational safety parameters across supply chains.
+                </div>
+                
+                <button class="swap-action-btn" onclick="alert('Redirecting via ValueMatch verified affiliate link...')">Swap to Dr. Bronner's</button>
+            </div>
+
+            <div class="alt-card">
+                <div class="alt-header">
+                    <div>
+                        <h4 class="alt-brand">Beauty Kitchen Natrulox</h4>
+                        <span class="alt-price">Estimated Value Validation: £4.50</span>
+                    </div>
+                    <span class="match-pill" style="background: rgba(129, 140, 248, 0.1); color: #818cf8;">88% Alternative Match</span>
+                </div>
+                
+                <div class="breakdown-table">
+                    <div class="table-node"><div class="node-lbl">Composition</div><div class="node-val">Bio-Synthesized Oils</div></div>
+                    <div class="table-node"><div class="node-lbl">Labor Trace</div><div class="node-val">UK Local Sourced</div></div>
+                    <div class="table-node"><div class="node-lbl">Packaging</div><div class="node-val">Circular Zero Waste</div></div>
+                </div>
+
+                <div class="evidence-drawer">
+                    <strong>Verification Evidence Log:</strong> Certified B-Corp operator utilizing a strict zero-waste return program. Products feature completely localized tracking parameters inside the UK logistical baseline.
+                </div>
+                
+                <button class="swap-action-btn" onclick="alert('Redirecting via ValueMatch verified affiliate link...')">Swap to Beauty Kitchen</button>
+            </div>
+
+        </section>
+    </main>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const ranges = [document.getElementById('range1'), document.getElementById('range2'), document.getElementById('range3')];
+        const outputs = [document.getElementById('txt1'), document.getElementById('txt2'), document.getElementById('txt3')];
+        const scoreDisplay = document.getElementById('lblScore');
+
+        function dynamicCalcs() {
+            let combined = 0;
+            ranges.forEach((range, idx) => {
+                outputs[idx].textContent = `${range.value}%`;
+                combined += parseInt(range.value);
+            });
+            let midVal = Math.round(combined / ranges.length);
+            let simulatedInverse = Math.max(10, 105 - Math.round(midVal * 0.85));
+            scoreDisplay.textContent = `${simulatedInverse}%`;
+            scoreDisplay.style.color = simulatedInverse > 55 ? "var(--match-green)" : "var(--match-red)";
+        }
+
+        ranges.forEach(range => range.addEventListener('input', dynamicCalcs));
+
+        document.getElementById('runAnalysis').addEventListener('click', () => {
+            const path = document.getElementById('linkField').value;
+            if(!path) return alert("Please enter a valid retail item tracking URL");
+            try {
+                const urlObj = new URL(path);
+                document.getElementById('lblDomain').textContent = urlObj.hostname.replace('www.', '');
+                alert(`Engine running dynamic verification analysis loop against ${urlObj.hostname}...`);
+            } catch(err) {
+                document.getElementById('lblDomain').textContent = 'External Store Listing';
+            }
+        });
+
+        document.getElementById('clearSearch').addEventListener('click', () => {
+            document.getElementById('linkField').value = '';
+            document.getElementById('linkField').focus();
+        });
+    });
+</script>
 </body>
 </html>
