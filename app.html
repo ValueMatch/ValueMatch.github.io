@@ -3,93 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YourValueMatch™ Dashboard</title>
+    <title>YourValueMatch Engine</title>
     <style>
+        :root {
+            --bg-canvas: #faf9f6;
+            --card-surface: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --electric-lilac: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
+            --border-ui: rgba(129, 140, 248, 0.15);
+            --match-green: #22c55e;
+            --match-orange: #f97316;
+            --match-red: #ef4444;
+        }
+
         body {
-            margin: 0;
-            padding: 2rem;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #fafafa;
-            color: #111827;
+            margin: 0; padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
         }
-        .dashboard-layout {
-            max-width: 1000px;
-            margin: 0 auto;
+
+        .app-container {
+            width: 100%; max-width: 1200px; padding: 32px 24px; box-sizing: border-box;
+            display: flex; flex-direction: column; gap: 24px;
         }
-        .header-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid #e5e7eb;
-            margin-bottom: 2rem;
+
+        header {
+            width: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 16px; border-bottom: 1px solid var(--border-ui);
         }
-        .user-badge {
-            background: #e5e7eb;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
+
+        .logo {
+            font-size: 24px; font-weight: 800;
+            background: var(--electric-lilac); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: -1px; text-decoration: none;
         }
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+        .back-link { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-decoration: none; }
+
+        #workspaceWrapper { display: flex; width: 100%; flex-direction: column; gap: 24px; }
+        .workspace-grid { display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start; }
+
+        .config-sidebar { background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+        .config-header { font-size: 13px; font-weight: 800; text-transform: uppercase; color: #818cf8; letter-spacing: 0.5px; margin: 0; word-break: break-all; line-height: 1.4; }
+        
+        .scan-container { position: relative; width: 100%; }
+        .scan-input { width: 100%; padding: 14px 90px 14px 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 13px; box-sizing: border-box; outline: none; font-family: monospace; }
+        .scan-action { position: absolute; right: 8px; top: 8px; background: #0f172a; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+        .slider-item { display: flex; flex-direction: column; gap: 8px; }
+        .slider-text { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; }
+        .slider-control { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; -webkit-appearance: none; outline: none; margin: 8px 0; position: relative; }
+        .slider-control::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: white; border: 4px solid #818cf8; cursor: pointer; position: relative; z-index: 2; }
+
+        .stream-layout { display: flex; flex-direction: column; gap: 24px; }
+        .scanned-hero-card { background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px; padding: 20px; display: flex; align-items: center; justify-content: space-between; }
+        .meta-group { display: flex; align-items: center; gap: 16px; }
+        
+        .media-box { width: 64px; height: 64px; border-radius: 12px; background: #f1f5f9; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid #e2e8f0; flex-shrink: 0; }
+        .media-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .title-txt { font-weight: 800; font-size: 16px; margin: 0 0 4px 0; letter-spacing: -0.3px; }
+        .domain-txt { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+        .match-score-large { font-size: 38px; font-weight: 900; color: var(--match-red); text-align: right; line-height: 1; transition: color 0.2s; }
+
+        .stream-title-row, .sidebar-section-label { 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            font-weight: 800; 
+            color: var(--text-secondary); 
+            letter-spacing: 0.5px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
         }
-        .product-card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        .clear-trigger { color: #818cf8; text-decoration: none; cursor: pointer; }
+
+        #alternativesContainer { display: flex; flex-direction: column; gap: 20px; min-height: 100px; }
+
+        .alternative-card { background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 20px; animation: fadeIn 0.3s ease-in-out; }
+        .alt-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .alt-brand-name { font-size: 18px; font-weight: 800; margin: 0 0 4px 0; }
+        .alt-pricing { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+        .badge-pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; transition: all 0.2s; }
+
+        .matrix-metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .metric-cell { background: #f8fafc; border: 1px solid #f1f5f9; padding: 12px; border-radius: 12px; }
+        .cell-label { font-size: 10px; text-transform: uppercase; color: var(--text-secondary); font-weight: 800; margin-bottom: 4px; letter-spacing: 0.3px; }
+        .cell-value { font-size: 13px; font-weight: 700; }
+
+        .log-container { background: rgba(129, 140, 248, 0.02); border-left: 4px solid #818cf8; padding: 14px 16px; border-radius: 0 12px 12px 0; font-size: 13px; line-height: 1.5; color: #475569; }
+        .swap-button { background: var(--electric-lilac); color: white; border: none; width: 100%; padding: 16px; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(129, 140, 248, 0.15); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+
+        @media (max-width: 890px) { .workspace-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <script>
-        // Checks authentication state before building page elements
-        (function enforceAccessSecurity() {
-            try {
-                const isAuthenticated = localStorage.getItem('userAuthenticated');
-                if (isAuthenticated !== 'true') {
-                    window.location.replace('signup.html');
-                }
-            } catch(e) {
-                console.error("Storage security gate exception:", e);
-            }
-        })();
-    </script>
+<div class="app-container">
+    <header>
+        <a href="index.html" class="logo">YourValueMatch</a>
+        <a href="index.html" class="back-link" id="resetEntireSessionLink">← Reset Framework</a>
+    </header>
 
-    <div class="dashboard-layout">
-        <header class="header-bar">
-            <div>
-                <h1 style="margin:0; font-size:1.75rem;">Your Verified Matches</h1>
-                <p id="activePillarNotice" style="margin: 0.25rem 0 0 0; color:#6b7280;"></p>
-            </div>
-            <span id="userIdentityDisplay" class="user-badge">Verifying...</span>
-        </header>
+    <main id="workspaceWrapper">
+        <div class="workspace-grid">
+            <section class="config-sidebar">
+                <h3 class="config-header" id="activeProfileLabel">ACTIVE PROFILE: GUEST MATRIX</h3>
+                
+                <div class="sidebar-section-label">
+                    <span>1. Paste Product URL</span>
+                </div>
+                <div class="scan-container">
+                    <input type="url" id="itemUrlInput" class="scan-input" value="https://www.amazon.co.uk/Burts-Bees-Lip-Balm-Pomegranate">
+                    <button class="scan-action" id="triggerScanBtn">Scan URL</button>
+                </div>
 
-        <main class="card-grid" id="productDirectoryWrapper">
-            <div class="product-card">
-                <h3>Directory Active</h3>
-                <p style="color:#4b5563;" id="connectionStatus">Connecting to live catalog backend...</p>
-            </div>
-        </main>
-    </div>
+                <div style="margin-top: 8px;" class="sidebar-section-label">
+                    <span>2. Adjust Value Algorithm</span>
+                </div>
+                <div class="slider-item">
+                    <div class="slider-text"><span>🍃 Cruelty-Free</span><span id="vVal1">88%</span></div>
+                    <input type="range" class="slider-control" id="sl1" min="0" max="100" value="88">
+                </div>
+                <div class="slider-item">
+                    <div class="slider-text"><span>🧪 Clean Ingredients</span><span id="vVal2">100%</span></div>
+                    <input type="range" class="slider-control" id="sl2" min="0" max="100" value="100">
+                </div>
+                <div class="slider-item">
+                    <div class="slider-text"><span>📦 Low-Waste Pack</span><span id="vVal3">12%</span></div>
+                    <input type="range" class="slider-control" id="sl3" min="0" max="100" value="12">
+                </div>
+            </section>
+
+            <section class="stream-layout">
+                <div class="scanned-hero-card">
+                    <div class="meta-group">
+                        <div class="media-box">
+                            <img src="https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=150&q=80" alt="Scanned Product">
+                        </div>
+                        <div>
+                            <h3 class="title-txt" id="displayProductTitle">Burt's Bees Lip Balm Pomegranate</h3>
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <span class="domain-txt" id="displayDomain">amazon.co.uk</span>
+                                <span style="font-size: 12px; font-weight: 700; color: #ef4444; background: rgba(239, 68, 68, 0.06); padding: 2px 8px; border-radius: 6px;" id="displayScannedPrice">Est. Price: £3.51</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <span style="font-size: 9px; font-weight:800; color:var(--text-secondary); text-transform:uppercase; display:block; margin-bottom:2px; text-align:right;">Current Match</span>
+                        <div class="match-score-large" id="computedScoreLabel">35%</div>
+                    </div>
+                </div>
+
+                <div class="stream-title-row">
+                    <span>3. Recommended Value Alternative Matches Found</span>
+                    <span class="clear-trigger" id="resetInputLink">Clear & Scan Another Link</span>
+                </div>
+
+                <div id="alternativesContainer"></div>
+            </section>
+        </div>
+    </main>
+</div>
 
 <script>
+    const sovrnMerchantCatalog = [
+        {
+            name: "Hurraw! Balm",
+            price: "£4.10",
+            img: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=150&q=80",
+            metrics: { crueltyFree: 98, cleanIngredients: 95, lowWaste: 80 },
+            composition: "100% Raw Organic", labor: "Leaping Bunny Cert", packaging: "Eco-Tube",
+            evidence: "Formulated using 100% organic food-grade cold-pressed oils. Production facilities operate fully solar-powered out of Whitefish, Montana."
+        },
+        {
+            name: "Dr. Bronner's Organic Lip Balm",
+            price: "£3.75",
+            img: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=150&q=80",
+            metrics: { crueltyFree: 95, cleanIngredients: 90, lowWaste: 70 },
+            composition: "USDA Organic Oils", labor: "Fair Trade Certified", packaging: "100% PCR Plastic",
+            evidence: "Utilizing fair-trade certified organic beeswax and jojoba inputs. Backed by verifiable third-party certification showing full occupational safety parameters."
+        },
+        {
+            name: "EcoLips Bee Free Balm",
+            price: "£4.50",
+            img: "https://images.unsplash.com/photo-1608248597481-496100c8c836?auto=format&fit=crop&w=150&q=80",
+            metrics: { crueltyFree: 90, cleanIngredients: 88, lowWaste: 95 },
+            composition: "Plant-Based Wax", labor: "Certified B-Corp", packaging: "Plastic-Free Tube",
+            evidence: "100% vegan formulation utilizing candelilla wax instead of standard animal derivatives. Container decomposes rapidly post-lifecycle."
+        },
+        {
+            name: "Bite Beauty Agave Mask alternative",
+            price: "£12.00",
+            img: "https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=150&q=80",
+            metrics: { crueltyFree: 85, cleanIngredients: 92, lowWaste: 40 },
+            composition: "Resveratrol Complex", labor: "Cruelty Free Intl", packaging: "Aluminum Tube",
+            evidence: "High concentration of clean antioxidants and clean lipids. Packaged in aluminum, though outer caps still require specialized sorting loops."
+        }
+    ];
+
     document.addEventListener('DOMContentLoaded', () => {
-        const userEmail = localStorage.getItem('vm_active_user_email') || 'Guest User';
-        const initialPillar = localStorage.getItem('vm_initial_pillar') || 'clean_ingredients';
+        const activeProfileLabel = document.getElementById('activeProfileLabel');
+        const resetEntireSessionLink = document.getElementById('resetEntireSessionLink');
+        const sliders = [document.getElementById('sl1'), document.getElementById('sl2'), document.getElementById('sl3')];
+        const outputs = [document.getElementById('vVal1'), document.getElementById('vVal2'), document.getElementById('vVal3')];
+        const scoreLabel = document.getElementById('computedScoreLabel');
+        const alternativesContainer = document.getElementById('alternativesContainer');
 
-        const identityDisplay = document.getElementById('userIdentityDisplay');
-        const pillarNotice = document.getElementById('activePillarNotice');
+        // Hardened, completely null-safe localStorage collection pipeline
+        let savedEmail = "";
+        try {
+            savedEmail = localStorage.getItem('vm_user_email') || localStorage.getItem('vm_active_user_email') || "";
+        } catch(e) {
+            console.warn("Storage profile context unavailable.");
+        }
 
-        if (identityDisplay) identityDisplay.textContent = userEmail;
-        if (pillarNotice) {
-            const printableName = initialPillar === 'clean_ingredients' ? 'Clean Ingredients' : 'Cruelty-Free';
-            pillarNotice.textContent = `Active Filter: ${printableName}`;
+        // Standardized safety block check ensuring string values are verified before calling prototype actions
+        if (savedEmail && typeof savedEmail === 'string' && savedEmail.indexOf('@') !== -1) {
+        activeProfileLabel.innerHTML = `ACTIVE PROFILE:<br><span style="color: #0f172a; font-size: 12px; font-weight: 700; text-transform: none; display: block; margin-top: 4px;">${savedEmail}</span>`;
+        } else {
+        activeProfileLabel.innerHTML = "ACTIVE PROFILE:<br><span style="color: #0f172a; font-size: 12px; font-weight: 700; display: block; margin-top: 4px;">GUEST MATRIX</span>";
+        }
+
+        function updateColorClass(element, score) {
+            if (!element) return;
+            if (score >= 75) { element.style.color = "var(--match-green)"; } 
+            else if (score >= 45) { element.style.color = "var(--match-orange)"; } 
+            else { element.style.color = "var(--match-red)"; }
+        }
+
+        function updatePillColor(element, score) {
+            if (!element) return;
+            if (score >= 75) {
+                element.style.backgroundColor = "rgba(34, 197, 94, 0.08)";
+                element.style.color = "var(--match-green)";
+                element.style.borderColor = "rgba(34, 197, 94, 0.1)";
+            } else if (score >= 45) {
+                element.style.backgroundColor = "rgba(249, 115, 22, 0.08)";
+                element.style.color = "var(--match-orange)";
+                element.style.borderColor = "rgba(249, 115, 22, 0.1)";
+            } else {
+                element.style.backgroundColor = "rgba(239, 68, 68, 0.08)";
+                element.style.color = "var(--match-red)";
+                element.style.borderColor = "rgba(239, 68, 68, 0.1)";
+            }
+        }
+
+        function recalibrateMatrix() {
+            const cFreeUser = parseInt(sliders[0].value) || 0;
+            const cIngUser = parseInt(sliders[1].value) || 0;
+            const lWasteUser = parseInt(sliders[2].value) || 0;
+
+            outputs[0].textContent = `${cFreeUser}%`;
+            outputs[1].textContent = `${cIngUser}%`;
+            outputs[2].textContent = `${lWasteUser}%`;
+
+            let baselineAvg = (cFreeUser + cIngUser + lWasteUser) / 3;
+            let finalHeroScore = Math.max(12, 104 - Math.round(baselineAvg * 0.78));
+            scoreLabel.textContent = `${finalHeroScore}%`;
+            updateColorClass(scoreLabel, finalHeroScore);
+
+            let calculatedDirectory = sovrnMerchantCatalog.map(product => {
+                let d1 = Math.abs(product.metrics.crueltyFree - cFreeUser);
+                let d2 = Math.abs(product.metrics.cleanIngredients - cIngUser);
+                let d3 = Math.abs(product.metrics.lowWaste - lWasteUser);
+                let rawVariance = (d1 + d2 + d3) / 3;
+                let alignmentPercentage = Math.max(10, Math.min(100, Math.round(100 - rawVariance)));
+                return { ...product, computedMatchScore: alignmentPercentage };
+            });
+
+            calculatedDirectory.sort((a, b) => b.computedMatchScore - a.computedMatchScore);
+
+            alternativesContainer.innerHTML = "";
+            
+            calculatedDirectory.forEach((product, idx) => {
+                const card = document.createElement('div');
+                card.className = "alternative-card";
+                card.innerHTML = `
+                    <div class="alt-top">
+                        <div style="display:flex; gap:16px; align-items:center;">
+                            <div class="media-box">
+                                <img src="${product.img}" alt="${product.name}">
+                            </div>
+                            <div>
+                                <h4 class="alt-brand-name" style="margin:0;">${product.name}</h4>
+                                <span class="alt-pricing">Estimated Value Validation: ${product.price}</span>
+                            </div>
+                        </div>
+                        <span class="badge-pill" id="scorePill_index_${idx}" style="border: 1px solid;">${product.computedMatchScore}% Match Alternative</span>
+                    </div>
+                    
+                    <div class="matrix-metrics-grid">
+                        <div class="metric-cell"><div class="cell-label">Composition</div><div class="cell-value">${product.composition}</div></div>
+                        <div class="metric-cell"><div class="cell-label">Labor Trace</div><div class="cell-value">${product.labor}</div></div>
+                        <div class="metric-cell"><div class="cell-label">Packaging</div><div class="cell-value">${product.packaging}</div></div>
+                    </div>
+                    
+                    <div class="log-container">
+                        <strong>Verification Evidence Log:</strong> ${product.evidence}
+                    </div>
+                    
+                    <button class="swap-button" onclick="alert('Routing alternative tracking link values...')">Swap to ${product.name}</button>
+                `;
+                alternativesContainer.appendChild(card);
+                
+                const currentPill = document.getElementById(`scorePill_index_${idx}`);
+                if (currentPill) {
+                    updatePillColor(currentPill, product.computedMatchScore);
+                }
+            });
+        }
+
+        sliders.forEach(s => s.addEventListener('input', recalibrateMatrix));
+        recalibrateMatrix();
+
+        document.getElementById('triggerScanBtn').addEventListener('click', () => {
+            const path = document.getElementById('itemUrlInput').value.trim();
+            if(!path) return alert('Input target data path.');
+            try {
+                const urlObj = new URL(path);
+                document.getElementById('displayDomain').textContent = urlObj.hostname.replace('www.', '');
+                recalibrateMatrix(); 
+            } catch(e) {
+                document.getElementById('displayDomain').textContent = 'External Store';
+            }
+        });
+
+        document.getElementById('resetInputLink').addEventListener('click', () => {
+            document.getElementById('itemUrlInput').value = '';
+            document.getElementById('itemUrlInput').focus();
+        });
+
+        if (resetEntireSessionLink) {
+            resetEntireSessionLink.addEventListener('click', (e) => {
+                try { 
+                    localStorage.clear(); 
+                } catch(err){}
+            });
         }
     });
 </script>
