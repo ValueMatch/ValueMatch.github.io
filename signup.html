@@ -1,12 +1,106 @@
-<!DOCTYPEdoctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ValueMatch™ Onboarding</title>
     <style>
-        /* Your existing styles go here */
-        .active { border: 2px solid #a855f7; } /* Example visual state token */
+        /* =========================================================================
+           RESERVED ORIGINAL VISUAL DESIGN CORE
+           ========================================================================= */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .app-container {
+            background: #ffffff;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            width: 100%;
+            max-width: 440px;
+            box-sizing: border-box;
+        }
+        h2 {
+            margin: 0 0 1.5rem 0;
+            color: #111827;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        .selection-row {
+            display: flex;
+            align-items: center;
+            padding: 1.25rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .selection-row:hover {
+            border-color: #cbd5e1;
+        }
+        .selection-row.active {
+            border-color: #a855f7;
+            background-color: rgba(168, 85, 247, 0.04);
+        }
+        .selection-row input[type="radio"] {
+            margin-right: 14px;
+            accent-color: #a855f7;
+            transform: scale(1.1);
+        }
+        .selection-row label {
+            cursor: pointer;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95rem;
+            user-select: none;
+        }
+        .input-group {
+            margin: 1.75rem 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4b5563;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+        .input-group input:focus {
+            border-color: #a855f7;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #111827;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .submit-btn:hover {
+            background: #1f2937;
+        }
     </style>
 </head>
 <body>
@@ -15,22 +109,22 @@
         <div class="app-container">
             <h2>Select Your Core Value Alignment</h2>
             
-            <div id="vector1" style="cursor: pointer; padding: 15px; margin: 10px 0; border: 1px solid #ccc;">
+            <div id="vector1" class="selection-row active">
                 <input type="radio" id="rad1" name="pillar" checked>
-                <label for="rad1">Clean Ingredients</label>
+                <label for="rad1">Clean Ingredients Alignment</label>
             </div>
             
-            <div id="vector2" style="cursor: pointer; padding: 15px; margin: 10px 0; border: 1px solid #ccc;">
+            <div id="vector2" class="selection-row">
                 <input type="radio" id="rad2" name="pillar">
-                <label for="rad2">Cruelty-Free</label>
+                <label for="rad2">Cruelty-Free Verification</label>
             </div>
 
-            <div style="margin: 20px 0;">
-                <label for="userEmailField">Identity Email Address:</label>
-                <input type="email" id="userEmailField" placeholder="Enter your email..." style="padding: 10px; width: 100%; max-width: 300px;">
+            <div class="input-group">
+                <label for="userEmailField">Identity Email Address</label>
+                <input type="email" id="userEmailField" placeholder="name@company.com" autocomplete="email">
             </div>
 
-            <button id="submitSetupBtn" style="padding: 12px 24px; cursor: pointer;">Next: Access Dashboard</button>
+            <button id="submitSetupBtn" class="submit-btn">Next: Access Dashboard</button>
         </div>
     </main>
 
@@ -42,7 +136,7 @@
         const rad2 = document.getElementById('rad2');
         const submitSetupBtn = document.getElementById('submitSetupBtn');
 
-        // Toggle selection visuals safely
+        // Toggle visual selection styling safely
         if (row1 && row2 && rad1 && rad2) {
             row1.addEventListener('click', () => { 
                 row1.classList.add('active'); 
@@ -56,7 +150,7 @@
             });
         }
 
-        // Setup the form action handler loop
+        // Handle form action submission mapping
         if (submitSetupBtn) {
             submitSetupBtn.addEventListener('click', () => {
                 const emailField = document.getElementById('userEmailField');
@@ -67,19 +161,21 @@
                     return alert('Please input a valid identity email address.');
                 }
 
-                // Standardize values to exactly what app.html engine reads
+                // Map strictly to the criteria data categories app.html expects
                 const selectedPillar = (rad1 && rad1.checked) ? 'clean_ingredients' : 'cruelty_free';
 
                 // Safe Write Execution Guard
                 try {
                     localStorage.setItem('vm_active_user_email', emailvalue);
                     localStorage.setItem('vm_initial_pillar', selectedPillar);
+                    
+                    // ISSUE TOKEN: Satisfies security access gates deployed inside app.html 
                     localStorage.setItem('userAuthenticated', 'true');
                 } catch(e) {
                     console.warn("Storage write blocked by browser context rules.");
                 }
 
-                // Redirect cleanly to application board
+                // Redirect cleanly to application board engine
                 window.location.href = 'app.html';
             });
         }
