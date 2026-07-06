@@ -6,12 +6,21 @@
         const rad2 = document.getElementById('rad2');
         const submitSetupBtn = document.getElementById('submitSetupBtn');
 
-        // Toggle selection visuals
+        // Toggle selection visuals safely
         if (row1 && row2 && rad1 && rad2) {
-            row1.addEventListener('click', () => { row1.classList.add('active'); row2.classList.remove('active'); rad1.checked = true; });
-            row2.addEventListener('click', () => { row2.classList.add('active'); row1.classList.remove('active'); rad2.checked = true; });
+            row1.addEventListener('click', () => { 
+                row1.classList.add('active'); 
+                row2.classList.remove('active'); 
+                rad1.checked = true; 
+            });
+            row2.addEventListener('click', () => { 
+                row2.classList.add('active'); 
+                row1.classList.remove('active'); 
+                rad2.checked = true; 
+            });
         }
 
+        // Setup the clean button click action mapping
         if (submitSetupBtn) {
             submitSetupBtn.addEventListener('click', () => {
                 const emailField = document.getElementById('userEmailField');
@@ -22,21 +31,19 @@
                     return alert('Please input a valid identity email address.');
                 }
 
-                // Match the exact value categories the app.html engine reads
-                const selectedPillar = rad1.checked ? 'clean_ingredients' : 'cruelty_free';
+                // Standardize values to exactly what app.html expects
+                const selectedPillar = (rad1 && rad1.checked) ? 'clean_ingredients' : 'cruelty_free';
 
-                // Safe Write Execution Loop Guard
+                // Safe Write Execution Guard
                 try {
                     localStorage.setItem('vm_active_user_email', emailvalue);
                     localStorage.setItem('vm_initial_pillar', selectedPillar);
-                    
-                    // THE SAFEGUARD: Set security flag to unlock app.html
                     localStorage.setItem('userAuthenticated', 'true');
                 } catch(e) {
                     console.warn("Storage write blocked by browser context rules.");
                 }
 
-                // Re-route processing over to application engine
+                // Redirect cleanly to application board
                 window.location.href = 'app.html';
             });
         }
