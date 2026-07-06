@@ -126,8 +126,9 @@
             
             // Safe Write Execution Loop Guard
             try {
-                localStorage.setItem('vm_active_user_email', emailValue);
-                localStorage.setItem('vm_initial_pillar', selectedPillar);
+        localStorage.setItem('userEmail', emailvalue);
+        localStorage.setItem('userAuthenticated', 'true');
+        localStorage.setItem('vm_initial_pillar', selectedPillar);
             } catch(e) {
                 console.warn("Storage write blocked by browser context rules.");
             }
