@@ -46,7 +46,7 @@
         .workspace-grid { display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start; }
 
         .config-sidebar { background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
-        .config-header { font-size: 13px; font-weight: 800; text-transform: uppercase; color: #818cf8; letter-spacing: 0.5px; margin: 0; word-break: break-all; line-height: 1.4; }
+        .config-header { font-size: 13px; font-weight: 800; text-transform: uppercase; color: #818cf8; letter-spacing: 0.5px; margin: 0; word-break: break-all; line-height: 1.5; }
         
         .scan-container { position: relative; width: 100%; }
         .scan-input { width: 100%; padding: 14px 90px 14px 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 13px; box-sizing: border-box; outline: none; font-family: monospace; }
@@ -115,7 +115,7 @@
     <main id="workspaceWrapper">
         <div class="workspace-grid">
             <section class="config-sidebar">
-                <h3 class="config-header" id="activeProfileLabel">ACTIVE PROFILE: GUEST MATRIX</h3>
+                <h3 class="config-header" id="activeProfileLabel">ACTIVE PROFILE:<br><span style="color: #64748b; font-size: 12px; text-transform: none; display: block; margin-top: 4px;">Loading profile...</span></h3>
                 
                 <div class="sidebar-section-label">
                     <span>1. Paste Product URL</span>
@@ -217,19 +217,18 @@
         const scoreLabel = document.getElementById('computedScoreLabel');
         const alternativesContainer = document.getElementById('alternativesContainer');
 
-        // Hardened, completely null-safe localStorage collection pipeline
         let savedEmail = "";
         try {
             savedEmail = localStorage.getItem('vm_user_email') || localStorage.getItem('vm_active_user_email') || "";
         } catch(e) {
-            console.warn("Storage profile context unavailable.");
+            console.warn("Storage context read warning.");
         }
 
-        // Standardized safety block check ensuring string values are verified before calling prototype actions
+        // Clean string parsing ensures formatting outputs on a distinct visual new line break
         if (savedEmail && typeof savedEmail === 'string' && savedEmail.indexOf('@') !== -1) {
-        activeProfileLabel.innerHTML = `ACTIVE PROFILE:<br><span style="color: #0f172a; font-size: 12px; font-weight: 700; text-transform: none; display: block; margin-top: 4px;">${savedEmail}</span>`;
+            activeProfileLabel.innerHTML = 'ACTIVE PROFILE:<br><span style="color: #818cf8; font-size: 12px; font-weight: 700; text-transform: none; display: block; margin-top: 4px; word-break: break-all;">' + savedEmail + '</span>';
         } else {
-        activeProfileLabel.innerHTML = "ACTIVE PROFILE:<br><span style="color: #0f172a; font-size: 12px; font-weight: 700; display: block; margin-top: 4px;">GUEST MATRIX</span>";
+            activeProfileLabel.innerHTML = 'ACTIVE PROFILE:<br><span style="color: #64748b; font-size: 12px; font-weight: 700; display: block; margin-top: 4px;">GUEST MATRIX</span>';
         }
 
         function updateColorClass(element, score) {
@@ -261,29 +260,29 @@
             const cIngUser = parseInt(sliders[1].value) || 0;
             const lWasteUser = parseInt(sliders[2].value) || 0;
 
-            outputs[0].textContent = `${cFreeUser}%`;
-            outputs[1].textContent = `${cIngUser}%`;
-            outputs[2].textContent = `${lWasteUser}%`;
+            outputs[0].textContent = cFreeUser + '%';
+            outputs[1].textContent = cIngUser + '%';
+            outputs[2].textContent = lWasteUser + '%';
 
             let baselineAvg = (cFreeUser + cIngUser + lWasteUser) / 3;
             let finalHeroScore = Math.max(12, 104 - Math.round(baselineAvg * 0.78));
-            scoreLabel.textContent = `${finalHeroScore}%`;
+            scoreLabel.textContent = finalHeroScore + '%';
             updateColorClass(scoreLabel, finalHeroScore);
 
-            let calculatedDirectory = sovrnMerchantCatalog.map(product => {
+            let calculatedDirectory = sovrnMerchantCatalog.map(function(product) {
                 let d1 = Math.abs(product.metrics.crueltyFree - cFreeUser);
                 let d2 = Math.abs(product.metrics.cleanIngredients - cIngUser);
                 let d3 = Math.abs(product.metrics.lowWaste - lWasteUser);
                 let rawVariance = (d1 + d2 + d3) / 3;
                 let alignmentPercentage = Math.max(10, Math.min(100, Math.round(100 - rawVariance)));
-                return { ...product, computedMatchScore: alignmentPercentage };
+                return Object.assign({}, product, { computedMatchScore: alignmentPercentage });
             });
 
-            calculatedDirectory.sort((a, b) => b.computedMatchScore - a.computedMatchScore);
+            calculatedDirectory.sort(function(a, b) { return b.computedMatchScore - a.computedMatchScore; });
 
             alternativesContainer.innerHTML = "";
             
-            calculatedDirectory.forEach((product, idx) => {
+            calculatedDirectory.forEach(function(product, idx) {
                 const card = document.createElement('div');
                 card.className = "alternative-card";
                 card.innerHTML = `
@@ -310,42 +309,40 @@
                         <strong>Verification Evidence Log:</strong> ${product.evidence}
                     </div>
                     
-                    <button class="swap-button" onclick="alert('Routing alternative tracking link values...')">Swap to ${product.name}</button>
+                    <button class="swap-button" onclick="alert('Routing alternative tracking parameters via Sovrn integration loops...')">Swap to ${product.name}</button>
                 `;
                 alternativesContainer.appendChild(card);
                 
-                const currentPill = document.getElementById(`scorePill_index_${idx}`);
+                const currentPill = document.getElementById('scorePill_index_' + idx);
                 if (currentPill) {
                     updatePillColor(currentPill, product.computedMatchScore);
                 }
             });
         }
 
-        sliders.forEach(s => s.addEventListener('input', recalibrateMatrix));
+        sliders.forEach(function(s) { s.addEventListener('input', recalibrateMatrix); });
         recalibrateMatrix();
 
-        document.getElementById('triggerScanBtn').addEventListener('click', () => {
+        document.getElementById('triggerScanBtn').addEventListener('click', function() {
             const path = document.getElementById('itemUrlInput').value.trim();
-            if(!path) return alert('Input target data path.');
+            if(!path) return alert('Input target domain link path.');
             try {
                 const urlObj = new URL(path);
                 document.getElementById('displayDomain').textContent = urlObj.hostname.replace('www.', '');
                 recalibrateMatrix(); 
             } catch(e) {
-                document.getElementById('displayDomain').textContent = 'External Store';
+                document.getElementById('displayDomain').textContent = 'External Store Listing';
             }
         });
 
-        document.getElementById('resetInputLink').addEventListener('click', () => {
+        document.getElementById('resetInputLink').addEventListener('click', function() {
             document.getElementById('itemUrlInput').value = '';
             document.getElementById('itemUrlInput').focus();
         });
 
         if (resetEntireSessionLink) {
-            resetEntireSessionLink.addEventListener('click', (e) => {
-                try { 
-                    localStorage.clear(); 
-                } catch(err){}
+            resetEntireSessionLink.addEventListener('click', function() {
+                try { localStorage.clear(); } catch(err){}
             });
         }
     });
