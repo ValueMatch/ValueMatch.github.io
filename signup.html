@@ -1,3 +1,39 @@
+<!DOCTYPEdoctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValueMatch™ Onboarding</title>
+    <style>
+        /* Your existing styles go here */
+        .active { border: 2px solid #a855f7; } /* Example visual state token */
+    </style>
+</head>
+<body>
+
+    <main id="onboardingWrapper">
+        <div class="app-container">
+            <h2>Select Your Core Value Alignment</h2>
+            
+            <div id="vector1" style="cursor: pointer; padding: 15px; margin: 10px 0; border: 1px solid #ccc;">
+                <input type="radio" id="rad1" name="pillar" checked>
+                <label for="rad1">Clean Ingredients</label>
+            </div>
+            
+            <div id="vector2" style="cursor: pointer; padding: 15px; margin: 10px 0; border: 1px solid #ccc;">
+                <input type="radio" id="rad2" name="pillar">
+                <label for="rad2">Cruelty-Free</label>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <label for="userEmailField">Identity Email Address:</label>
+                <input type="email" id="userEmailField" placeholder="Enter your email..." style="padding: 10px; width: 100%; max-width: 300px;">
+            </div>
+
+            <button id="submitSetupBtn" style="padding: 12px 24px; cursor: pointer;">Next: Access Dashboard</button>
+        </div>
+    </main>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const row1 = document.getElementById('vector1');
@@ -20,7 +56,7 @@
             });
         }
 
-        // Setup the clean button click action mapping
+        // Setup the form action handler loop
         if (submitSetupBtn) {
             submitSetupBtn.addEventListener('click', () => {
                 const emailField = document.getElementById('userEmailField');
@@ -31,7 +67,7 @@
                     return alert('Please input a valid identity email address.');
                 }
 
-                // Standardize values to exactly what app.html expects
+                // Standardize values to exactly what app.html engine reads
                 const selectedPillar = (rad1 && rad1.checked) ? 'clean_ingredients' : 'cruelty_free';
 
                 // Safe Write Execution Guard
@@ -49,3 +85,5 @@
         }
     });
 </script>
+</body>
+</html>
