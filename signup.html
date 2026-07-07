@@ -4,37 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourValueMatch - Configuration</title>
-    <style>
-        :root {
-            --bg-canvas: #faf9f6;
-            --card-surface: #ffffff;
-            --text-primary: #0f172a;
-            --text-secondary: #64748b;
-            --electric-lilac: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
-            --border-ui: rgba(129, 140, 248, 0.15);
-        }
-        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; background-color: var(--bg-canvas); color: var(--text-primary); display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 1200px; padding: 32px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px; }
-        header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--border-ui); }
-        .logo { font-size: 24px; font-weight: 800; background: var(--electric-lilac); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
-        #onboardingWrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; width: 100%; }
-        .setup-card { background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px; padding: 32px; width: 100%; max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 24px; }
-        .setup-card h2 { font-size: 22px; font-weight: 800; margin: 0; text-align: center; }
-        .form-group { display: flex; flex-direction: column; gap: 8px; }
-        .form-group label { font-size: 13px; font-weight: 700; text-transform: uppercase; }
-        .input-text { width: 100%; padding: 14px 16px; border: 1px solid #cbd5e1; border-radius: 12px; box-sizing: border-box; }
-        .pillar-select-list { display: flex; flex-direction: column; gap: 12px; }
-        .pillar-row { border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 16px; display: flex; gap: 14px; cursor: pointer; }
-        .pillar-row.active { border-color: #818cf8; background: rgba(129, 140, 248, 0.03); box-shadow: 0 0 0 1px #818cf8; }
-        .action-btn { background: var(--electric-lilac); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; flex: 1; }
-        .signup-actions { display: flex; justify-content: center; gap: 12px; width: 100%; margin-top: 24px; }
-    </style>
+ <style>
+    :root {
+        --bg-canvas: #faf9f6;
+        --card-surface: #ffffff;
+        --text-primary: #0f172a;
+        --text-secondary: #64748b;
+        --electric-lilac: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
+        --border-ui: rgba(129, 140, 248, 0.15);
+    }
+
+    body {
+        margin: 0; padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+        background-color: var(--bg-canvas);
+        color: var(--text-primary);
+        display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+    }
+
+    .app-container {
+        width: 100%; max-width: 1200px; padding: 32px 24px; box-sizing: border-box;
+        display: flex; flex-direction: column; gap: 24px;
+    }
+
+    header {
+        width: 100%; display: flex; justify-content: space-between; align-items: center;
+        padding-bottom: 16px; border-bottom: 1px solid var(--border-ui);
+    }
+
+    .logo {
+        font-size: 24px; font-weight: 800;
+        background: var(--electric-lilac); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        letter-spacing: -1px; text-decoration: none;
+    }
+
+    #onboardingWrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; width: 100%; }
+    
+    .setup-card {
+        background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px;
+        padding: 32px; width: 100%; max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        display: flex; flex-direction: column; gap: 24px;
+    }
+    .setup-card h2 { font-size: 22px; font-weight: 800; margin: 0; text-align: center; letter-spacing: -0.5px; }
+    
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group label { font-size: 13px; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.5px; }
+    .input-text { width: 100%; padding: 14px 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s; }
+    .input-text:focus { border-color: #818cf8; }
+
+    .pillar-select-list { display: flex; flex-direction: column; gap: 12px; }
+    .pillar-row {
+        border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 16px; display: flex; gap: 14px; align-items: flex-start; cursor: pointer; transition: all 0.2s;
+    }
+    .pillar-row.active { border-color: #818cf8; background: rgba(129, 140, 248, 0.03); box-shadow: 0 0 0 1px #818cf8; }
+    .pillar-row input[type="radio"] { margin-top: 3px; cursor: pointer; }
+    .pillar-meta strong { display: block; font-size: 14px; margin-bottom: 2px; }
+    .pillar-meta p { margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
+    
+    .action-btn { background: var(--electric-lilac); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2); }
+    .action-btn:hover { opacity: 0.95; }
+
+    /* --- NEW ADDITIONS FOR GUEST BUTTONS --- */
+    .signup-actions {
+    display: flex;
+    justify-content: center; /* This centers the buttons */
+    gap: 12px;
+    width: 100%;
+    margin-top: 24px;
+    }
+
+    .secondary-btn {
+        background: #e2e8f0; 
+        color: var(--text-primary); 
+        box-shadow: none;
+    }
+
+    .secondary-btn:hover {
+        background: #cbd5e1;
+    }
+</style>
 </head>
 <body>
 
 <div class="app-container">
     <header>
-        <a href="signup.html" class="logo">YourValueMatch</a>
+        <a href="index.html" class="logo">YourValueMatch</a>
     </header>
 
     <main id="onboardingWrapper">
@@ -43,58 +97,75 @@
             
             <div class="form-group">
                 <label for="userEmailField">Account Email</label>
-                <input type="email" id="userEmailField" class="input-text" placeholder="Enter your email to anchor your preferences">
+                <input type="email" id="userEmailField" class="input-text" placeholder="Enter your email to anchor your preferences" required autocomplete="email">
             </div>
 
             <div class="form-group">
                 <label>Select Top Baseline Focus Pillar</label>
                 <div class="pillar-select-list">
-                    <div class="pillar-row active" onclick="selectPillar(this)">
-                        <input type="radio" name="pillar" value="clean" checked style="display:none">
-                        <div><strong>🍃 Clean Composition</strong><p style="margin:0; font-size: 12px; color: #64748b;">Prioritizes toxin-free products.</p></div>
+                    <div class="pillar-row active" id="vector1">
+                        <input type="radio" name="pillar" id="rad1" value="clean" checked>
+                        <div class="pillar-meta">
+                            <strong>🍃 Clean Composition</strong>
+                            <p>Prioritizes toxin-free products, clean elements, and full label safety verification.</p>
+                        </div>
                     </div>
-                    <div class="pillar-row" onclick="selectPillar(this)">
-                        <input type="radio" name="pillar" value="labor" style="display:none">
-                        <div><strong>🐰 Ethical Labor Tracking</strong><p style="margin:0; font-size: 12px; color: #64748b;">Prioritizes human rights.</p></div>
+                    <div class="pillar-row" id="vector2">
+                        <input type="radio" name="pillar" id="rad2" value="labor">
+                        <div class="pillar-meta">
+                            <strong>🐰 Ethical Labor Tracking</strong>
+                            <p>Prioritizes human rights, fair wages, safety oversight, and manufacturing integrity.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="signup-actions">
-                <button type="button" id="continueGuestBtn" class="action-btn" style="background: transparent; border: 1px solid #818cf8; color: #818cf8; box-shadow: none;">Continue as Guest</button>
-                <button type="button" id="submitSetupBtn" class="action-btn">Create Value Profile</button>
+            
+            <div class="signup-actions" style="display: flex; gap: 12px; margin-top: 24px;">
+                <button type="button" id="continueGuestBtn" class="action-btn" 
+                        style="flex: 1; background: transparent; border: 1px solid #818cf8; color: #818cf8; box-shadow: none;">
+                    Continue as Guest
+                </button>
+                
+                <button type="button" id="submitSetupBtn" class="action-btn" style="flex: 1;">
+                    Create Value Profile
+                </button>
             </div>
         </div>
     </main>
 </div>
 
 <script>
-    // Pillar selection visual logic
-    function selectPillar(el) {
-        document.querySelectorAll('.pillar-row').forEach(r => r.classList.remove('active'));
-        el.classList.add('active');
-        el.querySelector('input').checked = true;
-    }
-
-    // Guest Button Logic
+    // 1. GUEST ROUTING LISTENER
     document.getElementById('continueGuestBtn').addEventListener('click', () => {
-        localStorage.removeItem('userEmail');
+        console.log("Initializing anonymous session wrapper...");
+        
+        // Clear out any old identities to force GUEST MATRIX state
+        localStorage.removeItem('savedEmail'); 
+        
+        // Redirect straight to your matching engine page
         window.location.href = 'app.html';
     });
 
-    // Create Profile Button Logic
-    document.getElementById('submitSetupBtn').addEventListener('click', () => {
-        const email = document.getElementById('userEmailField').value;
-        const pillar = document.querySelector('input[name="pillar"]:checked').value;
+    // 2. CREATE VALUE PROFILE ROUTING LISTENER (FIX 2)
+    document.getElementById('submitSetupBtn').addEventListener('click', (event) => {
+        // Prevent default button behavior just in case
+        event.preventDefault();
+
+        // Grab the email value from the input field
+        const userEmail = document.getElementById('userEmailField').value;
         
-        if (!email || !email.includes('@')) {
-            alert("Please enter a valid email address.");
+        // Validation: Ensure they actually entered an email
+        if (!userEmail) {
+            alert("Please enter an email address to create your profile.");
             return;
         }
-        
-        localStorage.setItem('userEmail', email);
-        localStorage.setItem('vm_initial_pillar', pillar);
-        window.location.href = 'app.html';
+
+        // Save the email to local storage for the next page to use
+        localStorage.setItem('savedEmail', userEmail);
+        console.log("Profile created for:", userEmail);
+
+        // Redirect the user to your main app page
+        window.location.href = 'app.html'; 
     });
 </script>
 </body>
