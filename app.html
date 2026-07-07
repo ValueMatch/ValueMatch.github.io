@@ -174,6 +174,8 @@
 </div>
 
 <script>
+    const RENDER_BASE_URL = 'https://yourvaluematch-backend.onrender.com';
+
     const sovrnMerchantCatalog = [
         {
             name: "Hurraw! Balm",
@@ -217,18 +219,31 @@
         const scoreLabel = document.getElementById('computedScoreLabel');
         const alternativesContainer = document.getElementById('alternativesContainer');
 
+        // FIX: Pulling user identity accurately using the same token key set during onboarding configuration
         let savedEmail = "";
         try {
-            savedEmail = localStorage.getItem('vm_user_email') || localStorage.getItem('vm_active_user_email') || "";
+            savedEmail = localStorage.getItem('userEmail') || "";
         } catch(e) {
             console.warn("Storage context read warning.");
         }
 
-        // Clean string parsing ensures formatting outputs on a distinct visual new line break
-        if (savedEmail && typeof savedEmail === 'string' && savedEmail.indexOf('@') !== -1) {
+        if (savedEmail && typeof savedEmail === 'string' && savedEmail.includes('@')) {
             activeProfileLabel.innerHTML = 'ACTIVE PROFILE:<br><span style="color: #818cf8; font-size: 12px; font-weight: 700; text-transform: none; display: block; margin-top: 4px; word-break: break-all;">' + savedEmail + '</span>';
         } else {
             activeProfileLabel.innerHTML = 'ACTIVE PROFILE:<br><span style="color: #64748b; font-size: 12px; font-weight: 700; display: block; margin-top: 4px;">GUEST MATRIX</span>';
+        }
+
+        // Pushes initial slider values based on what the user clicked during signup onboarding
+        try {
+            const signupPillar = localStorage.getItem('vm_initial_pillar');
+            if (signupPillar === 'clean') {
+                sliders[1].value = 100; // Clean Ingredients
+                sliders[2].value = 20;  // Low Waste Baseline
+            } else if (signupPillar === 'labor') {
+                sliders[0].value = 100; // Cruelty Free / Labor Focus
+            }
+        } catch (err) {
+            console.warn("Onboarding matrix synchronization bypassed.");
         }
 
         function updateColorClass(element, score) {
@@ -309,7 +324,7 @@
                         <strong>Verification Evidence Log:</strong> ${product.evidence}
                     </div>
                     
-                    <button class="swap-button" onclick="alert('Routing alternative tracking parameters via Sovrn integration loops...')">Swap to ${product.name}</button>
+                    <button class="swap-button" data-product-name="${product.name}">Swap to ${product.name}</button>
                 `;
                 alternativesContainer.appendChild(card);
                 
@@ -322,6 +337,45 @@
 
         sliders.forEach(function(s) { s.addEventListener('input', recalibrateMatrix); });
         recalibrateMatrix();
+
+        // TELEMETRY INTERCEPT LOOP: Captures current matrix metrics right at the action moment
+        async function sendMatrixTelemetry(targetAlternative) {
+            if (!savedEmail) return;
+
+            const matrixPayload = {
+                email: savedEmail,
+                cleanIngredientsScore: parseInt(sliders[1].value) || 0,
+                ethicalLaborScore: parseInt(sliders[0].value) || 0, // Maps Leaping Bunny tracking inputs
+                crueltyFreeScore: parseInt(sliders[0].value) || 0,
+                lowWasteScore: parseInt(sliders[2].value) || 0
+            };
+
+            console.log("Transmitting dynamic value metrics to database layers...", matrixPayload);
+
+            try {
+                await fetch(`${RENDER_BASE_URL}/api/update-user-matrix`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(matrixPayload),
+                    keepalive: true
+                });
+                console.log("Database update committed successfully.");
+            } catch (err) {
+                console.error("Telemetry channel link deferred:", err);
+            }
+        }
+
+        // Catch click routing events transparently
+        alternativesContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('swap-button')) {
+                const alternativeName = e.target.getAttribute('data-product-name');
+                
+                // Fire real-time matrix update weights to PostgreSQL cluster prior to checkout redirection
+                sendMatrixTelemetry(alternativeName);
+                
+                alert(`Routing alternative tracking parameters via Sovrn integration loops for: ${alternativeName}`);
+            }
+        });
 
         document.getElementById('triggerScanBtn').addEventListener('click', function() {
             const path = document.getElementById('itemUrlInput').value.trim();
