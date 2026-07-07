@@ -108,7 +108,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Points to your production backend proxy infrastructure
+        // Double-check this matches your exact live Render Service URL
         const RENDER_BASE_URL = 'https://yourvaluematch-backend.onrender.com';
 
         const row1 = document.getElementById('vector1');
@@ -132,10 +132,13 @@
 
         if (submitSetupBtn) {
             submitSetupBtn.addEventListener('click', async (e) => {
-                e.preventDefault(); // Prevents page reload artifacts during async processing
+                e.preventDefault(); 
 
                 const emailField = document.getElementById('userEmailField');
-                if (!emailField) return;
+                if (!emailField) {
+                    window.location.href = 'app.html';
+                    return;
+                }
 
                 const emailValue = emailField.value.trim();
                 if(!emailValue || !emailValue.includes('@')) {
@@ -144,21 +147,21 @@
                 
                 const selectedPillar = rad1.checked ? 'clean' : 'labor';
                 
-                // 1. Establish the browser context states for dynamic frontend manipulation
+                // 1. Instantly write to LocalStorage so the UI transitions smoothly
                 try {
                     localStorage.setItem('userEmail', emailValue);
                     localStorage.setItem('userAuthenticated', 'true');
                     localStorage.setItem('vm_initial_pillar', selectedPillar);
                     
-                    // Create an anonymized tracking token to support downstream event attribution
                     const shortHash = btoa(emailValue).substring(0, 8);
                     localStorage.setItem('vm_anonymized_id', 'usr_' + shortHash);
                 } catch(err) {
-                    console.warn("Storage write blocked by browser context rules.");
+                    console.warn("LocalStorage context write blocked.");
                 }
                 
-                // 2. Stream user identity vectors straight into your PostgreSQL cloud database table
+                // 2. Wrap network request in a try/catch block to guarantee safety
                 try {
+                    console.log("Attempting database synchronization...");
                     const response = await fetch(`${RENDER_BASE_URL}/api/signup`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -168,15 +171,18 @@
                         })
                     });
                     
-                    if (!response.ok) throw new Error('Cloud platform gateway rejected configuration handshake.');
-                    console.log("Profile successfully anchored inside cloud database repository.");
-                    
+                    if (!response.ok) {
+                        console.warn("Backend rejected the handshake syntax.");
+                    } else {
+                        console.log("Profile successfully written to PostgreSQL!");
+                    }
                 } catch (netErr) {
-                    // Fail-safe keeps conversion flowing seamlessly if network bottlenecks exist
-                    console.error("Database write deferred. Moving user forward to app dashboard.", netErr);
+                    // If the backend server is sleeping or blocked, catch it silently
+                    console.error("Database connection bypassed to prevent UI crash:", netErr);
                 }
                 
-                // 3. Clear views and navigate to the application interface workspace
+                // 3. Fall-through redirection guarantees the dashboard opens no matter what
+                console.log("Navigating to dashboard...");
                 window.location.href = 'app.html';
             });
         }
