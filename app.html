@@ -40,7 +40,7 @@
             background: var(--electric-lilac); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             letter-spacing: -1px; text-decoration: none;
         }
-        .back-link { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-decoration: none; }
+        .back-link { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-decoration: none; cursor: pointer; }
 
         #workspaceWrapper { display: flex; width: 100%; flex-direction: column; gap: 24px; }
         .workspace-grid { display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start; }
@@ -88,7 +88,7 @@
         .alt-pricing { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
         .badge-pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; transition: all 0.2s; }
 
-        .matrix-metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .algorithm-metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .metric-cell { background: #f8fafc; border: 1px solid #f1f5f9; padding: 12px; border-radius: 12px; }
         .cell-label { font-size: 10px; text-transform: uppercase; color: var(--text-secondary); font-weight: 800; margin-bottom: 4px; letter-spacing: 0.3px; }
         .cell-value { font-size: 13px; font-weight: 700; }
@@ -109,7 +109,7 @@
 <div class="app-container">
     <header>
         <a href="index.html" class="logo">YourValueMatch</a>
-        <a href="index.html" class="back-link" id="resetEntireSessionLink">← Reset Framework</a>
+        <a class="back-link" id="resetEntireSessionLink">← Reset Framework</a>
     </header>
 
     <main id="workspaceWrapper">
@@ -117,6 +117,12 @@
             <section class="config-sidebar">
                 <h3 class="config-header" id="activeProfileLabel">ACTIVE PROFILE:<br><span style="color: #64748b; font-size: 12px; text-transform: none; display: block; margin-top: 4px;">Loading profile...</span></h3>
                 
+                <div id="guestConversionPanel" style="display: none; background: #f8fafc; padding: 16px; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 8px;">
+                    <p style="font-size: 13px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0;">Love your current value settings? Save them for next time:</p>
+                    <input type="email" id="conversionEmailInput" placeholder="Enter your email" style="width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; box-sizing: border-box; outline: none;">
+                    <button id="saveProfileBtn" style="width: 100%; padding: 12px; background: #0f172a; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer;">Save Value Profile</button>
+                </div>
+
                 <div class="sidebar-section-label">
                     <span>1. Paste Product URL</span>
                 </div>
@@ -183,7 +189,8 @@
             img: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=150&q=80",
             metrics: { crueltyFree: 98, cleanIngredients: 95, lowWaste: 80 },
             composition: "100% Raw Organic", labor: "Leaping Bunny Cert", packaging: "Eco-Tube",
-            evidence: "Formulated using 100% organic food-grade cold-pressed oils. Production facilities operate fully solar-powered out of Whitefish, Montana."
+            evidence: "Formulated using 100% organic food-grade cold-pressed oils. Production facilities operate fully solar-powered out of Whitefish, Montana.",
+            targetUrl: "https://example.com/hurraw"
         },
         {
             name: "Dr. Bronner's Organic Lip Balm",
@@ -191,7 +198,8 @@
             img: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=150&q=80",
             metrics: { crueltyFree: 95, cleanIngredients: 90, lowWaste: 70 },
             composition: "USDA Organic Oils", labor: "Fair Trade Certified", packaging: "100% PCR Plastic",
-            evidence: "Utilizing fair-trade certified organic beeswax and jojoba inputs. Backed by verifiable third-party certification showing full occupational safety parameters."
+            evidence: "Utilizing fair-trade certified organic beeswax and jojoba inputs. Backed by verifiable third-party certification showing full occupational safety parameters.",
+            targetUrl: "https://example.com/drbronners"
         },
         {
             name: "EcoLips Bee Free Balm",
@@ -199,7 +207,8 @@
             img: "https://images.unsplash.com/photo-1608248597481-496100c8c836?auto=format&fit=crop&w=150&q=80",
             metrics: { crueltyFree: 90, cleanIngredients: 88, lowWaste: 95 },
             composition: "Plant-Based Wax", labor: "Certified B-Corp", packaging: "Plastic-Free Tube",
-            evidence: "100% vegan formulation utilizing candelilla wax instead of standard animal derivatives. Container decomposes rapidly post-lifecycle."
+            evidence: "100% vegan formulation utilizing candelilla wax instead of standard animal derivatives. Container decomposes rapidly post-lifecycle.",
+            targetUrl: "https://example.com/ecolips"
         },
         {
             name: "Bite Beauty Agave Mask alternative",
@@ -207,46 +216,50 @@
             img: "https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=150&q=80",
             metrics: { crueltyFree: 85, cleanIngredients: 92, lowWaste: 40 },
             composition: "Resveratrol Complex", labor: "Cruelty Free Intl", packaging: "Aluminum Tube",
-            evidence: "High concentration of clean antioxidants and clean lipids. Packaged in aluminum, though outer caps still require specialized sorting loops."
+            evidence: "High concentration of clean antioxidants and clean lipids. Packaged in aluminum, though outer caps still require specialized sorting loops.",
+            targetUrl: "https://example.com/bite"
         }
     ];
 
-document.addEventListener('DOMContentLoaded', () => {
-    const activeProfileLabel = document.getElementById('activeProfileLabel');
-    const guestPanel = document.getElementById('guestConversionPanel');
-    
-    // 1. IDENTITY CHECK
-    const savedEmail = localStorage.getItem('userEmail');
-    
-    if (savedEmail && savedEmail.includes('@')) {
-        // Logged In
-        activeProfileLabel.innerHTML = 'ACTIVE PROFILE:<br><span style="color: #818cf8;">' + savedEmail + '</span>';
-        if (guestPanel) guestPanel.style.display = 'none';
-    } else {
-        // Guest
-        activeProfileLabel.innerHTML = 'ACTIVE PROFILE:<br><span>GUEST</span>';
-        if (guestPanel) guestPanel.style.display = 'block';
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+        // DOM Elements
+        const activeProfileLabel = document.getElementById('activeProfileLabel');
+        const guestPanel = document.getElementById('guestConversionPanel');
+        const sliders = document.querySelectorAll('.slider-control');
+        const outputs = [document.getElementById('vVal1'), document.getElementById('vVal2'), document.getElementById('vVal3')];
+        const scoreLabel = document.getElementById('computedScoreLabel');
+        const alternativesContainer = document.getElementById('alternativesContainer');
+        const resetEntireSessionLink = document.getElementById('resetEntireSessionLink');
+        
+        // 1. IDENTITY CHECK (Fixed to match signup page key)
+        const savedEmail = localStorage.getItem('savedEmail');
+        
+        if (savedEmail && savedEmail.includes('@')) {
+            // Logged In
+            activeProfileLabel.innerHTML = 'ACTIVE PROFILE:<br><span style="color: #818cf8;">' + savedEmail + '</span>';
+            if (guestPanel) guestPanel.style.display = 'none';
+        } else {
+            // Guest
+            activeProfileLabel.innerHTML = 'ACTIVE PROFILE:<br><span>GUEST PROFILE</span>';
+            if (guestPanel) guestPanel.style.display = 'block';
+        }
 
-    // 2. GUEST CONVERSION ACTION
-    const saveBtn = document.getElementById('saveProfileBtn');
-    if (saveBtn) {
-        saveBtn.addEventListener('click', async () => {
-            const emailInput = document.getElementById('conversionEmailInput').value.trim();
-            if (!emailInput.includes('@')) return alert("Enter valid email");
+        // 2. GUEST CONVERSION ACTION
+        const saveBtn = document.getElementById('saveProfileBtn');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                const emailInput = document.getElementById('conversionEmailInput').value.trim();
+                if (!emailInput.includes('@')) return alert("Please enter a valid email address.");
 
-            // Sync with DB
-            localStorage.setItem('userEmail', emailInput);
-            
-            // Trigger refresh or UI state change
-            alert("Value settings saved!");
-            window.location.reload(); // Simplest way to ensure all script states reset
-        });
-    }
-});
-    }
-});
+                // Sync with DB / LocalStorage (using the matching key)
+                localStorage.setItem('savedEmail', emailInput);
+                
+                alert("Value settings saved!");
+                window.location.reload(); 
+            });
+        }
 
+        // 3. UI HELPER FUNCTIONS
         function updateColorClass(element, score) {
             if (!element) return;
             if (score >= 75) { element.style.color = "var(--match-green)"; } 
@@ -271,7 +284,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        function recalibrateMatrix() {
+        // 4. CORE ALGORITHM LOGIC
+        function recalibrateAlgorithm() {
             const cFreeUser = parseInt(sliders[0].value) || 0;
             const cIngUser = parseInt(sliders[1].value) || 0;
             const lWasteUser = parseInt(sliders[2].value) || 0;
@@ -315,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="badge-pill" id="scorePill_index_${idx}" style="border: 1px solid;">${product.computedMatchScore}% Match Alternative</span>
                     </div>
                     
-                    <div class="matrix-metrics-grid">
+                    <div class="algorithm-metrics-grid">
                         <div class="metric-cell"><div class="cell-label">Composition</div><div class="cell-value">${product.composition}</div></div>
                         <div class="metric-cell"><div class="cell-label">Labor Trace</div><div class="cell-value">${product.labor}</div></div>
                         <div class="metric-cell"><div class="cell-label">Packaging</div><div class="cell-value">${product.packaging}</div></div>
@@ -336,72 +350,65 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        sliders.forEach(function(s) { s.addEventListener('input', recalibrateMatrix); });
-        recalibrateMatrix();
+        // Initialize sliders
+        sliders.forEach(function(s) { s.addEventListener('input', recalibrateAlgorithm); });
+        recalibrateAlgorithm();
 
-       // TELEMETRY INTERCEPT LOOP: Captures current matrix metrics right at the action moment
-async function sendMatrixTelemetry(targetAlternative) {
-    // 1. Resolve identity: Fallback safely to 'GUEST MATRIX' if savedEmail doesn't exist
-    const currentEmail = savedEmail || "GUEST MATRIX";
+        // 5. TELEMETRY & ROUTING
+        async function sendValueTelemetry(targetAlternative) {
+            const currentEmail = savedEmail || "GUEST PROFILE";
 
-    // 2. Map payload cleanly matching your user_click_logs table schema
-    const matrixPayload = {
-        email: currentEmail,
-        clicked_product: targetAlternative,
-        // Match sliders safely based on your UI sequence (0: Cruelty-Free, 1: Clean Ingredients, 2: Low-Waste)
-        cruelty_free_score: parseInt(sliders[0]?.value) || 0,
-        clean_ingredients_score: parseInt(sliders[1]?.value) || 0,
-        low_waste_score: parseInt(sliders[2]?.value) || 0,
-        // Optional default or placeholder value for your ethical labor column
-        ethical_labor_score: 0 
-    };
+            const valuePayload = {
+                email: currentEmail,
+                clicked_product: targetAlternative,
+                cruelty_free_score: parseInt(sliders[0]?.value) || 0,
+                clean_ingredients_score: parseInt(sliders[1]?.value) || 0,
+                low_waste_score: parseInt(sliders[2]?.value) || 0,
+                ethical_labor_score: 0 
+            };
 
-    console.log("Transmitting dynamic value metrics to database layers...", matrixPayload);
+            console.log("Transmitting dynamic value metrics to database layers...", valuePayload);
 
-    try {
-        // Change this path to match your dedicated click routing endpoint on Render
-        await fetch(`${RENDER_BASE_URL}/api/logs/click`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(matrixPayload),
-            keepalive: true
+            try {
+                await fetch(`${RENDER_BASE_URL}/api/logs/click`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(valuePayload),
+                    keepalive: true
+                });
+                console.log("Database transaction log update committed successfully.");
+            } catch (err) {
+                console.error("Telemetry channel link deferred:", err);
+            }
+        }
+
+        alternativesContainer.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('swap-button')) {
+                const alternativeName = e.target.getAttribute('data-product-name');
+
+                await sendValueTelemetry(alternativeName);
+
+                const selectedProduct = sovrnMerchantCatalog.find(p => p.name === alternativeName);
+                const destinationUrl = selectedProduct ? selectedProduct.targetUrl : "https://www.google.com";
+                
+                const SOVRN_API_KEY = "YOUR_SOVRN_API_KEY";
+                const userTrackingId = encodeURIComponent(savedEmail || "GUEST PROFILE");
+
+                const liveAffiliateRedirectUrl = `https://redirect.viglink.com?key=${SOVRN_API_KEY}&u=${encodeURIComponent(destinationUrl)}&cuid=${userTrackingId}`;
+
+                console.log("Routing session through live Sovrn monetization engine...");
+                window.location.href = liveAffiliateRedirectUrl;
+            }
         });
-        console.log("Database transaction log update committed successfully.");
-    } catch (err) {
-        console.error("Telemetry channel link deferred:", err);
-    }
-}
 
-// Catch click routing events transparently
-alternativesContainer.addEventListener('click', async (e) => {
-    if (e.target.classList.contains('swap-button')) {
-        const alternativeName = e.target.getAttribute('data-product-name');
-
-        // 1. Fire real-time matrix update weights to PostgreSQL cluster prior to checkout redirection
-        // Using await ensures the database log completes before the page starts navigating away
-        await sendMatrixTelemetry(alternativeName);
-
-        // 2. Execute live Sovrn affiliate tracking redirect mapping
-        const selectedProduct = sovrnMerchantCatalog.find(p => p.name === alternativeName);
-        const destinationUrl = selectedProduct ? selectedProduct.targetUrl : "https://www.google.com";
-        
-        const SOVRN_API_KEY = "YOUR_SOVRN_API_KEY"; // Swap this with your actual key when ready
-        const userTrackingId = encodeURIComponent(savedEmail || "GUEST MATRIX");
-
-        const liveAffiliateRedirectUrl = `https://redirect.viglink.com?key=${SOVRN_API_KEY}&u=${encodeURIComponent(destinationUrl)}&cuid=${userTrackingId}`;
-
-        console.log("Routing session through live Sovrn monetization engine...");
-        window.location.href = liveAffiliateRedirectUrl;
-    }
-});
-
+        // 6. HEADER & SIDEBAR ACTIONS
         document.getElementById('triggerScanBtn').addEventListener('click', function() {
             const path = document.getElementById('itemUrlInput').value.trim();
             if(!path) return alert('Input target domain link path.');
             try {
                 const urlObj = new URL(path);
                 document.getElementById('displayDomain').textContent = urlObj.hostname.replace('www.', '');
-                recalibrateMatrix(); 
+                recalibrateAlgorithm(); 
             } catch(e) {
                 document.getElementById('displayDomain').textContent = 'External Store Listing';
             }
@@ -414,7 +421,10 @@ alternativesContainer.addEventListener('click', async (e) => {
 
         if (resetEntireSessionLink) {
             resetEntireSessionLink.addEventListener('click', function() {
-                try { localStorage.clear(); } catch(err){}
+                try { 
+                    localStorage.clear(); 
+                    window.location.href = 'index.html';
+                } catch(err){}
             });
         }
     });
