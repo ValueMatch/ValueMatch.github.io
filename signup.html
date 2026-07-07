@@ -100,96 +100,26 @@
                     </div>
                 </div>
 <div class="signup-actions">
-    <button type="submit" id="submitSignupBtn" class="primary-button">Create Profile Matrix</button>
-    
-    <button type="button" id="continueGuestBtn" class="secondary-guest-button" style="margin-top: 10px; background: none; border: 1px solid #ccc; padding: 10px; cursor: pointer; width: 100%;">
-        Continue as Guest
-    </button>
-</div>
-    </main>
-</div>
+        <button type="submit" id="submitSignupBtn" class="primary-button">Create Profile Matrix</button>
+        
+        <button type="button" id="continueGuestBtn" class="secondary-guest-button">
+            Continue as Guest
+        </button>
+    </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Double-check this matches your exact live Render Service URL
-        const RENDER_BASE_URL = 'https://yourvaluematch-backend.onrender.com';
+    <script>
+        // ... Your existing signup page code might be here (like handling the submit button) ...
 
-        const row1 = document.getElementById('vector1');
-        const row2 = document.getElementById('vector2');
-        const rad1 = document.getElementById('rad1');
-        const rad2 = document.getElementById('rad2');
-        const submitSetupBtn = document.getElementById('submitSetupBtn');
-
-        if (row1 && row2 && rad1 && rad2) {
-            row1.addEventListener('click', () => { 
-                row1.classList.add('active'); 
-                row2.classList.remove('active'); 
-                rad1.checked = true; 
-            });
-            row2.addEventListener('click', () => { 
-                row2.classList.add('active'); 
-                row1.classList.remove('active'); 
-                rad2.checked = true; 
-            });
-        }
-
-        if (submitSetupBtn) {
-            submitSetupBtn.addEventListener('click', async (e) => {
-                e.preventDefault(); 
-
-                const emailField = document.getElementById('userEmailField');
-                if (!emailField) {
-                    window.location.href = 'app.html';
-                    return;
-                }
-
-                const emailValue = emailField.value.trim();
-                if(!emailValue || !emailValue.includes('@')) {
-                    return alert('Please input a valid identity email address.');
-                }
-                
-                const selectedPillar = rad1.checked ? 'clean' : 'labor';
-                
-                // 1. Instantly write to LocalStorage so the UI transitions smoothly
-                try {
-                    localStorage.setItem('userEmail', emailValue);
-                    localStorage.setItem('userAuthenticated', 'true');
-                    localStorage.setItem('vm_initial_pillar', selectedPillar);
-                    
-                    const shortHash = btoa(emailValue).substring(0, 8);
-                    localStorage.setItem('vm_anonymized_id', 'usr_' + shortHash);
-                } catch(err) {
-                    console.warn("LocalStorage context write blocked.");
-                }
-                
-                // 2. Wrap network request in a try/catch block to guarantee safety
-                try {
-                    console.log("Attempting database synchronization...");
-                    const response = await fetch(`${RENDER_BASE_URL}/api/signup`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            email: emailValue,
-                            primaryPillar: selectedPillar
-                        })
-                    });
-                    
-                    if (!response.ok) {
-                        console.warn("Backend rejected the handshake syntax.");
-                    } else {
-                        console.log("Profile successfully written to PostgreSQL!");
-                    }
-                } catch (netErr) {
-                    // If the backend server is sleeping or blocked, catch it silently
-                    console.error("Database connection bypassed to prevent UI crash:", netErr);
-                }
-                
-                // 3. Fall-through redirection guarantees the dashboard opens no matter what
-                console.log("Navigating to dashboard...");
-                window.location.href = 'app.html';
-            });
-        }
-    });
-</script>
+        // 2. PASTE THE GUEST ROUTING LISTENERS RIGHT HERE:
+        document.getElementById('continueGuestBtn').addEventListener('click', () => {
+            console.log("Initializing anonymous session wrapper...");
+            
+            // Clear out any old identities to force GUEST MATRIX state
+            localStorage.removeItem('savedEmail'); 
+            
+            // Redirect straight to your matching engine page
+            window.location.href = 'app.html';
+        });
+    </script>
 </body>
 </html>
