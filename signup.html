@@ -1,121 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YourValueMatch - Configuration</title>
-    <style>
-        :root {
-            --bg-canvas: #faf9f6;
-            --card-surface: #ffffff;
-            --text-primary: #0f172a;
-            --text-secondary: #64748b;
-            --electric-lilac: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
-            --border-ui: rgba(129, 140, 248, 0.15);
-        }
-
-        body {
-            margin: 0; padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-            background-color: var(--bg-canvas);
-            color: var(--text-primary);
-            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
-        }
-
-        .app-container {
-            width: 100%; max-width: 1200px; padding: 32px 24px; box-sizing: border-box;
-            display: flex; flex-direction: column; gap: 24px;
-        }
-
-        header {
-            width: 100%; display: flex; justify-content: space-between; align-items: center;
-            padding-bottom: 16px; border-bottom: 1px solid var(--border-ui);
-        }
-
-        .logo {
-            font-size: 24px; font-weight: 800;
-            background: var(--electric-lilac); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: -1px; text-decoration: none;
-        }
-
-        #onboardingWrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; width: 100%; }
-        
-        .setup-card {
-            background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px;
-            padding: 32px; width: 100%; max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,0.02);
-            display: flex; flex-direction: column; gap: 24px;
-        }
-        .setup-card h2 { font-size: 22px; font-weight: 800; margin: 0; text-align: center; letter-spacing: -0.5px; }
-        
-        .form-group { display: flex; flex-direction: column; gap: 8px; }
-        .form-group label { font-size: 13px; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.5px; }
-        .input-text { width: 100%; padding: 14px 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s; }
-        .input-text:focus { border-color: #818cf8; }
-
-        .pillar-select-list { display: flex; flex-direction: column; gap: 12px; }
-        .pillar-row {
-            border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 16px; display: flex; gap: 14px; align-items: flex-start; cursor: pointer; transition: all 0.2s;
-        }
-        .pillar-row.active { border-color: #818cf8; background: rgba(129, 140, 248, 0.03); box-shadow: 0 0 0 1px #818cf8; }
-        .pillar-row input[type="radio"] { margin-top: 3px; cursor: pointer; }
-        .pillar-meta strong { display: block; font-size: 14px; margin-bottom: 2px; }
-        .pillar-meta p { margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
-        
-        .action-btn { background: var(--electric-lilac); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2); }
-        .action-btn:hover { opacity: 0.95; }
-    </style>
-</head>
-<body>
-
-<div class="app-container">
-    <header>
-        <a href="signup.html" class="logo">YourValueMatch</a>
-    </header>
-
-    <main id="onboardingWrapper">
-        <div class="setup-card">
-            <h2>Configure Your Matrix Profile</h2>
-            
-            <div class="form-group">
-                <label for="userEmailField">Account Identity Email</label>
-                <input type="email" id="userEmailField" class="input-text" placeholder="Enter your email to anchor your preferences" required autocomplete="email">
-            </div>
-
-            <div class="form-group">
-                <label>Select Top Baseline Focus Pillar</label>
-                <div class="pillar-select-list">
-                    <div class="pillar-row active" id="vector1">
-                        <input type="radio" name="pillar" id="rad1" value="clean" checked>
-                        <div class="pillar-meta">
-                            <strong>🍃 Clean Composition</strong>
-                            <p>Prioritizes toxin-free products, clean elements, and full label safety verification.</p>
-                        </div>
-                    </div>
-                    <div class="pillar-row" id="vector2">
-                        <input type="radio" name="pillar" id="rad2" value="labor">
-                        <div class="pillar-meta">
-                            <strong>🐰 Ethical Labor Tracking</strong>
-                            <p>Prioritizes human rights, fair wages, safety oversight, and manufacturing integrity.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button class="action-btn" id="submitSetupBtn">Create Profile & Build Engine</button>
-        </div>
-    </main>
-</div>
-
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Your live active Render web service URL
-        const RENDER_BASE_URL = 'https://yourvaluematch.onrender.com';
+        // Points directly to your live backend endpoint infrastructure
+        const RENDER_BASE_URL = 'https://yourvaluematch-backend.onrender.com';
 
         const row1 = document.getElementById('vector1');
         const row2 = document.getElementById('vector2');
         const rad1 = document.getElementById('rad1');
         const rad2 = document.getElementById('rad2');
-        const submitSetupBtn = document.getElementById('submitSetupBtn');
+        const submitSetupBtn = document.getElementById('submitSetupBtn') || document.querySelector('.action-btn');
 
         if (row1 && row2 && rad1 && rad2) {
             row1.addEventListener('click', () => { 
@@ -131,9 +23,10 @@
         }
 
         if (submitSetupBtn) {
-            // Updated to an async execution context for Phase 3 Network Loop
-            submitSetupBtn.addEventListener('click', async () => {
-                const emailField = document.getElementById('userEmailField');
+            submitSetupBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                const emailField = document.getElementById('userEmailField') || document.querySelector('input[type="email"]');
                 if (!emailField) return;
 
                 const emailValue = emailField.value.trim();
@@ -141,37 +34,44 @@
                     return alert('Please input a valid identity email address.');
                 }
                 
-                const selectedPillar = rad1.checked ? 'clean' : 'labor';
+                // Track baseline onboarding selection
+                const selectedPillar = (rad1 && rad1.checked) ? 'clean' : 'labor';
                 
-                // 1. Save identity locally so app.html instantly recognizes the active profile
+                // 1. Establish the browser context states for swift client-side personalizations
                 try {
                     localStorage.setItem('userEmail', emailValue);
                     localStorage.setItem('userAuthenticated', 'true');
                     localStorage.setItem('vm_initial_pillar', selectedPillar);
-                } catch(e) {
-                    console.warn("Storage write blocked by browser context rules.");
+                    
+                    // Create an anonymized token matching your historical matrices tracking schema
+                    const shortHash = btoa(emailValue).substring(0, 8);
+                    localStorage.setItem('vm_anonymized_id', 'usr_' + shortHash);
+                } catch(err) {
+                    console.warn("Local secure container context write locked.", err);
                 }
                 
-                // 2. Phase 3 Network Loop: Store user profile directly in Render PostgreSQL database
+                // 2. Stream user identity anchor into your live database users asset table
                 try {
-                    await fetch(`${RENDER_BASE_URL}/api/signup`, {
+                    const response = await fetch(`${RENDER_BASE_URL}/api/signup`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
                             email: emailValue,
-                            initialPillar: selectedPillar 
+                            primaryPillar: selectedPillar
                         })
                     });
-                } catch (err) {
-                    // Fallback to maintain user workflow even if database connection is slow/waking up
-                    console.error("Render DB write delayed, passing window focus to dashboard.", err);
+                    
+                    if (!response.ok) throw new Error('Cloud platform gateway rejected payload connection.');
+                    console.log("Core profile row initialized successfully inside cloud repository.");
+                    
+                } catch (netErr) {
+                    // Fallback routing prevents user-facing errors if network traffic bottlenecks
+                    console.error("Database entry deferred. Routing forward to preserve smooth UX pipeline.", netErr);
                 }
                 
-                // 3. Move cleanly to the workspace engine
+                // 3. Clear workspace views and transition into main interactive engine app
                 window.location.href = 'app.html';
             });
         }
     });
 </script>
-</body>
-</html>
