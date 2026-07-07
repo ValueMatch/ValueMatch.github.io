@@ -6,75 +6,91 @@
     <title>YourValueMatch - Configuration</title>
     <style>
         :root {
-            --bg-canvas: #faf9f6; --card-surface: #ffffff;
-            --text-primary: #0f172a; --text-secondary: #64748b;
+            --bg-canvas: #faf9f6;
+            --card-surface: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
             --electric-lilac: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
             --border-ui: rgba(129, 140, 248, 0.15);
         }
-        body { margin: 0; font-family: -apple-system, sans-serif; background-color: var(--bg-canvas); display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 1200px; padding: 32px 24px; box-sizing: border-box; }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; background-color: var(--bg-canvas); color: var(--text-primary); display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 1200px; padding: 32px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px; }
+        header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--border-ui); }
         .logo { font-size: 24px; font-weight: 800; background: var(--electric-lilac); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
-        .setup-card { background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px; padding: 32px; width: 100%; max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); margin: 40px auto; }
-        .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
-        .input-text { width: 100%; padding: 14px; border: 1px solid #cbd5e1; border-radius: 12px; box-sizing: border-box; }
-        .pillar-select-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-        .pillar-row { border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px; cursor: pointer; display: flex; gap: 12px; }
-        .pillar-row.active { border-color: #818cf8; background: rgba(129, 140, 248, 0.03); }
-        .action-btn { background: var(--electric-lilac); color: white; border: none; padding: 16px; border-radius: 12px; font-weight: 700; cursor: pointer; flex: 1; }
-        .signup-actions { display: flex; gap: 12px; }
+        #onboardingWrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; width: 100%; }
+        .setup-card { background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px; padding: 32px; width: 100%; max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 24px; }
+        .setup-card h2 { font-size: 22px; font-weight: 800; margin: 0; text-align: center; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 13px; font-weight: 700; text-transform: uppercase; }
+        .input-text { width: 100%; padding: 14px 16px; border: 1px solid #cbd5e1; border-radius: 12px; box-sizing: border-box; }
+        .pillar-select-list { display: flex; flex-direction: column; gap: 12px; }
+        .pillar-row { border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 16px; display: flex; gap: 14px; cursor: pointer; }
+        .pillar-row.active { border-color: #818cf8; background: rgba(129, 140, 248, 0.03); box-shadow: 0 0 0 1px #818cf8; }
+        .action-btn { background: var(--electric-lilac); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; flex: 1; }
+        .signup-actions { display: flex; justify-content: center; gap: 12px; width: 100%; margin-top: 24px; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <header><a href="signup.html" class="logo">YourValueMatch</a></header>
+    <header>
+        <a href="signup.html" class="logo">YourValueMatch</a>
+    </header>
 
-    <main class="setup-card">
-        <h2>Configure Your Value Profile</h2>
-        <div class="form-group">
-            <label>Account Email</label>
-            <input type="email" id="userEmailField" class="input-text" placeholder="Enter email to anchor preferences">
-        </div>
-
-        <label>Select Top Baseline Focus Pillar</label>
-        <div class="pillar-select-list">
-            <div class="pillar-row active" onclick="selectPillar('clean', this)">
-                <input type="radio" name="pillar" value="clean" checked>
-                <div><strong>🍃 Clean Composition</strong><p style="font-size: 12px;">Prioritizes toxin-free products.</p></div>
+    <main id="onboardingWrapper">
+        <div class="setup-card">
+            <h2>Configure Your Value Profile</h2>
+            
+            <div class="form-group">
+                <label for="userEmailField">Account Email</label>
+                <input type="email" id="userEmailField" class="input-text" placeholder="Enter your email to anchor your preferences">
             </div>
-            <div class="pillar-row" onclick="selectPillar('labor', this)">
-                <input type="radio" name="pillar" value="labor">
-                <div><strong>🐰 Ethical Labor Tracking</strong><p style="font-size: 12px;">Prioritizes human rights.</p></div>
-            </div>
-        </div>
 
-        <div class="signup-actions">
-            <button type="button" id="continueGuestBtn" class="action-btn" style="background: transparent; border: 1px solid #818cf8; color: #818cf8;">Continue as Guest</button>
-            <button type="button" id="submitSetupBtn" class="action-btn">Create Value Profile</button>
+            <div class="form-group">
+                <label>Select Top Baseline Focus Pillar</label>
+                <div class="pillar-select-list">
+                    <div class="pillar-row active" onclick="selectPillar(this)">
+                        <input type="radio" name="pillar" value="clean" checked style="display:none">
+                        <div><strong>🍃 Clean Composition</strong><p style="margin:0; font-size: 12px; color: #64748b;">Prioritizes toxin-free products.</p></div>
+                    </div>
+                    <div class="pillar-row" onclick="selectPillar(this)">
+                        <input type="radio" name="pillar" value="labor" style="display:none">
+                        <div><strong>🐰 Ethical Labor Tracking</strong><p style="margin:0; font-size: 12px; color: #64748b;">Prioritizes human rights.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="signup-actions">
+                <button type="button" id="continueGuestBtn" class="action-btn" style="background: transparent; border: 1px solid #818cf8; color: #818cf8; box-shadow: none;">Continue as Guest</button>
+                <button type="button" id="submitSetupBtn" class="action-btn">Create Value Profile</button>
+            </div>
         </div>
     </main>
 </div>
 
 <script>
-    // Logic for Pillar Selection
-    function selectPillar(val, el) {
+    // Pillar selection visual logic
+    function selectPillar(el) {
         document.querySelectorAll('.pillar-row').forEach(r => r.classList.remove('active'));
         el.classList.add('active');
         el.querySelector('input').checked = true;
     }
 
-    // Guest Mode
+    // Guest Button Logic
     document.getElementById('continueGuestBtn').addEventListener('click', () => {
         localStorage.removeItem('userEmail');
         window.location.href = 'app.html';
     });
 
-    // Create Profile Mode
+    // Create Profile Button Logic
     document.getElementById('submitSetupBtn').addEventListener('click', () => {
         const email = document.getElementById('userEmailField').value;
         const pillar = document.querySelector('input[name="pillar"]:checked').value;
         
-        if (!email.includes('@')) return alert("Enter a valid email.");
+        if (!email || !email.includes('@')) {
+            alert("Please enter a valid email address.");
+            return;
+        }
         
         localStorage.setItem('userEmail', email);
         localStorage.setItem('vm_initial_pillar', pillar);
