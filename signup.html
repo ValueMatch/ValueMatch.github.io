@@ -4,66 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YourValueMatch - Configuration</title>
-    <style>
-        :root {
-            --bg-canvas: #faf9f6;
-            --card-surface: #ffffff;
-            --text-primary: #0f172a;
-            --text-secondary: #64748b;
-            --electric-lilac: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
-            --border-ui: rgba(129, 140, 248, 0.15);
-        }
+ <style>
+    :root {
+        --bg-canvas: #faf9f6;
+        --card-surface: #ffffff;
+        --text-primary: #0f172a;
+        --text-secondary: #64748b;
+        --electric-lilac: linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
+        --border-ui: rgba(129, 140, 248, 0.15);
+    }
 
-        body {
-            margin: 0; padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-            background-color: var(--bg-canvas);
-            color: var(--text-primary);
-            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
-        }
+    body {
+        margin: 0; padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+        background-color: var(--bg-canvas);
+        color: var(--text-primary);
+        display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+    }
 
-        .app-container {
-            width: 100%; max-width: 1200px; padding: 32px 24px; box-sizing: border-box;
-            display: flex; flex-direction: column; gap: 24px;
-        }
+    .app-container {
+        width: 100%; max-width: 1200px; padding: 32px 24px; box-sizing: border-box;
+        display: flex; flex-direction: column; gap: 24px;
+    }
 
-        header {
-            width: 100%; display: flex; justify-content: space-between; align-items: center;
-            padding-bottom: 16px; border-bottom: 1px solid var(--border-ui);
-        }
+    header {
+        width: 100%; display: flex; justify-content: space-between; align-items: center;
+        padding-bottom: 16px; border-bottom: 1px solid var(--border-ui);
+    }
 
-        .logo {
-            font-size: 24px; font-weight: 800;
-            background: var(--electric-lilac); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: -1px; text-decoration: none;
-        }
+    .logo {
+        font-size: 24px; font-weight: 800;
+        background: var(--electric-lilac); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        letter-spacing: -1px; text-decoration: none;
+    }
 
-        #onboardingWrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; width: 100%; }
-        
-        .setup-card {
-            background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px;
-            padding: 32px; width: 100%; max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,0.02);
-            display: flex; flex-direction: column; gap: 24px;
-        }
-        .setup-card h2 { font-size: 22px; font-weight: 800; margin: 0; text-align: center; letter-spacing: -0.5px; }
-        
-        .form-group { display: flex; flex-direction: column; gap: 8px; }
-        .form-group label { font-size: 13px; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.5px; }
-        .input-text { width: 100%; padding: 14px 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s; }
-        .input-text:focus { border-color: #818cf8; }
+    #onboardingWrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; width: 100%; }
+    
+    .setup-card {
+        background: var(--card-surface); border: 1px solid var(--border-ui); border-radius: 24px;
+        padding: 32px; width: 100%; max-width: 480px; box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        display: flex; flex-direction: column; gap: 24px;
+    }
+    .setup-card h2 { font-size: 22px; font-weight: 800; margin: 0; text-align: center; letter-spacing: -0.5px; }
+    
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group label { font-size: 13px; font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.5px; }
+    .input-text { width: 100%; padding: 14px 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 14px; box-sizing: border-box; outline: none; transition: border-color 0.2s; }
+    .input-text:focus { border-color: #818cf8; }
 
-        .pillar-select-list { display: flex; flex-direction: column; gap: 12px; }
-        .pillar-row {
-            border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 16px; display: flex; gap: 14px; align-items: flex-start; cursor: pointer; transition: all 0.2s;
-        }
-        .pillar-row.active { border-color: #818cf8; background: rgba(129, 140, 248, 0.03); box-shadow: 0 0 0 1px #818cf8; }
-        .pillar-row input[type="radio"] { margin-top: 3px; cursor: pointer; }
-        .pillar-meta strong { display: block; font-size: 14px; margin-bottom: 2px; }
-        .pillar-meta p { margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
-        
-        .action-btn { background: var(--electric-lilac); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2); }
-        .action-btn:hover { opacity: 0.95; }
-    </style>
+    .pillar-select-list { display: flex; flex-direction: column; gap: 12px; }
+    .pillar-row {
+        border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 16px; display: flex; gap: 14px; align-items: flex-start; cursor: pointer; transition: all 0.2s;
+    }
+    .pillar-row.active { border-color: #818cf8; background: rgba(129, 140, 248, 0.03); box-shadow: 0 0 0 1px #818cf8; }
+    .pillar-row input[type="radio"] { margin-top: 3px; cursor: pointer; }
+    .pillar-meta strong { display: block; font-size: 14px; margin-bottom: 2px; }
+    .pillar-meta p { margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
+    
+    .action-btn { background: var(--electric-lilac); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(129, 140, 248, 0.2); }
+    .action-btn:hover { opacity: 0.95; }
+
+    /* --- NEW ADDITIONS FOR GUEST BUTTONS --- */
+    .signup-actions {
+        display: flex;
+        gap: 12px;
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    .secondary-btn {
+        background: #e2e8f0; 
+        color: var(--text-primary); 
+        box-shadow: none;
+    }
+
+    .secondary-btn:hover {
+        background: #cbd5e1;
+    }
+</style>
 </head>
 <body>
 
@@ -100,12 +118,9 @@
                     </div>
                 </div>
 <div class="signup-actions">
-        <button type="submit" id="submitSignupBtn" class="primary-button">Create Profile Matrix</button>
-        
-        <button type="button" id="continueGuestBtn" class="secondary-guest-button">
-            Continue as Guest
-        </button>
-    </div>
+    <button type="submit" id="submitSetupBtn" class="action-btn">Create Profile Matrix</button>
+    <button type="button" id="continueGuestBtn" class="action-btn">Continue as Guest</button>
+</div>
 
     <script>
         // ... Your existing signup page code might be here (like handling the submit button) ...
