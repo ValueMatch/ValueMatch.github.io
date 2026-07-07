@@ -108,6 +108,9 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // Your live active Render web service URL
+        const RENDER_BASE_URL = 'https://yourvaluematch.onrender.com';
+
         const row1 = document.getElementById('vector1');
         const row2 = document.getElementById('vector2');
         const rad1 = document.getElementById('rad1');
@@ -128,7 +131,8 @@
         }
 
         if (submitSetupBtn) {
-            submitSetupBtn.addEventListener('click', () => {
+            // Updated to an async execution context for Phase 3 Network Loop
+            submitSetupBtn.addEventListener('click', async () => {
                 const emailField = document.getElementById('userEmailField');
                 if (!emailField) return;
 
@@ -139,6 +143,7 @@
                 
                 const selectedPillar = rad1.checked ? 'clean' : 'labor';
                 
+                // 1. Save identity locally so app.html instantly recognizes the active profile
                 try {
                     localStorage.setItem('userEmail', emailValue);
                     localStorage.setItem('userAuthenticated', 'true');
@@ -147,6 +152,22 @@
                     console.warn("Storage write blocked by browser context rules.");
                 }
                 
+                // 2. Phase 3 Network Loop: Store user profile directly in Render PostgreSQL database
+                try {
+                    await fetch(`${RENDER_BASE_URL}/api/signup`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            email: emailValue,
+                            initialPillar: selectedPillar 
+                        })
+                    });
+                } catch (err) {
+                    // Fallback to maintain user workflow even if database connection is slow/waking up
+                    console.error("Render DB write delayed, passing window focus to dashboard.", err);
+                }
+                
+                // 3. Move cleanly to the workspace engine
                 window.location.href = 'app.html';
             });
         }
