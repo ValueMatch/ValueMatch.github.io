@@ -1,6 +1,6 @@
-const RENDER_BASE_URL = 'https://yourvaluematch-backend.onrender.com';
+const RENDER_BASE_URL = 'http://localhost:3000'; // Change to your live URL when deployed
 
-// 12-Point Catalog Data
+// 12-Point Catalog Data (Mocked Alternatives for now)
 const sovrnMerchantCatalog = [
     {
         name: "Hurraw! Balm",
@@ -40,18 +40,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const sliders = sliderIds.map(id => document.getElementById(id));
     const outputs = Array.from({length: 12}, (_, i) => document.getElementById(`valOut${i}`));
     
+    // Track the LIVE scanned metrics from Gemini
+    let currentScannedMetrics = null;
+
     // --- THE HANDSHAKE: INJECT SAVED PRESETS ---
     const savedScoresJSON = localStorage.getItem('userProfileScores');
     if (savedScoresJSON) {
         const presetScores = JSON.parse(savedScoresJSON);
-        console.log("Template Loaded! Syncing sliders to:", presetScores);
         sliders.forEach((slider, index) => {
             if (slider && presetScores[index] !== undefined) {
                 slider.value = presetScores[index];
             }
         });
-    } else {
-        console.log("No preset template found in localStorage. Defaulting to 50s.");
     }
 
     // 1. IDENTITY CHECK
@@ -110,12 +110,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if(outputs[i]) outputs[i].textContent = val + '%';
         });
 
-        let sumWeights = userValues.reduce((a,b) => a+b, 0);
-        let avgWeight = sumWeights / 12;
-        let finalHeroScore = Math.max(12, 100 - Math.round(avgWeight * 0.85));
-        scoreLabel.textContent = finalHeroScore + '%';
-        updateColorClass(scoreLabel, finalHeroScore);
+        // Compute REAL score for the scanned product if AI data exists
+        if (currentScannedMetrics) {
+            let totalVariance = 0;
+            for(let i = 0; i < 12; i++) {
+                let importanceMultiplier = (userValues[i] / 100) + 0.5; 
+                totalVariance += Math.abs(currentScannedMetrics[i] - userValues[i]) * importanceMultiplier;
+            }
+            let avgRawVariance = totalVariance / 12;
+            let finalHeroScore = Math.max(0, Math.min(100, Math.round(100 - avgRawVariance)));
+            scoreLabel.textContent = finalHeroScore + '%';
+            updateColorClass(scoreLabel, finalHeroScore);
+        }
 
+        // Compare Catalog Alternatives against 12-point matrix
         let calculatedDirectory = sovrnMerchantCatalog.map(product => {
             const pMetrics = [
                 product.metrics.clean, product.metrics.organic, product.metrics.crueltyFree,
@@ -172,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sliders.forEach(s => { if(s) s.addEventListener('input', recalibrateAlgorithm); });
     recalibrateAlgorithm();
 
-    // 5. TELEMETRY LOGGING (Full 12-Point Payload)
+    // 5. TELEMETRY LOGGING
     async function sendValueTelemetry(targetAlternative) {
         const currentEmail = savedEmail || "GUEST PROFILE";
         const currentValues = sliders.map(s => parseInt(s.value) || 0);
@@ -180,21 +188,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const valuePayload = {
             email: currentEmail,
             clicked_product: targetAlternative,
-            clean_ingredients_score: currentValues[0],
-            organic_score: currentValues[1],
-            cruelty_free_score: currentValues[2],
-            vegan_score: currentValues[3],
-            low_waste_score: currentValues[4],
-            climate_impact_score: currentValues[5],
-            ethical_labor_score: currentValues[6],
-            transparency_score: currentValues[7],
-            indie_scale_score: currentValues[8],
-            inclusion_score: currentValues[9],
-            local_sourcing_score: currentValues[10],
-            regenerative_ag_score: currentValues[11]
+            clean_ingredients_score: currentValues[0], organic_score: currentValues[1],
+            cruelty_free_score: currentValues[2], vegan_score: currentValues[3],
+            low_waste_score: currentValues[4], climate_impact_score: currentValues[5],
+            ethical_labor_score: currentValues[6], transparency_score: currentValues[7],
+            indie_scale_score: currentValues[8], inclusion_score: currentValues[9],
+            local_sourcing_score: currentValues[10], regenerative_ag_score: currentValues[11]
         };
-
-        console.log("Transmitting 12-point value matrix to PostgreSQL...", valuePayload);
 
         try {
             await fetch(`${RENDER_BASE_URL}/api/logs/click`, {
@@ -203,13 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(valuePayload),
                 keepalive: true
             });
-            console.log("Database transaction log committed.");
-        } catch (err) {
-            console.error("Telemetry channel deferred:", err);
-        }
+        } catch (err) { console.error("Telemetry failed:", err); }
     }
 
-    // Affiliate Routing Intercept
     alternativesContainer.addEventListener('click', async (e) => {
         if (e.target.classList.contains('swap-button')) {
             const alternativeName = e.target.getAttribute('data-product-name');
@@ -220,24 +216,78 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const SOVRN_API_KEY = "YOUR_SOVRN_API_KEY"; 
             const userTrackingId = encodeURIComponent(savedEmail || "GUEST PROFILE");
-
             const liveAffiliateRedirectUrl = `https://redirect.viglink.com?key=${SOVRN_API_KEY}&u=${encodeURIComponent(destinationUrl)}&cuid=${userTrackingId}`;
 
-            console.log("Routing session through live Sovrn monetization engine...");
             window.location.href = liveAffiliateRedirectUrl;
         }
     });
 
-    // 6. HEADER & SIDEBAR ACTIONS
-    document.getElementById('triggerScanBtn').addEventListener('click', function() {
+    // =========================================================================
+    // 6. LIVE AI SCANNER INTEGRATION
+    // =========================================================================
+    document.getElementById('triggerScanBtn').addEventListener('click', async function() {
         const path = document.getElementById('itemUrlInput').value.trim();
         if(!path) return alert('Please enter a target product URL.');
+        
+        const scanBtn = this;
+        scanBtn.textContent = 'Auditing...';
+        scanBtn.style.background = '#818cf8'; 
+        scanBtn.disabled = true;
+
         try {
             const urlObj = new URL(path);
             document.getElementById('displayDomain').textContent = urlObj.hostname.replace('www.', '');
-            recalibrateAlgorithm(); 
+            
+            // Call the Gemini Backend Agent
+            const response = await fetch(`${RENDER_BASE_URL}/api/analyze`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ product: path, userEmail: savedEmail })
+            });
+
+            const data = await response.json();
+            
+            if(data.success && data.auditedProduct) {
+                const aiData = data.auditedProduct;
+                document.getElementById('displayProductTitle').textContent = aiData.product_name || aiData.brand;
+                document.getElementById('displayScannedPrice').style.display = 'none'; // Hide generic price
+                
+                // Map the AI's metrics 
+                currentScannedMetrics = [
+                    aiData.metrics.clean, aiData.metrics.organic, aiData.metrics.crueltyFree,
+                    aiData.metrics.vegan, aiData.metrics.waste, aiData.metrics.climate,
+                    aiData.metrics.labor, aiData.metrics.transparency, aiData.metrics.indie,
+                    aiData.metrics.inclusion, aiData.metrics.local, aiData.metrics.regenerative
+                ];
+
+                // Inject the Evidence Log into the UI
+                let evidenceBox = document.getElementById('heroEvidenceLog');
+                if(!evidenceBox) {
+                    evidenceBox = document.createElement('div');
+                    evidenceBox.id = 'heroEvidenceLog';
+                    evidenceBox.className = 'log-container';
+                    evidenceBox.style.marginTop = '16px';
+                    document.querySelector('.scanned-hero-card').parentElement.insertBefore(evidenceBox, document.querySelector('.stream-title-row'));
+                }
+                
+                // Style based on score threshold
+                evidenceBox.innerHTML = `<strong>AI Audit Evidence:</strong> ${aiData.evidence}`;
+                evidenceBox.style.borderLeftColor = '#ef4444'; // Red flag for low transparency
+                
+                // Recalculate to show the actual match score!
+                recalibrateAlgorithm(); 
+            } else {
+                alert('Audit failed. Please check your backend terminal for errors.');
+            }
+            
         } catch(e) {
+            console.error(e);
             document.getElementById('displayDomain').textContent = 'External Store Listing';
+            alert('Failed to connect to the backend agent.');
+        } finally {
+            scanBtn.textContent = 'Scan';
+            scanBtn.style.background = '#0f172a';
+            scanBtn.disabled = false;
         }
     });
 
