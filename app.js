@@ -235,7 +235,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             if(data.success && data.auditedProduct) {
                 const aiData = data.auditedProduct;
                 document.getElementById('displayProductTitle').textContent = aiData.product_name || aiData.brand;
-                document.getElementById('displayScannedPrice').style.display = 'none'; 
+                // --- UPDATE PRICE ---
+                    const priceEl = document.getElementById('displayScannedPrice');
+                    if (aiData.price && aiData.price !== 'N/A') {
+                        priceEl.textContent = `Est. Price: ${aiData.price}`;
+                        priceEl.style.display = 'inline-block'; 
+                    } else {
+                        priceEl.style.display = 'none'; 
+                    }
+                
+                    // --- UPDATE IMAGE ---
+                    if (aiData.image_url) {
+                        const heroImage = document.querySelector('.scanned-hero-card img');
+                        if (heroImage) {
+                            heroImage.src = aiData.image_url;
+                        }
+                    }
                 
                 currentScannedMetrics = [
                     aiData.metrics.clean, aiData.metrics.organic, aiData.metrics.crueltyFree,
