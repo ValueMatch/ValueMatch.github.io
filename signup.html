@@ -123,37 +123,37 @@
 </div>
 
 <script>
-    // 12-Point Scoring Key:
-    // [Clean, Organic, CrueltyFree, Vegan, ZeroWaste, Climate, Labor, Transparency, Indie, Inclusion, Local, Regenerative]
+    // 8-Point Scoring Key:
+    // [Clean, Cruelty, Vegan, Waste, Climate, Labor, Independent, Inclusion]
     
     const valueTemplates = [
         {
-            id: "clean",
+            id: "clean-composition",
             icon: "🍃",
             title: "Clean Composition",
             desc: "Prioritizes toxin-free products, clean elements, and full label safety verification.",
-            scores: [100, 100, 50, 50, 50, 50, 50, 90, 80, 50, 50, 50]
+            scores: [100, 60, 50, 60, 50, 50, 50, 50]
         },
         {
-            id: "labor",
+            id: "ethical-labour",
             icon: "🤝",
             title: "Ethical Labour",
             desc: "Prioritizes human rights, fair wages, safety oversight, and manufacturing integrity.",
-            scores: [50, 50, 80, 50, 50, 50, 100, 100, 100, 100, 50, 50]
+            scores: [50, 50, 50, 50, 50, 100, 50, 90]
         },
         {
-            id: "planet",
+            id: "planet-first",
             icon: "🌍",
             title: "Planet First",
             desc: "Prioritizes climate action, zero-waste packaging, and regenerative agricultural practices.",
-            scores: [50, 70, 70, 60, 100, 100, 70, 60, 50, 50, 80, 100]
+            scores: [60, 50, 50, 100, 100, 60, 50, 50]
         },
         {
-            id: "animal",
+            id: "animal-advocate",
             icon: "🐰",
             title: "Animal Advocate",
             desc: "Prioritizes cruelty-free testing, 100% vegan formulations, and strict animal welfare.",
-            scores: [50, 50, 100, 100, 70, 80, 50, 60, 50, 50, 50, 50]
+            scores: [60, 100, 100, 50, 60, 50, 50, 50]
         }
     ];
 
@@ -213,7 +213,7 @@
         localStorage.setItem('savedEmail', userEmail);
         localStorage.setItem('userProfileScores', JSON.stringify(selectedData.scores));
         
-        console.log("Profile created. 12-Point Data mapped for:", userEmail);
+        console.log("Profile created. 8-Point Data mapped for:", userEmail);
         window.location.href = 'app.html'; 
     });
 </script>
