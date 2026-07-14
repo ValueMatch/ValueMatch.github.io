@@ -190,18 +190,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   card.innerHTML = `
     <div style="position: relative;">
-      
+    
       ${!hasUnlockedPremium ? `
-      <div style="position: absolute; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.2);">
+      <div style="position: absolute; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px);">
         <span style="background: #0f172a; color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
           ${product.computedMatchScore}% Match Found
         </span>
         
-        <stripe-buy-button
-          buy-button-id="buy_btn_YOUR_SPECIFIC_ID"
-          publishable-key="pk_live_YOUR_SPECIFIC_KEY"
-        >
-        </stripe-buy-button>
+        <a href="https://buy.stripe.com/eVq7sE8Jm0109KbeV05Ne00" style="background: var(--electric-lilac); color: white; padding: 16px 28px; border-radius: 14px; font-size: 15px; font-weight: 700; text-decoration: none; box-shadow: 0 8px 24px rgba(129, 140, 248, 0.4); transition: transform 0.2s; cursor: pointer; display: inline-block;">
+          Unlock Alternative Matches - $15
+        </a>
 
       </div>
       ` : ''}
