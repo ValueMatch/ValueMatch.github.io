@@ -34,6 +34,9 @@ window.applyBaselinePillar = function(pillarName) {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Check if the user has successfully returned from Stripe checkout
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasUnlockedPremium = urlParams.has('session_id');
     const activeProfileLabel = document.getElementById('activeProfileLabel');
     const guestPanel = document.getElementById('guestConversionPanel');
     const resetEntireSessionLink = document.getElementById('resetEntireSessionLink');
