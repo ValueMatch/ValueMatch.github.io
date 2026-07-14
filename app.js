@@ -196,9 +196,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         <span style="background: #0f172a; color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
           ${product.computedMatchScore}% Match Found
         </span>
-        <a href="YOUR_STRIPE_PAYMENT_LINK_HERE" style="background: var(--electric-lilac); color: white; padding: 16px 28px; border-radius: 14px; font-size: 15px; font-weight: 700; text-decoration: none; box-shadow: 0 8px 24px rgba(129, 140, 248, 0.4); transition: transform 0.2s;">
-          Unlock Alternative Matches - $15
-        </a>
+        
+        <stripe-buy-button
+          buy-button-id="buy_btn_YOUR_SPECIFIC_ID"
+          publishable-key="pk_live_YOUR_SPECIFIC_KEY"
+        >
+        </stripe-buy-button>
+
       </div>
       ` : ''}
       
